@@ -1,0 +1,7 @@
+# Runtime dependencies. Adding a line here requires human approval (REQ-S-002)
+# and a matching entry in the allowlist checked by test/offline/test_dependencies.py.
+PyYAML>=6.0
+
+# Dev / CI only.
+# pytest>=8.0
+# jsonschema>=4.20

@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Runtime stores: case-derived data must never be committed (INV-004).
+data/audit/
+data/state/
+data/cache/
+data/telemetry/
+
+# Secrets
+.env
+.env.*
+secrets/
+*.pem
+*.key
+
+# Local evaluation output
+data/eval/runs/
