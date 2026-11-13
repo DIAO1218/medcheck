@@ -66,6 +66,8 @@ zip -r CS5351-MedCheck.zip MedCheck -x "MedCheck/.pytest_cache/*" -x "*/__pycach
 
 The required structure is preserved inside the zip (`docs/req/`, `docs/architecture/`, `docs/code-governance/`, `src/`, `test/offline`, `test/live`, `transcripts/`, `.opencode/`, `.agent/`, `.github/workflows/`).
 
+The zip also contains `.git/` (9 commits, tag `s0-baseline`), so the commit history travels with the submission — D7 asks for a meaningful history, and a marker who only receives the zip would otherwise see none. Drop `.git/` if your marker prefers a clean archive, but keep it if you have not pushed to GitHub yet.
+
 ## 6. Pre-submission questions the marker will ask
 
 Answer these out loud before you submit; if any answer is "uh", fix the artefact rather than rehearsing.

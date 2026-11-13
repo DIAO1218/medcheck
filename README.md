@@ -100,6 +100,16 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 
 **Branch protection:** `ci` must pass; changes under `src/medcheck/{adjudicator,rules,privacy,audit}`, `data/rules/`, `.opencode/`, or `.agent/` additionally require a human review with an ADR id in the PR body. Gate 1 was red until the S0 close review, because the baseline was written in one pass and no prior approval existed; `docs/test-approvals.yaml` now records that approval retroactively, and the review memo says why that is visible rather than tidied away.
 
+## Where to look first
+
+| If you want to… | Read |
+|---|---|
+| check the submission against the requirement sheet | `docs/compliance-matrix.md` (clause → artefact → status) |
+| know what only the team can do | `SUBMISSION-CHECKLIST.md` |
+| see the one decision everything else follows from | `docs/architecture/adr/001-…md` |
+| see what broke and what found it | `docs/bug-diary.md` (7 defects, 0 found by reading code) |
+| see the agent being supervised | `transcripts/` (30 marked interventions) |
+
 ## Status, honestly
 
 | Deliverable | State |
