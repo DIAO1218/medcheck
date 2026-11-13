@@ -22,6 +22,10 @@ python scripts/check_ai_use_log.py --changed src/medcheck/rules/dose.py docs/ai-
 
 All seven must print `PASS`. If one fails, the failure is real — do not edit the check.
 
+## 1b. The repository is already published
+
+<https://github.com/DIAO1218/medcheck> is public, CI is green, and `main` is protected (PR + one approval + `all gates`). Pushing more work: `git push origin main`. If `github.com` is unreachable on your network, `docs/zh/PUBLISH.zh.md` §6 lists what to check.
+
 ## 2. Fill in the six identities (only you can do this)
 
 | Where | What |

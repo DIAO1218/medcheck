@@ -9,7 +9,7 @@
 
 | 要求 | 制品 | 状态 |
 |---|---|---|
-| 一个仓库 | <https://github.com/DIAO1218/medcheck>（12 次提交，tag `s0-baseline`） | 符合 |
+| 一个仓库 | <https://github.com/DIAO1218/medcheck>（13 次提交，tag `s0-baseline`） | 符合 |
 | 五份带标注的智能体会话 | `transcripts/T1…T5` | 符合，带取证声明 |
 | 一份过程报告 | `Report.md` + `Report.zh.md` | 符合 |
 | AI 使用日志强制且最新 | `docs/ai-use-log.yaml`（5 条） | 符合 |
@@ -100,7 +100,7 @@
 
 | 要求 | 制品 | 状态 |
 |---|---|---|
-| 源码、测试、带阻断门的 CI/CD、分支保护、有意义的提交历史 | `src/`、`test/`、`ci.yml`、9 次提交 + tag | 历史符合；**分支保护未结**（GitHub 设置项） |
+| 源码、测试、带阻断门的 CI/CD、分支保护、有意义的提交历史 | <https://github.com/DIAO1218/medcheck> —— 13 次提交 + tag `s0-baseline`；CI 绿（run 43474042516）；`main` 已开分支保护：需 PR、需 1 次批准、`all gates` 必须绿、管理员同样受限 | 符合 |
 | README 说明阻断门设计 | `README.md` 六门表 + 理由段（中英双版） | 符合 |
 | 六道阻断门 | `ci.yml` 六个 job + 汇总 job | 符合 |
 | 每道门有反向自测 | `test_gates_selftest.py`、`test_requirements_schema.py` 等（REQ-G-005） | 符合 |
@@ -143,7 +143,6 @@
 | 1 | 六人姓名 + 学号、每冲刺工时、权重 | 团队 | 工时无法从仓库重建；编造会污染作业唯一要求诚实报告的度量 |
 | 2 | 六段反思用本人语气重写并签名 | 团队 | 智能体写的反思不是反思 |
 | 3 | 会话记录认证或重录 | 团队 | 它们是重构件；认证只能由当事人作出 |
-| 4 | GitHub 远端 + 分支保护（要求 ci 通过、安全路径需人工审查 + ADR） | 团队 | 仓库设置项，不是文件 |
 | 5 | 在线抽取器准确率（`prompts/*.yaml: live_accuracy`） | 团队 | 需要 API key 与真实病历 |
 | 6 | INV-002/004/005 的变异检验 | 团队 | 1 小时工作，关闭 DEBT-09 |
 

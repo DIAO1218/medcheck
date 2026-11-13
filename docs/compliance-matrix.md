@@ -10,7 +10,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 
 | Requirement | Artefact | Status |
 |---|---|---|
-| One repository | <https://github.com/DIAO1218/medcheck> (12 commits, tag `s0-baseline`) | met |
+| One repository | <https://github.com/DIAO1218/medcheck> (13 commits, tag `s0-baseline`) | met |
 | Five annotated agent-session transcripts | `transcripts/T1…T5` | met, with provenance caveat |
 | One process report | `Report.md` | met |
 | AI-use log mandatory and up to date | `docs/ai-use-log.yaml` (5 entries) | met |
@@ -107,7 +107,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 
 | Requirement | Artefact | Status |
 |---|---|---|
-| Source, tests, CI/CD with blocking gates, branch protection, meaningful history | `src/`, `test/`, `.github/workflows/ci.yml`, 8 commits + tag | history met; **branch protection open** (GitHub setting, not a file) |
+| Source, tests, CI/CD with blocking gates, branch protection, meaningful history | <https://github.com/DIAO1218/medcheck> — 13 commits + tag `s0-baseline`; CI green (run 43474042516); branch protection on `main`: PR required, 1 approval, `all gates` must be green, admins included | met |
 | README states the design of the blocking gates | `README.md` §"The six blocking gates" + rationale paragraph | met |
 | Six blocking gates | `ci.yml`: test-approval, static-analysis, schema-gate, semantic-evaluation, regression, ai-use-log, plus `all-gates` aggregator | met |
 | Each gate self-tested | `test_gates_selftest.py`, `test_requirements_schema.py`, `test_permissions.py`, `test_semantic_gate.py` (REQ-G-005) | met |
@@ -158,7 +158,6 @@ Structure check: every path in §5 exists, plus a mirror of the blueprint, `docs
 | 1 | Six names + student numbers, per-sprint hours, weights | team | hours are not recoverable from the repository; inventing them corrupts the one measure the sheet asks for |
 | 2 | Six reflections rewritten in each member's own voice + signed | team | a reflection written by an agent is not a reflection |
 | 3 | Transcripts certified or re-recorded | team | they are reconstructions; certification is a statement only the team can make |
-| 4 | GitHub remote + branch protection (require `ci`, require review + ADR on safety paths) | team | repository settings, not files |
 | 5 | Live extractor accuracy (`prompts/*.yaml: live_accuracy`) | team | needs an API key and real notes |
 | 6 | Mutation check for INV-002/004/005 | team | 1 hour of work, closes DEBT-09 |
 
