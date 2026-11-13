@@ -32,7 +32,13 @@ gh auth login
 授权完成后，在 `GROUP PROJECT/MedCheck/` 下执行：
 
 ```bash
-gh repo create medcheck --private --source=. --remote=origin --push
+./scripts/publish.sh medcheck public     # 公开；私有就写 private
+```
+
+脚本会做四件事：建仓库、推送 `main` 与 tag、加 topics、开分支保护（失败会因为 CI 还没跑过，见 §3 的说明）。等价的单步命令是：
+
+```bash
+gh repo create medcheck --public --source=. --remote=origin --push
 ```
 
 它会：创建 `github.com/<你的账号>/medcheck` → 加 remote `origin` → 推送 `main` 分支和 tag。
