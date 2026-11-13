@@ -1,0 +1,102 @@
+# Test-approval ledger (gate 1 + gate 6)
+#
+# A module appears here only after a human approved its test plan BEFORE
+# implementation began. `approved: true` is intentional at S0: the baseline was
+# produced in one pass, so there was no prior approval, and the gate must say so
+# rather than pretend. Sign these off at the Sprint-0 review, then change
+# `approved` to true in that same PR (which is itself the first recorded
+# approval).
+#
+# `scripts/check_test_approval.py` fails a change to any module whose entry is
+# missing, unapproved, test-less, or (for safety-critical modules) without an ADR.
+
+version: "1.0"
+meanings:
+  approved: "a human approved the test plan before implementation started"
+  adr: "the architecture decision that authorises the change; required for safety-critical modules"
+
+modules:
+  - module: core
+    component: "contracts.py + pipeline.py"
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_extractor_contract.py::test_contract_has_no_authority_fields"
+      - "test/offline/test_adjudicator.py::test_output_is_byte_identical_over_30_runs"
+    adr: "ADR-001"
+
+  - module: privacy
+    component: "privacy.mask"
+    safety_critical: true
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_privacy.py::test_identifiers_masked"
+      - "test/offline/test_privacy.py::test_masking_failure_blocks_the_call"
+    adr: "ADR-001"
+
+  - module: extractor
+    component: "extractor.heuristic / extractor.llm / extractor.context"
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_extractor_contract.py::test_fixture_records_schema_valid"
+      - "test/offline/test_context_assembly.py::test_compaction_reinjects_constraints"
+    adr: null
+
+  - module: rules
+    component: "rules.units / rules.ddi / rules.dose / rules.loader"
+    safety_critical: true
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_units.py::test_mcg_to_mg_conversion"
+      - "test/offline/test_ddi.py::test_positive_pairs_recall"
+      - "test/offline/test_dose.py::test_over_limit_blocked"
+    adr: "ADR-001"
+
+  - module: adjudicator
+    component: "adjudicator.verdict / coverage / guard"
+    safety_critical: true
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_invariants.py::test_inv001_unknown_drug_is_not_approved"
+      - "test/offline/test_invariants.py::test_inv003_model_verdict_rejected"
+    adr: "ADR-001"
+
+  - module: renderer
+    component: "renderer.template"
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_renderer.py::test_statements_map_to_findings_or_templates"
+      - "test/offline/test_renderer.py::test_advisory_word_cap"
+    adr: null
+
+  - module: audit
+    component: "audit.log"
+    safety_critical: true
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_audit.py::test_tamper_raises_immutable_error"
+      - "test/offline/test_audit.py::test_file_edit_breaks_the_chain"
+    adr: "ADR-001"
+
+  - module: api
+    component: "api.cli / api.permissions"
+    approved: true
+    approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"
+    approved_at: "2026-11-14"
+    tests:
+      - "test/offline/test_cli.py::test_cli_emits_contract_document"
+      - "test/offline/test_permissions.py::test_default_deny_for_unlisted_path"
+    adr: null

@@ -1,0 +1,138 @@
+version: "1.0"
+# AI-use log — mandatory, gate 6 blocks a code/prompt change that does not update
+# this file. One entry per substantial session. Entries are appended, never edited
+# (corrections are new entries that supersede).
+#
+# Fields: who instructed, which agent, what was delegated, what a human checked,
+# which artefacts resulted, where the raw transcript lives.
+
+policy:
+  gate: "scripts/check_ai_use_log.py"
+  retention: "course duration + 1 semester"
+  rule: "an entry that cannot be tied to a transcript entry is not evidence"
+
+entries:
+  - id: AIU-2026-11-14-01
+    date: "2026-11-14"
+    sprint: S0
+    session: "baseline scaffold"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Produce the S0 baseline: repository skeleton per D1-D9, the deterministic
+      core, the offline test suite, and the six CI gates.
+    delegated:
+      - "D1 registry and schema, including the MoSCoW tradeoff statement"
+      - "D2 eleven architecture artefacts and ADR-001"
+      - "D3 governance files and the machine-readable permission model"
+      - "src/medcheck deterministic core (privacy, rules, adjudicator, audit, renderer, cli)"
+      - "offline test suite (165 tests) and the four gate scripts"
+    human_checked:
+      - "domain framing: which drug pairs and ceilings are plausible teaching data"
+      - "the invariant set (INV-001..005) and their fallbacks"
+      - "the evaluation weights (C1 x3, C7 x2) and the sensitivity table"
+    artefacts:
+      - "docs/req/requirements.yaml, docs/req/req-schema.json"
+      - "architecture-blueprint.md, docs/architecture/**"
+      - "AGENTS.md, Prompt.md, .opencode/**, .agent/**"
+      - "src/**, test/**, scripts/**, .github/workflows/ci.yml"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (S0 session, to be annotated)"
+    notes: >-
+      The baseline is agent-generated under human direction. It is a scaffold, not
+      evidence of a supervised build: D5 requires five recorded sessions with
+      marked interventions, and this entry does not substitute for them. Claims in
+      this repository are backed by the test suite and the gate scripts, both of
+      which the team must re-run rather than trust.
+
+  - id: AIU-2026-11-14-02
+    date: "2026-11-14"
+    sprint: S0
+    session: "gate hardening iteration"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Run the gates against their own artefacts and fix what they caught.
+    delegated:
+      - "interpret gate failures and propose fixes"
+      - "add the coverage-hole mechanism after the fail-closed gap was found"
+      - "split the ceiling assertion into integrity and silent-overdose checks"
+    human_checked:
+      - "accepted that .env became readable after a path-normalisation bug (BUG-0003)"
+      - "accepted the change from BLOCK to HOLD when eGFR is missing (BUG-0004)"
+    artefacts:
+      - "data/rules/ddi.yaml (coverage_holes), src/medcheck/privacy/mask.py, src/medcheck/rules/dose.py"
+      - "src/medcheck/adjudicator/verdict.py, src/medcheck/api/permissions.py"
+      - "docs/bug-diary.md BUG-0001..0006"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (same session, annotated)"
+    notes: >-
+      Six defects were found by the artefacts disagreeing with each other (schema
+      gate vs registry, permission model vs its test, invariant vs its own
+      meaning). None were found by reading the code. This is the argument for the
+      gates, recorded where a reader can check it.
+
+  - id: AIU-2026-11-14-03
+    date: "2026-11-14"
+    sprint: S0
+    session: "mutation check"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Verify the invariant guards are load-bearing by deleting them and observing
+      which tests fail.
+    delegated: ["execute the mutation, report which tests went red"]
+    human_checked: ["both mutations produced red tests, then were reverted"]
+    artefacts:
+      - "docs/code-governance/verification-constraints.md section 3"
+      - "docs/architecture/evaluation-logbook.md E-06"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md"
+    notes: >-
+      Deleting the unknown-drug branch failed 1 test; disabling the authority-field
+      check failed 10. Neither guard is decorative.
+
+  - id: AIU-2026-11-14-04
+    date: "2026-11-14"
+    sprint: S0
+    session: "evaluation set growth 6 -> 25"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Repay DEBT-02: grow the frozen evaluation set to 25 cases, one per
+      distinguishable outcome class, and pin every verdict.
+    delegated:
+      - "propose 19 additional cases covering interaction severity, renal bands, coverage holes, unparsed fields, injection and empty notes"
+      - "generate the fixtures and the verdict matrix test"
+    human_checked:
+      - "that the distribution is not degenerate (6 APPROVE / 14 HOLD / 5 BLOCK)"
+      - "that no committed fixture carries an identifier (BUG-0007 caught by the gate first)"
+    artefacts:
+      - "test/fixtures/cases/c01..c25"
+      - "test/offline/test_fixture_matrix.py"
+      - "docs/bug-diary.md BUG-0007, docs/debt-register.md DEBT-02 repaid / DEBT-11 opened"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia-T5-revision.md"
+    notes: >-
+      The gate found our own violation before we did: the PHI fixture was rejected
+      by REQ-S-001's check in the same run that added it.
+
+  - id: AIU-2026-11-14-05
+    date: "2026-11-14"
+    sprint: S0
+    session: "D5 transcripts and D6 report"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Produce the five annotated sessions and the process report.
+    delegated:
+      - "reconstruct T1-T5 from the build log with verbatim agent output and condensed human turns"
+      - "draft the report structure, evidence tables and six role-based reflections"
+    human_checked:
+      - "that each transcript carries an explicit provenance block rather than claiming live capture"
+      - "that the contribution table stays blank instead of inventing hours"
+      - "that the reflection section is labelled as a draft each member must revise"
+    artefacts:
+      - "transcripts/60371620-DIAO-Liuxianjia-T1..T5-*.md, transcripts/README.md"
+      - "Report.md (8,560 words), SUBMISSION-CHECKLIST.md"
+    transcript: "this session"
+    notes: >-
+      The report states three times that the transcripts are reconstructions
+      requiring certification. That repetition is deliberate: it is the one claim
+      a reader could reasonably assume had been laundered.
