@@ -1,0 +1,111 @@
+# Maximum daily dose table with renal adjustment bands.
+#
+# TEACHING DATA ONLY. Not clinical guidance. Values are set to make the
+# adjudicator's logic testable, not to reflect prescribing practice; several are
+# deliberately conservative.
+version: "2026.11.1"
+renal_bands:
+  # first band whose max_egfr is >= the patient's eGFR wins
+  - name: G5
+    max_egfr: 15
+    factor: 0.25
+  - name: G4
+    max_egfr: 30
+    factor: 0.5
+  - name: G3
+    max_egfr: 60
+    factor: 0.75
+  - name: G1-G2
+    max_egfr: 10000
+    factor: 1.0
+drugs:
+  warfarin:
+    rule_id: DOSE-001
+    max_mg_per_day: 10.0
+    renal_sensitive: false
+    basis: anticoagulant ceiling
+  aspirin:
+    rule_id: DOSE-002
+    max_mg_per_day: 4000.0
+    renal_sensitive: false
+    basis: analgesic ceiling
+  ibuprofen:
+    rule_id: DOSE-003
+    max_mg_per_day: 2400.0
+    renal_sensitive: true
+    basis: NSAID ceiling
+  simvastatin:
+    rule_id: DOSE-004
+    max_mg_per_day: 40.0
+    renal_sensitive: false
+    basis: statin ceiling
+  clarithromycin:
+    rule_id: DOSE-005
+    max_mg_per_day: 1000.0
+    renal_sensitive: false
+    basis: macrolide ceiling
+  metformin:
+    rule_id: DOSE-006
+    max_mg_per_day: 2550.0
+    renal_sensitive: true
+    basis: biguanide ceiling
+  lisinopril:
+    rule_id: DOSE-007
+    max_mg_per_day: 40.0
+    renal_sensitive: true
+    basis: ACE inhibitor ceiling
+  spironolactone:
+    rule_id: DOSE-008
+    max_mg_per_day: 100.0
+    renal_sensitive: true
+    basis: potassium sparing ceiling
+  digoxin:
+    rule_id: DOSE-009
+    max_mg_per_day: 0.25
+    renal_sensitive: true
+    basis: narrow therapeutic index
+  furosemide:
+    rule_id: DOSE-010
+    max_mg_per_day: 600.0
+    renal_sensitive: true
+    basis: loop diuretic ceiling
+  amiodarone:
+    rule_id: DOSE-011
+    max_mg_per_day: 400.0
+    renal_sensitive: false
+    basis: antiarrhythmic loading ceiling
+  ciprofloxacin:
+    rule_id: DOSE-012
+    max_mg_per_day: 1500.0
+    renal_sensitive: true
+    basis: fluoroquinolone ceiling
+  omeprazole:
+    rule_id: DOSE-013
+    max_mg_per_day: 40.0
+    renal_sensitive: false
+    basis: PPI ceiling
+  clopidogrel:
+    rule_id: DOSE-014
+    max_mg_per_day: 75.0
+    renal_sensitive: false
+    basis: antiplatelet maintenance
+  gentamicin:
+    rule_id: DOSE-015
+    max_mg_per_day: 500.0
+    renal_sensitive: true
+    basis: aminoglycoside ceiling
+  vancomycin:
+    rule_id: DOSE-016
+    max_mg_per_day: 4000.0
+    renal_sensitive: true
+    basis: glycopeptide ceiling
+  lithium:
+    rule_id: DOSE-017
+    max_mg_per_day: 1800.0
+    renal_sensitive: true
+    basis: narrow therapeutic index
+  tramadol:
+    rule_id: DOSE-018
+    max_mg_per_day: 400.0
+    renal_sensitive: true
+    basis: opioid ceiling

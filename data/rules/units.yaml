@@ -1,0 +1,40 @@
+# Unit conversion table. Every dose must pass through this closed table; a unit
+# absent from it is an error, never a guess (P-11).
+#
+# TEACHING DATA ONLY. Values are textbook conversions, not clinical guidance.
+version: "2026.11.1"
+canonical_unit: mg
+conversions:
+  mg: 1.0
+  milligram: 1.0
+  milligrams: 1.0
+  g: 1000.0
+  gram: 1000.0
+  grams: 1000.0
+  mcg: 0.001
+  ug: 0.001
+  microgram: 0.001
+  micrograms: 0.001
+  ng: 0.000001
+
+# Frequency grammar. Deliberately narrow: anything outside it becomes
+# FIELD_UNPARSED and the case is held rather than guessed.
+frequencies:
+  once daily: 1.0
+  od: 1.0
+  mane: 1.0
+  nocte: 1.0
+  daily: 1.0
+  q24h: 1.0
+  twice daily: 2.0
+  bd: 2.0
+  bid: 2.0
+  q12h: 2.0
+  three times daily: 3.0
+  tds: 3.0
+  tid: 3.0
+  q8h: 3.0
+  four times daily: 4.0
+  qds: 4.0
+  qid: 4.0
+  q6h: 4.0

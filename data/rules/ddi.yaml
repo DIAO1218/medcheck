@@ -1,0 +1,222 @@
+# Drug-drug interaction table.
+#
+# TEACHING DATA ONLY. These entries are illustrative and must not be used for
+# clinical decisions. Every row carries the source class it is modelled on so a
+# reviewer can audit it (R-01: a table row without a source is a guess).
+#
+# Coverage contract: 40 assessed pairs among 18 drugs. Absence of a pair from
+# this list means "no known interaction" ONLY for pairs not listed under
+# coverage_holes below.
+version: "2026.11.1"
+interactions:
+  - rule_id: DDI-001
+    pair: [warfarin, aspirin]
+    severity: major
+    effect: additive bleeding risk
+    basis: anticoagulant + antiplatelet
+  - rule_id: DDI-002
+    pair: [warfarin, ibuprofen]
+    severity: major
+    effect: GI bleeding risk plus displacement
+    basis: anticoagulant + NSAID
+  - rule_id: DDI-003
+    pair: [warfarin, clarithromycin]
+    severity: major
+    effect: INR rise via CYP3A4 inhibition
+    basis: CYP3A4 inhibitor
+  - rule_id: DDI-004
+    pair: [warfarin, amiodarone]
+    severity: major
+    effect: INR rise, long half-life interaction
+    basis: CYP2C9 inhibition
+  - rule_id: DDI-005
+    pair: [warfarin, ciprofloxacin]
+    severity: major
+    effect: INR rise
+    basis: CYP1A2 inhibition
+  - rule_id: DDI-006
+    pair: [warfarin, tramadol]
+    severity: moderate
+    effect: INR rise reported
+    basis: case reports
+  - rule_id: DDI-007
+    pair: [simvastatin, clarithromycin]
+    severity: contraindicated
+    effect: rhabdomyolysis risk
+    basis: strong CYP3A4 inhibition
+  - rule_id: DDI-008
+    pair: [simvastatin, amiodarone]
+    severity: major
+    effect: myopathy risk
+    basis: CYP3A4 inhibition
+  - rule_id: DDI-009
+    pair: [metformin, gentamicin]
+    severity: major
+    effect: accumulation with renal impairment, lactic acidosis risk
+    basis: nephrotoxicity
+  - rule_id: DDI-010
+    pair: [lisinopril, spironolactone]
+    severity: major
+    effect: hyperkalaemia
+    basis: RAAS blockade + potassium sparing
+  - rule_id: DDI-011
+    pair: [lisinopril, ibuprofen]
+    severity: moderate
+    effect: reduced antihypertensive effect, renal risk
+    basis: NSAID + ACE inhibitor
+  - rule_id: DDI-012
+    pair: [spironolactone, ibuprofen]
+    severity: major
+    effect: hyperkalaemia and renal impairment
+    basis: potassium sparing + NSAID
+  - rule_id: DDI-013
+    pair: [digoxin, furosemide]
+    severity: major
+    effect: hypokalaemia potentiates digoxin toxicity
+    basis: loop diuretic potassium loss
+  - rule_id: DDI-014
+    pair: [digoxin, amiodarone]
+    severity: major
+    effect: digoxin level rise
+    basis: P-glycoprotein inhibition
+  - rule_id: DDI-015
+    pair: [digoxin, clarithromycin]
+    severity: major
+    effect: digoxin level rise
+    basis: P-glycoprotein inhibition
+  - rule_id: DDI-016
+    pair: [clopidogrel, omeprazole]
+    severity: moderate
+    effect: reduced clopidogrel activation
+    basis: CYP2C19 inhibition
+  - rule_id: DDI-017
+    pair: [ciprofloxacin, tramadol]
+    severity: moderate
+    effect: QT prolongation
+    basis: additive QT
+  - rule_id: DDI-018
+    pair: [amiodarone, ciprofloxacin]
+    severity: major
+    effect: QT prolongation, torsades risk
+    basis: additive QT
+  - rule_id: DDI-019
+    pair: [lithium, ibuprofen]
+    severity: major
+    effect: lithium toxicity
+    basis: reduced renal clearance
+  - rule_id: DDI-020
+    pair: [lithium, lisinopril]
+    severity: major
+    effect: lithium toxicity
+    basis: reduced renal clearance
+  - rule_id: DDI-021
+    pair: [gentamicin, vancomycin]
+    severity: major
+    effect: additive nephro- and ototoxicity
+    basis: two nephrotoxins
+  - rule_id: DDI-022
+    pair: [furosemide, gentamicin]
+    severity: major
+    effect: additive ototoxicity
+    basis: loop diuretic + aminoglycoside
+  - rule_id: DDI-023
+    pair: [aspirin, ibuprofen]
+    severity: moderate
+    effect: attenuated antiplatelet effect, GI risk
+    basis: NSAID competition
+  - rule_id: DDI-024
+    pair: [omeprazole, warfarin]
+    severity: minor
+    effect: minor INR rise
+    basis: CYP2C19
+  - rule_id: DDI-025
+    pair: [simvastatin, omeprazole]
+    severity: moderate
+    effect: increased statin exposure
+    basis: CYP3A4 / CYP2C19 overlap
+  - rule_id: DDI-026
+    pair: [clopidogrel, clarithromycin]
+    severity: major
+    effect: reduced clopidogrel activation, thrombotic risk
+    basis: CYP3A4 inhibition
+  - rule_id: DDI-027
+    pair: [metformin, furosemide]
+    severity: moderate
+    effect: altered metformin clearance
+    basis: renal perfusion
+  - rule_id: DDI-028
+    pair: [digoxin, spironolactone]
+    severity: major
+    effect: digoxin level rise
+    basis: P-glycoprotein competition
+  - rule_id: DDI-029
+    pair: [lithium, furosemide]
+    severity: major
+    effect: lithium toxicity via sodium depletion
+    basis: loop diuretic
+  - rule_id: DDI-030
+    pair: [lithium, spironolactone]
+    severity: moderate
+    effect: lithium level rise
+    basis: diuretic-induced sodium loss
+  - rule_id: DDI-031
+    pair: [tramadol, omeprazole]
+    severity: moderate
+    effect: reduced tramadol activation
+    basis: CYP2C19 inhibition
+  - rule_id: DDI-032
+    pair: [tramadol, clarithromycin]
+    severity: major
+    effect: serotonin and QT risk
+    basis: CYP3A4 inhibition + QT
+  - rule_id: DDI-033
+    pair: [aspirin, clopidogrel]
+    severity: major
+    effect: additive bleeding risk
+    basis: dual antiplatelet
+  - rule_id: DDI-034
+    pair: [aspirin, lisinopril]
+    severity: moderate
+    effect: reduced antihypertensive effect, renal risk
+    basis: NSAID + ACE inhibitor
+  - rule_id: DDI-035
+    pair: [ibuprofen, furosemide]
+    severity: major
+    effect: reduced diuretic effect, renal impairment
+    basis: NSAID + loop diuretic
+  - rule_id: DDI-036
+    pair: [metformin, lisinopril]
+    severity: moderate
+    effect: enhanced hypoglycaemic effect
+    basis: ACE inhibitor
+  - rule_id: DDI-037
+    pair: [gentamicin, lisinopril]
+    severity: major
+    effect: additive nephrotoxicity
+    basis: two renal insults
+  - rule_id: DDI-038
+    pair: [vancomycin, lisinopril]
+    severity: moderate
+    effect: additive renal risk
+    basis: ACE inhibitor + glycopeptide
+  - rule_id: DDI-039
+    pair: [ciprofloxacin, omeprazole]
+    severity: minor
+    effect: minor absorption change
+    basis: gastric pH
+  - rule_id: DDI-040
+    pair: [simvastatin, warfarin]
+    severity: moderate
+    effect: INR rise
+    basis: shared CYP metabolism
+
+# Declared knowledge holes. Absence of a pair from `interactions` normally means
+# "no known interaction" -- but only for pairs we have actually assessed. A pair
+# listed here is explicitly *unassessed*, which must produce COVERAGE_GAP and a
+# HOLD (INV-001). Declaring holes is how the table stays honest about its own
+# limits instead of silently treating ignorance as safety.
+coverage_holes:
+  - pair: [metformin, ciprofloxacin]
+    note: renal clearance interaction not enumerated in this teaching table
+  - pair: [vancomycin, furosemide]
+    note: additive ototoxicity suspected but not assessed in this teaching table
