@@ -1,0 +1,146 @@
+name: ci
+
+# Six blocking gates (D7). Each job is a merge blocker; none is advisory.
+# Branch protection requires "ci" to pass, and safety-critical paths additionally
+# require a human review with an ADR id in the PR body.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ---------------------------------------------------------------- gate 1 --
+  # No code change merges unless its tests were approved before implementation.
+  test-approval-gate:
+    name: "gate 1 · test approval"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install pyyaml
+      - name: Verify an approved test record exists for every touched module
+        run: |
+          BASE="origin/${{ github.base_ref }}"
+          if [ "${{ github.event_name }}" = "push" ]; then BASE="HEAD~1"; fi
+          CHANGED=$(git diff --name-only "$BASE"...HEAD | tr '\n' ' ')
+          echo "changed: $CHANGED"
+          python scripts/check_test_approval.py --changed $CHANGED
+
+  # ---------------------------------------------------------------- gate 2 --
+  static-analysis:
+    name: "gate 2 · static analysis"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -e ".[dev]" ruff
+      - name: Lint and type-adjacent checks
+        run: |
+          ruff check src test scripts
+          python -m compileall -q src scripts
+      - name: Dependency allowlist and structural fitness functions
+        run: |
+          python -m pytest test/offline/test_dependencies.py test/offline/test_structure.py -q
+      - name: Permission surface checks on safety-relevant changes
+        run: |
+          BASE="origin/${{ github.base_ref }}"
+          if [ "${{ github.event_name }}" = "push" ]; then BASE="HEAD~1"; fi
+          TOUCHED=$(git diff --name-only "$BASE"...HEAD | grep -E '^(src/medcheck/(adjudicator|rules|privacy|audit)/|\.opencode/|\.agent/)' || true)
+          if [ -n "$TOUCHED" ]; then
+            echo "safety-relevant paths touched: $TOUCHED"
+            python scripts/check_permissions_sync.py
+          fi
+
+  # ---------------------------------------------------------------- gate 3 --
+  schema-gate:
+    name: "gate 3 · requirements schema"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install pyyaml jsonschema
+      - run: python scripts/validate_requirements.py
+
+  # ---------------------------------------------------------------- gate 4 --
+  semantic-evaluation:
+    name: "gate 4 · semantic evaluation"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -e ".[dev]"
+      - name: Replay the frozen evaluation set
+        # Runs on any prompt/model change, and on main as a trend check.
+        run: python scripts/eval_replay.py
+
+  # ---------------------------------------------------------------- gate 5 --
+  regression:
+    name: "gate 5 · regression"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -e ".[dev]"
+      - name: Full offline suite, zero regressions
+        run: python -m pytest test/offline -q
+      - name: Invariant suites must report exactly zero violations
+        run: python -m pytest test/offline/test_invariants.py -q
+
+  # ---------------------------------------------------------------- gate 6 --
+  ai-use-log:
+    name: "gate 6 · AI-use log"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: A code or prompt change must update docs/ai-use-log.yaml
+        run: |
+          BASE="origin/${{ github.base_ref }}"
+          if [ "${{ github.event_name }}" = "push" ]; then BASE="HEAD~1"; fi
+          CHANGED=$(git diff --name-only "$BASE"...HEAD | tr '\n' ' ')
+          python scripts/check_ai_use_log.py --changed $CHANGED
+
+  # --------------------------------------------------------------- summary --
+  all-gates:
+    name: "all gates"
+    if: always()
+    needs: [test-approval-gate, static-analysis, schema-gate, semantic-evaluation, regression, ai-use-log]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any gate failed
+        run: |
+          echo "test-approval: ${{ needs.test-approval-gate.result }}"
+          echo "static-analysis: ${{ needs.static-analysis.result }}"
+          echo "schema: ${{ needs.schema-gate.result }}"
+          echo "semantic: ${{ needs.semantic-evaluation.result }}"
+          echo "regression: ${{ needs.regression.result }}"
+          echo "ai-use-log: ${{ needs.ai-use-log.result }}"
+          if [ "${{ contains(needs.*.result, 'failure') }}" = "true" ]; then exit 1; fi
