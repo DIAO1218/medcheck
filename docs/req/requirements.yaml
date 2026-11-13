@@ -1,0 +1,393 @@
+schema_version: "1.0"
+product: MedCheck
+tagline: "Medication interaction and dose-ceiling adjudication with a deterministic safety core"
+revision: 2
+last_updated: "2026-11-14"
+owner: "CS5351 MedCheck team"
+
+# ---------------------------------------------------------------------------
+# Prioritisation: MoSCoW.
+# Tradeoff stated explicitly (required by D1):
+#   We trade breadth for provability. Multi-language extraction, free-text
+#   dose parsing beyond the supported grammar, and any form of LLM-signed
+#   verdict are WON'T for v1. The reason is that every added degree of freedom
+#   in the AI path widens the set of behaviours the invariant checker must
+#   prove, and we cannot produce zero-tolerance evidence for a surface we
+#   cannot enumerate. MUST items are exactly those an invariant depends on.
+#   SHOULD items improve clinician trust but no invariant fails without them;
+#   they may be dropped under schedule pressure without reopening an ADR.
+# ---------------------------------------------------------------------------
+prioritisation:
+  framework: MoSCoW
+  tradeoff: >-
+    Breadth is traded for provability. Anything that cannot be enumerated in a
+    frozen fixture corpus is out of scope for v1, because an invariant without
+    a zero-tolerance evidence set is an assertion, not a constraint.
+  distribution:
+    must: "every invariant-bearing behaviour plus its verification surface"
+    should: "advisory quality, latency, cost targets"
+    could: "rule-table hot reload, multi-tenant audit view"
+    wont: "multi-language intake, LLM-signed verdicts, autonomous prescribing"
+
+product_context:
+  vision: >-
+    A medication review step that a clinician can audit in seconds: every number
+    traceable to a table, every decision reproducible, and a refusal to approve
+    anything the tables do not cover.
+  users:
+    - "reviewing clinician (primary): reads the verdict and the top finding"
+    - "pharmacy reviewer (escalation): resolves COVERAGE_GAP and RENAL_DATA_MISSING"
+    - "auditor: reconstructs any verdict from the audit record and table version"
+    - "course assessor: reads the artefacts, not the app"
+  in_scope:
+    - "single free-text case note per request"
+    - "18 drugs, 40 assessed interaction pairs, dose ceilings with 4 renal bands"
+    - "one verdict, an ordered finding list, a bounded advisory paragraph"
+  out_of_scope:
+    - "prescribing, titration, or any output executable as an order"
+    - "multi-language intake, handwriting OCR, tablet/vial dose grammars"
+    - "any verdict produced or modified by a model"
+  success_metrics:
+    - "zero invariant violations across the offline suite (release blocker)"
+    - "coverage-gap rate measured and visible; > 20% opens a table sprint"
+    - "p95 deterministic adjudication <= 50 ms"
+    - "faithfulness >= 0.90, relevance >= 0.85 on the frozen evaluation set"
+  non_goals:
+    - "clinical validity: the tables are teaching data and say so everywhere"
+    - "throughput: this is a review aid, not a high-volume pipeline"
+
+sources:
+  - id: SRC-LECTURE-VHIS
+    kind: lecture_reference
+    ref: "CS5351 VHIS lab: advisory AI + authoritative deterministic eligibility engine"
+    note: "Pattern adopted, domain and code not reused."
+  - id: SRC-SPEC
+    kind: course_spec
+    ref: "CS5351-2026-2027-project.pdf, D1-D9"
+  - id: SRC-ANALYSIS-01
+    kind: analysis
+    ref: "docs/bug-diary.md#BUG-0002"
+    note: "Coverage gap found during negative testing became INV-001."
+
+requirements:
+  # ------------------------------- functional -------------------------------
+  - id: REQ-F-001
+    type: functional
+    statement: >-
+      The system extracts medication name, dose amount, dose unit, frequency,
+      route, and (when present) renal function from a free-text case note and
+      emits a schema-valid structured record.
+    fit_criterion: >-
+      >= 95% of 120 frozen extraction fixtures produce records that validate
+      against medcheck.contracts.ExtractionRecord; per-field exact match >= 90%
+      for dose amount and frequency on the golden subset.
+    priority: must
+    component: extractor
+    source: SRC-SPEC
+  - id: REQ-F-002
+    type: functional
+    statement: >-
+      The system normalises every dose to milligrams per day using an explicit
+      unit table, rejecting units that have no defined conversion.
+    fit_criterion: >-
+      100% of 60 unit-conversion fixtures (mcg/mg/g mixtures, non-convertible
+      units) yield the expected mg/day value within 1e-6 relative tolerance or
+      a typed UnconvertibleUnit error.
+    priority: must
+    component: rules.units
+    source: SRC-SPEC
+  - id: REQ-F-003
+    type: functional
+    statement: >-
+      The system detects drug-drug interactions between the extracted
+      medications using a versioned interaction table and assigns each hit a
+      severity from the table.
+    fit_criterion: >-
+      100% recall on 40 positive pairs and zero false positives on 60 negative
+      pairs in the offline DDI fixture set, at table version recorded in the
+      audit record.
+    priority: must
+    component: rules.ddi
+    source: SRC-SPEC
+  - id: REQ-F-004
+    type: functional
+    statement: >-
+      The system compares each normalised dose against the maximum daily dose
+      table, applying a renal adjustment band when eGFR is available.
+    fit_criterion: >-
+      100% of 50 over-limit fixtures are blocked and 0 of 50 compliant fixtures
+      are blocked; renal-band fixtures (25 cases) select the band recorded in
+      the table.
+    priority: must
+    component: rules.dose
+    source: SRC-SPEC
+  - id: REQ-F-005
+    type: functional
+    statement: >-
+      The adjudicator composes a verdict of APPROVE, HOLD, or BLOCK with an
+      ordered finding list, and is a pure function of (case, rule tables).
+    fit_criterion: >-
+      Identical input and table version produce byte-identical JSON output over
+      30 repeated runs; every finding carries a resolvable rule_id.
+    priority: must
+    component: adjudicator
+    source: SRC-SPEC
+  - id: REQ-F-006
+    type: functional
+    statement: >-
+      The renderer produces clinician-facing advisory prose that only restates
+      findings already present in the adjudication result.
+    fit_criterion: >-
+      For 50 rendered cases, 100% of emitted statements resolve to either a
+      finding rule_id or a fixed template id; no statement introduces a
+      medication, number, or verdict absent from the adjudication result.
+    priority: must
+    component: renderer
+    source: SRC-SPEC
+  - id: REQ-F-007
+    type: functional
+    statement: >-
+      Every adjudicated case appends one immutable audit record containing case
+      id, input hash, rule-table version, verdict, findings, and any human
+      override with reviewer id.
+    fit_criterion: >-
+      Attempting to mutate a written record raises AuditImmutableError in 10 of
+      10 tamper tests; record count equals adjudication count in the round-trip
+      test.
+    priority: must
+    component: audit
+    source: SRC-SPEC
+  - id: REQ-F-008
+    type: functional
+    statement: >-
+      The system is invocable as a CLI over a case JSON file and emits one
+      JSON result document on stdout.
+    fit_criterion: >-
+      `python -m medcheck.cli --case <fixture>` exits 0 for fixture set and
+      matches the output contract schema; exit code 2 with a typed error object
+      on malformed input (10 malformed fixtures).
+    priority: should
+    component: api.cli
+    source: SRC-SPEC
+
+  # ------------------------------- invariants -------------------------------
+  - id: REQ-I-001
+    type: invariant
+    zero_tolerance: true
+    statement: >-
+      Fail-closed coverage: if any prescribed medication, or any pair of
+      medications, is absent from the rule tables, the verdict must not be
+      APPROVE. It must be HOLD with a COVERAGE_GAP finding escalated to a human.
+    fit_criterion: >-
+      ZERO failures permitted: 100% of 25 unknown-drug and uncovered-pair
+      fixtures yield verdict != APPROVE, and 100% carry a COVERAGE_GAP finding.
+    priority: must
+    component: adjudicator
+    source: SRC-ANALYSIS-01
+  - id: REQ-I-002
+    type: invariant
+    zero_tolerance: true
+    statement: >-
+      No output of any component may assert a daily dose above the applicable
+      maximum for the patient context, including advisory prose.
+    fit_criterion: >-
+      ZERO failures permitted: 0 ceiling violations across the full fixture
+      corpus plus 500 property-generated cases; violations are fatal, not
+      warnings.
+    priority: must
+    component: adjudicator
+    source: SRC-SPEC
+  - id: REQ-I-003
+    type: invariant
+    zero_tolerance: true
+    statement: >-
+      Authority separation: verdict, severity, and dose fields are derived only
+      by deterministic code. Any value for these fields originating in model
+      output is rejected before it can reach a result document.
+    fit_criterion: >-
+      ZERO failures permitted: 10 of 10 adversarial payloads containing a
+      model-supplied verdict or severity raise AuthorityViolation and never
+      surface in output.
+    priority: must
+    component: adjudicator.guard
+    source: SRC-LECTURE-VHIS
+  - id: REQ-I-004
+    type: invariant
+    zero_tolerance: true
+    statement: >-
+      Patient identifiers never leave the process boundary unmasked. Name,
+      HKID, phone, address, and date of birth are replaced with typed tokens
+      before any model call, and logs never contain raw identifiers.
+    fit_criterion: >-
+      ZERO failures permitted: 0 identifier hits in outbound model payloads and
+      in application logs across 40 PHI fixtures and the property test.
+    priority: must
+    component: privacy
+    source: SRC-SPEC
+  - id: REQ-I-005
+    type: invariant
+    zero_tolerance: true
+    statement: >-
+      Traceability: no finding may exist without a resolvable rule_id and the
+      rule-table version it was evaluated against.
+    fit_criterion: >-
+      ZERO failures permitted: 100% of findings in all fixtures resolve to an
+      entry present in the pinned table version; unresolvable findings abort
+      the run.
+    priority: must
+    component: adjudicator
+    source: SRC-SPEC
+
+  # ------------------------------- quality ----------------------------------
+  - id: REQ-Q-001
+    type: quality
+    statement: >-
+      Extraction and advisory output meet semantic quality thresholds on a
+      frozen evaluation set judged by a fixed rubric.
+    metric: "faithfulness and relevance scores"
+    threshold: "faithfulness >= 0.90, relevance >= 0.85 on the frozen 25-case evaluation set"
+    verification: >-
+      scripts/eval_replay.py against the frozen set; CI semantic gate blocks a
+      prompt or model change when either threshold is missed.
+    fit_criterion: >-
+      Scores reported by the replay script meet both thresholds on the 25-case
+      frozen set; 20% of cases human-audited each sprint with disagreement rate
+      <= 10%. Corpus growth is tracked as DEBT-11, not silently assumed.
+    priority: should
+    component: renderer
+    source: SRC-SPEC
+  - id: REQ-Q-002
+    type: quality
+    statement: >-
+      Advisory prose stays short enough to be read at the point of care.
+    metric: "advisory word count"
+    threshold: "<= 200 words per case, 100% of cases"
+    verification: "offline test over the render fixture set"
+    fit_criterion: "Every rendered advisory is <= 200 words."
+    priority: should
+    component: renderer
+    source: SRC-SPEC
+
+  # ------------------------------- performance ------------------------------
+  - id: REQ-P-001
+    type: performance
+    statement: >-
+      Deterministic adjudication must be fast enough to sit inside a
+      synchronous review step.
+    metric: "p95 latency of adjudicate() on 1000 cases"
+    threshold: "<= 50 ms on the CI runner"
+    verification: "benchmark test with warm tables, 3 repeats, worst p95 reported"
+    fit_criterion: >-
+      Measured p95 adjudicate() latency over 1000 warm-table cases is <= 50 ms
+      on the CI runner, reported by the benchmark test in test/offline/.
+    priority: should
+    component: adjudicator
+    source: SRC-SPEC
+  - id: REQ-P-002
+    type: performance
+    statement: >-
+      End-to-end case processing including the model call stays within an
+      interactive budget.
+    metric: "p95 wall-clock per case with live model"
+    threshold: "<= 6 s"
+    verification: "live test, 20 cases, labelled live so it never blocks offline CI"
+    fit_criterion: "p95 <= 6 s on the recorded run."
+    priority: could
+    component: api
+    source: SRC-SPEC
+
+  # --------------------------------- cost -----------------------------------
+  - id: REQ-C-001
+    type: cost
+    statement: >-
+      Model spend per adjudicated case stays inside the teaching budget.
+    metric: "USD per case, input tokens per extraction call"
+    threshold: "<= 0.02 USD per case, <= 3000 input tokens per call"
+    verification: "token accounting in the live test plus cost table in README"
+    fit_criterion: "Mean cost per case <= 0.02 USD over the 20-case live run."
+    priority: should
+    component: extractor.llm
+    source: SRC-SPEC
+
+  # ------------------------------- security ---------------------------------
+  - id: REQ-S-001
+    type: security
+    statement: >-
+      The repository, CI logs, and transcripts contain no secrets and no
+      patient data; only synthetic fixtures are committed.
+    fit_criterion: >-
+      Secret scan gate reports 0 findings; every file under test/fixtures is
+      generated or synthetic and reviewed in the PR that adds it.
+    priority: must
+    component: ci
+    source: SRC-SPEC
+  - id: REQ-S-002
+    type: security
+    statement: >-
+      Runtime dependencies are limited to an allowlist with permissive licences.
+    fit_criterion: >-
+      Dependency gate fails on any package outside allowlist.json or with a
+      licence not in the approved set; 0 violations at merge.
+    priority: must
+    component: ci
+    source: SRC-SPEC
+
+  # ------------------------------ governance --------------------------------
+  - id: REQ-G-001
+    type: governance
+    statement: >-
+      A pull request that changes code under src/ or prompts/ without updating
+      docs/ai-use-log.yaml is blocked.
+    fit_criterion: >-
+      A synthetic PR touching src/ without a log update fails the gate; a PR
+      with the update passes; both cases are recorded in the CI self-test.
+    priority: must
+    component: ci
+    source: SRC-SPEC
+  - id: REQ-G-002
+    type: governance
+    statement: >-
+      The coding agent's file permissions are deny-by-default; every readable
+      or writable path is explicitly whitelisted per role.
+    fit_criterion: >-
+      A permission test requests 12 non-whitelisted paths across 3 roles and
+      gets 12 denials; whitelisted paths succeed.
+    priority: must
+    component: .opencode/permissions.jsonc
+    source: SRC-SPEC
+  - id: REQ-G-003
+    type: governance
+    statement: >-
+      Tests for a change are approved and recorded before implementation starts.
+    fit_criterion: >-
+      CI rejects a PR whose approval record for the touched module is missing or
+      predates the change; the approval record lives in transcripts/ and the PR
+      template.
+    priority: must
+    component: ci
+    source: SRC-SPEC
+  - id: REQ-G-004
+    type: governance
+    statement: >-
+      Changes to safety-critical paths (adjudicator, rules, privacy, audit)
+      require a new or amended architecture decision and a human reviewer.
+    fit_criterion: >-
+      CI fails when a safety-critical path changes without a new ADR file and a
+      human approval on the PR.
+    priority: must
+    component: ci
+    source: SRC-SPEC
+  - id: REQ-G-005
+    type: governance
+    statement: >-
+      The CI pipeline implements all six blocking gates and the three verification
+      tiers (structural, regression, behavioural). Every gate and every structural
+      fitness function is self-tested, so that a check which cannot fail is itself
+      a defect.
+    fit_criterion: >-
+      6 of 6 gates have a negative self-test: for each gate, disabling it makes a
+      named test fail (test/offline/test_gates_selftest.py, test_requirements_schema.py,
+      test_permissions.py, test_semantic_gate.py, test_fixture_matrix.py).
+    priority: must
+    component: ci
+    source: SRC-SPEC

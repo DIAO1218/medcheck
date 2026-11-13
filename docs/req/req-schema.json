@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medcheck.local/schemas/req-schema.json",
+  "title": "MedCheck requirements registry",
+  "description": "Schema used by the CI schema gate (.github/workflows/ci.yml) to validate docs/req/requirements.yaml on every push and pull request. A registry that fails this schema blocks the merge.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "revision",
+    "last_updated",
+    "prioritisation",
+    "requirements"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "product": {
+      "type": "string",
+      "minLength": 2
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "prioritisation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "framework",
+        "tradeoff"
+      ],
+      "properties": {
+        "framework": {
+          "enum": [
+            "MoSCoW"
+          ]
+        },
+        "tradeoff": {
+          "type": "string",
+          "minLength": 40,
+          "description": "Explicit statement of what was traded away. Required by D1."
+        },
+        "distribution": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "ref"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^SRC-[A-Z0-9-]+$"
+          },
+          "kind": {
+            "enum": [
+              "lecture_reference",
+              "course_spec",
+              "analysis",
+              "stakeholder",
+              "incident"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 4
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
+    },
+    "product_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The product requirements document in machine-readable form (D1). The registry below is the consolidated requirement list.",
+      "required": [
+        "vision",
+        "users",
+        "in_scope",
+        "out_of_scope"
+      ],
+      "properties": {
+        "vision": {
+          "type": "string",
+          "minLength": 40
+        },
+        "users": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 8
+          }
+        },
+        "in_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "out_of_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "success_metrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "non_goals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "statement",
+        "fit_criterion",
+        "priority"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^REQ-(F|I|Q|P|C|S|G)-[0-9]{3}$"
+        },
+        "type": {
+          "enum": [
+            "functional",
+            "invariant",
+            "quality",
+            "performance",
+            "cost",
+            "governance",
+            "security"
+          ]
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 20
+        },
+        "fit_criterion": {
+          "type": "string",
+          "minLength": 20,
+          "description": "Machine-checkable acceptance criterion."
+        },
+        "priority": {
+          "enum": [
+            "must",
+            "should",
+            "could",
+            "wont"
+          ]
+        },
+        "zero_tolerance": {
+          "type": "boolean"
+        },
+        "component": {
+          "type": "string",
+          "minLength": 2
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^SRC-[A-Z0-9-]+$"
+        },
+        "metric": {
+          "type": "string",
+          "minLength": 4
+        },
+        "threshold": {
+          "type": "string",
+          "minLength": 4
+        },
+        "verification": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "invariant"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "zero_tolerance"
+            ],
+            "properties": {
+              "zero_tolerance": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "quality",
+                  "performance",
+                  "cost"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "metric",
+              "threshold",
+              "verification"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
