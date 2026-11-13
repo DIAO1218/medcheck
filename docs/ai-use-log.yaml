@@ -136,3 +136,30 @@ entries:
       The report states three times that the transcripts are reconstructions
       requiring certification. That repetition is deliberate: it is the one claim
       a reader could reasonably assume had been laundered.
+
+  - id: AIU-2026-11-14-06
+    date: "2026-11-14"
+    sprint: S0
+    session: "CI gate 2 hardening on the published repository"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Make the published repository pass its own static-analysis gate, and record
+      what the gate found.
+    delegated:
+      - "run ruff locally for the first time and triage 48 findings"
+      - "add an explicit ruff configuration instead of relying on defaults"
+      - "fix 48 findings, keeping two deliberate ignores"
+    human_checked:
+      - "that the two ignores (E501, RUF001/003) are justified rather than convenient — the mask token uses angle quotes on purpose"
+      - "that StrEnum did not change any output the tests assert"
+      - "that 195 offline tests stayed green after 33 auto-fixes touched 17 files"
+    artefacts:
+      - "pyproject.toml (ruff config with per-file ignores and two documented exceptions)"
+      - "src/medcheck/{contracts,adjudicator/verdict,extractor/llm}.py, test/offline/*"
+      - "README.md / README.en.md / docs/compliance-matrix.md (real repository URL)"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia-T4-build-verify.md (related session)"
+    notes: >-
+      Gate 6 blocked this commit because src/ changed without a log entry. The
+      gate was right and the entry was added rather than the check bypassed; that
+      sequence is the whole argument for having the gate.
