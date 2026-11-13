@@ -1,0 +1,99 @@
+{
+  // MedCheck project permission model — machine-readable form of
+  // docs/architecture/permission-model.md. Deny by default: a path is reachable
+  // only if a pattern below grants it, and `deny_*` always wins over an allow.
+  //
+  // Humans are not modelled here; "human-only" means no agent role may write it.
+  "version": "1.0",
+  "default": "deny",
+
+  "human_only_write": [
+    "AGENTS.md",
+    "architecture-blueprint.md",
+    "Prompt.md",
+    "docs/architecture/**",
+    "docs/code-governance/**",
+    ".opencode/**",
+    ".agent/**",
+    ".github/workflows/**"
+  ],
+
+  "global_deny_read": [
+    "data/audit/**",
+    "data/state/**",
+    "data/cache/**",
+    "data/telemetry/**",
+    ".env",
+    ".env.*",
+    "secrets/**",
+    "*.pem",
+    "*.key"
+  ],
+
+  "roles": {
+    "plan-agent": {
+      "purpose": "requirements classification, candidate architectures, execution plans",
+      "read": ["**"],
+      "write": [
+        "docs/req/**",
+        "Report.md",
+        "transcripts/**",
+        ".workbuddy/memory/**"
+      ],
+      "deny_write": ["src/**", "test/**", "prompts/**", "scripts/**", "data/**"]
+    },
+
+    "build-agent": {
+      "purpose": "write tests, then implement; may not touch governance or tables",
+      "read": ["**"],
+      "write": [
+        "src/**",
+        "test/**",
+        "scripts/**",
+        "prompts/**",
+        "docs/ai-use-log.yaml",
+        "docs/debt-register.md",
+        "docs/bug-diary.md",
+        "transcripts/**",
+        ".workbuddy/memory/**"
+      ],
+      "deny_write": ["data/rules/**", "data/**"]
+    },
+
+    "verify-agent": {
+      "purpose": "run verification, write the review record; changes nothing else",
+      "read": ["**"],
+      "write": [
+        "docs/review-memo.md",
+        "docs/debt-register.md",
+        "docs/bug-diary.md"
+      ],
+      "deny_write": ["src/**", "test/**", "prompts/**", "scripts/**", "data/**", "docs/req/**"]
+    }
+  },
+
+  "guards": {
+    "safety_critical_paths": [
+      "src/medcheck/adjudicator/**",
+      "src/medcheck/rules/**",
+      "src/medcheck/privacy/**",
+      "src/medcheck/audit/**"
+    ],
+    "safety_critical_requires": ["adr_id_in_pr_body", "human_approval", "full_invariant_suite"],
+    "append_only_stores": ["data/audit/**", "docs/debt-register.md", "docs/bug-diary.md", "docs/ai-use-log.yaml"],
+    "max_files_per_change": 25,
+    "network": {
+      "egress_allowlist": ["llm-gateway.cs.cityu.edu.hk", "api.openai.com"],
+      "only_from_module": "medcheck/extractor/llm.py"
+    }
+  },
+
+  "shell_allowlist": [
+    "python -m pytest",
+    "python -m medcheck.cli",
+    "python scripts/",
+    "git diff",
+    "git status",
+    "git log"
+  ]
+}
