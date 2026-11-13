@@ -6,6 +6,7 @@
 
 | 文件 | 对应英文原件 | 用途 |
 |---|---|---|
+| [`../../项目简介.md`](../../项目简介.md) | — | 给同学看的项目简介：做什么、为什么这么设计、现在能做什么 |
 | [`../../README.md`](../../README.md) | `README.en.md` | 项目入口（中文为主，英文版单独保留） |
 | [`../../Report.zh.md`](../../Report.zh.md) | `Report.md` | 过程报告全文中文版（13 节 + 4 附录） |
 | [`architecture-overview.zh.md`](architecture-overview.zh.md) | `architecture-blueprint.md` + `docs/architecture/adr/001-…md` | 架构导读：接缝、数据流、结论语义、五条不变量、六层上下文、权限、被否方案 |

@@ -106,6 +106,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 
 | If you want to… | Read |
 |---|---|
+| a five-minute overview of what the project does (Chinese) | `项目简介.md` |
 | check the submission against the requirement sheet | `docs/compliance-matrix.md` (clause → artefact → status) |
 | know what only the team can do | `SUBMISSION-CHECKLIST.md` |
 | see the one decision everything else follows from | `docs/architecture/adr/001-…md` |
