@@ -19,7 +19,6 @@ from medcheck.adjudicator import coverage, guard
 from medcheck.adjudicator.verdict import compose
 from medcheck.contracts import (
     CODE_ALL_CHECKS_PASSED,
-    CODE_AUTHORITY_VIOLATION,
     CODE_COVERAGE_GAP,
     CODE_DOSE_CEILING,
     AdjudicationResult,
@@ -179,7 +178,6 @@ def test_inv003_result_without_pass_finding_rejected():
 
 def test_inv003_approve_with_incomplete_coverage_rejected(tables):
     """[INV-003] Even with a pass finding, APPROVE + incomplete coverage is refused."""
-    from medcheck.contracts import CODE_ALL_CHECKS_PASSED
 
     forged = AdjudicationResult(
         "x",

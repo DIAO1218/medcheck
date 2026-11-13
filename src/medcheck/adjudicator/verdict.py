@@ -22,11 +22,11 @@ from ..contracts import (
     CODE_NO_MEDICATIONS,
     CODE_RENAL_DATA_MISSING,
     CODE_UNIT_UNSUPPORTED,
+    SEVERITY_RANK,
     AdjudicationResult,
     CeilingAssertionError,
     Finding,
     NormalizedDose,
-    SEVERITY_RANK,
     Severity,
     UnresolvableFinding,
     Verdict,
@@ -65,12 +65,14 @@ def resolve(finding: Finding, tables: RuleTables) -> None:
     rule_id = finding.rule_id
     if rule_id in META_RULES:
         return
-    if rule_id.startswith("DDI-"):
-        if any(row["rule_id"] == rule_id for row in tables.interactions):
-            return
-    if rule_id.startswith("DOSE-"):
-        if any(row.get("rule_id") == rule_id for row in tables.drugs.values()):
-            return
+    if rule_id.startswith("DDI-") and any(
+        row["rule_id"] == rule_id for row in tables.interactions
+    ):
+        return
+    if rule_id.startswith("DOSE-") and any(
+        row.get("rule_id") == rule_id for row in tables.drugs.values()
+    ):
+        return
     raise UnresolvableFinding(
         f"finding {finding.code} cites '{rule_id}', which is absent from table {tables.version}"
     )
@@ -152,7 +154,8 @@ def compose(
         # read; approving through a finding is how "minor" becomes a blind spot.
         verdict = Verdict.HOLD
     elif coverage_complete:
-        findings = list(findings) + [
+        findings = [
+            *findings,
             Finding(
                 rule_id="SYS-PASS-001",
                 code=CODE_ALL_CHECKS_PASSED,
@@ -164,7 +167,8 @@ def compose(
         verdict = Verdict.APPROVE
     else:
         # Defensive: no findings but incomplete coverage must never approve.
-        findings = list(findings) + [
+        findings = [
+            *findings,
             Finding(
                 rule_id="SYS-COVERAGE-001",
                 code=CODE_COVERAGE_GAP,

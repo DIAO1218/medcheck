@@ -12,8 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import check_ai_use_log  # noqa: E402
-import check_test_approval  # noqa: E402
+import check_ai_use_log
+import check_test_approval
 
 
 # --------------------------------------------------------------------------- #

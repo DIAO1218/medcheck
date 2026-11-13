@@ -10,7 +10,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 
 | Requirement | Artefact | Status |
 |---|---|---|
-| One repository | `MedCheck/` (git initialised, 8 commits, tag `s0-baseline`) | met locally; **remote pending** (see §Open) |
+| One repository | <https://github.com/DIAO1218/medcheck> (12 commits, tag `s0-baseline`) | met |
 | Five annotated agent-session transcripts | `transcripts/T1…T5` | met, with provenance caveat |
 | One process report | `Report.md` | met |
 | AI-use log mandatory and up to date | `docs/ai-use-log.yaml` (5 entries) | met |
@@ -145,7 +145,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 | README: purpose + architecture in a few paragraphs | met (§ Purpose and architecture, three paragraphs) |
 | README: organisation of project files | met (annotated tree) |
 | README: how to run offline, live, full suite | met (three commands + exit codes) |
-| README: GitHub repo that contains the real project | **open** — placeholder URL |
+| README: GitHub repo that contains the real project | <https://github.com/DIAO1218/medcheck> | met |
 
 Structure check: every path in §5 exists, plus a mirror of the blueprint, `docs/test-approvals.yaml`, `SUBMISSION-CHECKLIST.md`, `docs/compliance-matrix.md`, `data/rules/`, `scripts/`.
 

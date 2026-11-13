@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import eval_replay  # noqa: E402
+import eval_replay
 
 
 def test_thresholds_configured():

@@ -14,8 +14,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from medcheck.contracts import Medication  # noqa: E402
-from medcheck.rules.loader import get_tables  # noqa: E402
+from medcheck.contracts import Medication
+from medcheck.rules.loader import get_tables
 
 
 @pytest.fixture(scope="session")

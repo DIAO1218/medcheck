@@ -123,9 +123,9 @@ def test_every_test_declares_its_requirement():
     for path in sorted((ROOT / "test").rglob("test_*.py")):
         tree = ast.parse(path.read_text(encoding="utf-8"))
         for node in ast.walk(tree):
-            if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
-                if not pattern.search(ast.get_docstring(node) or ""):
-                    missing.append(f"{path.name}::{node.name}")
+            is_test = isinstance(node, ast.FunctionDef) and node.name.startswith("test_")
+            if is_test and not pattern.search(ast.get_docstring(node) or ""):
+                missing.append(f"{path.name}::{node.name}")
     assert missing == [], f"tests with no requirement reference: {missing}"
 
 

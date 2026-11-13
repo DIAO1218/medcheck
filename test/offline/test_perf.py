@@ -15,7 +15,7 @@ BUDGET_MS = 50.0
 
 def _p95(samples: list[float]) -> float:
     ordered = sorted(samples)
-    index = max(0, int(round(0.95 * (len(ordered) - 1))))
+    index = max(0, round(0.95 * (len(ordered) - 1)))
     return ordered[index]
 
 

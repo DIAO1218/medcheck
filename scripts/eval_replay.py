@@ -25,10 +25,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from medcheck.adjudicator.verdict import resolve  # noqa: E402
-from medcheck.pipeline import process_case  # noqa: E402
-from medcheck.renderer import template  # noqa: E402
-from medcheck.rules.loader import get_tables  # noqa: E402
+from medcheck.adjudicator.verdict import resolve
+from medcheck.pipeline import process_case
+from medcheck.renderer import template
+from medcheck.rules.loader import get_tables
 
 #: Thresholds pinned by REQ-Q-001. A prompt or model change that drops below
 #: either one is blocked by CI gate 4.
@@ -64,7 +64,7 @@ def replay(case_dir: Path = FROZEN_SET) -> dict:
                 resolve(finding, tables)
                 if finding.statement.strip():
                     relevant += 1
-            except Exception:  # noqa: BLE001 - reported through the score
+            except Exception:
                 failures.append(f"{path.name}: unresolvable {finding.rule_id}")
 
     return {

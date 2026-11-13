@@ -9,15 +9,16 @@ cleaned up (INV-003).
 
 from __future__ import annotations
 
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 from ..contracts import (
+    FORBIDDEN_AUTHORITY_FIELDS,
+    SEVERITY_RANK,
     AdjudicationResult,
     AuthorityViolation,
-    FORBIDDEN_AUTHORITY_FIELDS,
     Finding,
     Verdict,
-    SEVERITY_RANK,
 )
 
 

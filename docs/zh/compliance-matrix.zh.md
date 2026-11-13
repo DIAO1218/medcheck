@@ -9,7 +9,7 @@
 
 | 要求 | 制品 | 状态 |
 |---|---|---|
-| 一个仓库 | `MedCheck/`（已 git 初始化，9 次提交，tag `s0-baseline`） | 本地符合；**远端待建** |
+| 一个仓库 | <https://github.com/DIAO1218/medcheck>（12 次提交，tag `s0-baseline`） | 符合 |
 | 五份带标注的智能体会话 | `transcripts/T1…T5` | 符合，带取证声明 |
 | 一份过程报告 | `Report.md` + `Report.zh.md` | 符合 |
 | AI 使用日志强制且最新 | `docs/ai-use-log.yaml`（5 条） | 符合 |
@@ -130,7 +130,7 @@
 | README：目的与架构（几段话） | 符合（中英双版各三段） |
 | README：项目文件组织 | 符合（带注释的目录树） |
 | README：如何跑离线 / 在线 / 全量 | 符合（三条命令 + 退出码） |
-| README：含真实 GitHub 仓库地址 | **未结**：占位链接 |
+| README：含真实 GitHub 仓库地址 | <https://github.com/DIAO1218/medcheck> | 符合 |
 
 结构核对：§5 的每条路径都存在，另有蓝图镜像、`docs/test-approvals.yaml`、`SUBMISSION-CHECKLIST.md`、`docs/compliance-matrix.md`、`data/rules/`、`scripts/`、`docs/zh/`。
 

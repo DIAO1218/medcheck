@@ -11,7 +11,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,7 +20,12 @@ REGISTRY = ROOT / "docs" / "req" / "requirements.yaml"
 
 def _run(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, str(SCRIPT), *args], cwd=ROOT, capture_output=True, text=True, timeout=60
+        [sys.executable, str(SCRIPT), *args],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
     )
 
 

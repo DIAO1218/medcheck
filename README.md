@@ -139,4 +139,4 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 
 ---
 
-**仓库：** `<https://github.com/<org>/medcheck>` —— 提交前替换为真实 GitHub 地址（提交格式要求）。
+**仓库：** <https://github.com/DIAO1218/medcheck> · 公开仓库，供同学查看；评分期间请勿复制（见 `PUBLISH.zh.md` §0）。

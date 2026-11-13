@@ -136,4 +136,4 @@ The transcripts are reconstructed from the S0 build log with agent output quoted
 
 ---
 
-**Repository:** `<https://github.com/<org>/medcheck>` — replace with the real GitHub URL before submission (required by the submission format).
+**Repository:** <https://github.com/DIAO1218/medcheck> — public, so classmates can read it.

@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from medcheck.api.permissions import check, load_policy  # noqa: E402
+from medcheck.api.permissions import check, load_policy
 
 REQUIRED_HUMAN_ONLY = ("AGENTS.md", "architecture-blueprint.md", ".opencode/**", ".agent/**")
 REQUIRED_SAFETY = ("src/medcheck/adjudicator", "src/medcheck/rules", "src/medcheck/privacy", "src/medcheck/audit")

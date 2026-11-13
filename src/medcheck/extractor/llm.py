@@ -58,7 +58,7 @@ def extract(
         method="POST",
     )
 
-    with urllib.request.urlopen(request, timeout=timeout) as response:  # noqa: S310
+    with urllib.request.urlopen(request, timeout=timeout) as response:
         payload = json.loads(response.read().decode("utf-8"))
 
     content = payload["choices"][0]["message"].get("content") or ""
@@ -116,6 +116,6 @@ def extract_with_fallback(
         return ExtractionRecord(
             medications=record.medications,
             egfr=record.egfr,
-            unparsed=record.unparsed + ("extractor: heuristic fallback",),
+            unparsed=(*record.unparsed, "extractor: heuristic fallback"),
             prompt_version=heuristic.VERSION,
         )

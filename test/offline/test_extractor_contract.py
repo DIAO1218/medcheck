@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import dataclasses
 
-import pytest
-
 from medcheck.contracts import FORBIDDEN_AUTHORITY_FIELDS, ExtractionRecord
 from medcheck.extractor import heuristic
 

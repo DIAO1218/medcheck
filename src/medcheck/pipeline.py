@@ -11,8 +11,8 @@ The renderer runs last because nothing may depend on its output.
 
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
-from typing import Callable, Mapping
 
 from .adjudicator import coverage, guard
 from .adjudicator.verdict import compose

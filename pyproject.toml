@@ -25,3 +25,22 @@ addopts = "-ra"
 markers = [
     "live: requires a model endpoint (never runs in offline CI)",
 ]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "test", "scripts"]
+extend-exclude = ["data"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "PLW", "RUF"]
+ignore = [
+    "E501",   # line length is handled by the formatter, not the linter
+    "RUF001", # the mask token uses guillemet-style angle quotes deliberately
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# scripts and tests insert src/ on sys.path before importing the package
+"scripts/*.py" = ["E402"]
+"test/**/*.py" = ["E402"]

@@ -20,7 +20,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from medcheck.rules.loader import get_tables  # noqa: E402
+from medcheck.rules.loader import get_tables
 
 FIXTURE = ROOT / "test" / "fixtures" / "ddi_pairs.yaml"
 NEGATIVES = 60

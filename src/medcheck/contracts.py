@@ -12,9 +12,10 @@ opinion about safety (REQ-I-003).
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import Any, Iterable, Mapping
+from collections.abc import Mapping
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import Any
 
 
 # --------------------------------------------------------------------------- #
@@ -63,13 +64,13 @@ class AuditTamperError(MedCheckError):
 # --------------------------------------------------------------------------- #
 # enumerations
 # --------------------------------------------------------------------------- #
-class Verdict(str, Enum):
+class Verdict(StrEnum):
     APPROVE = "APPROVE"
     HOLD = "HOLD"
     BLOCK = "BLOCK"
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     CONTRAINDICATED = "contraindicated"
     MAJOR = "major"
     MODERATE = "moderate"
@@ -138,7 +139,7 @@ class ExtractionRecord:
     prompt_version: str = "unknown"
 
     @classmethod
-    def from_payload(cls, payload: Mapping[str, Any], prompt_version: str) -> "ExtractionRecord":
+    def from_payload(cls, payload: Mapping[str, Any], prompt_version: str) -> ExtractionRecord:
         """Build from a model payload, refusing any authority field.
 
         Raises:
@@ -273,11 +274,6 @@ class AuditRecord:
 
 
 __all__ = [
-    "AdjudicationResult",
-    "AuditImmutableError",
-    "AuditRecord",
-    "AuditTamperError",
-    "AuthorityViolation",
     "CODE_ALL_CHECKS_PASSED",
     "CODE_AUTHORITY_VIOLATION",
     "CODE_COVERAGE_GAP",
@@ -289,15 +285,20 @@ __all__ = [
     "CODE_NO_MEDICATIONS",
     "CODE_RENAL_DATA_MISSING",
     "CODE_UNIT_UNSUPPORTED",
+    "FORBIDDEN_AUTHORITY_FIELDS",
+    "SEVERITY_RANK",
+    "AdjudicationResult",
+    "AuditImmutableError",
+    "AuditRecord",
+    "AuditTamperError",
+    "AuthorityViolation",
     "CeilingAssertionError",
     "ExtractionRecord",
-    "FORBIDDEN_AUTHORITY_FIELDS",
     "Finding",
     "MaskingError",
     "MedCheckError",
     "Medication",
     "NormalizedDose",
-    "SEVERITY_RANK",
     "Severity",
     "TableInvalid",
     "UnconvertibleUnit",

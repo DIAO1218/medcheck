@@ -24,6 +24,7 @@ def _run(*args: str) -> subprocess.CompletedProcess:
         text=True,
         env=env,
         timeout=60,
+        check=False,
     )
 
 
