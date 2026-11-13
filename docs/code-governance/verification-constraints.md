@@ -18,7 +18,7 @@ each requirement.
 | Tier | What it proves | Where | Blocking? |
 |---|---|---|---|
 | **Structural** | imports, module boundaries, permissions, single-authority sites, requirement traceability | `test/offline/test_structure.py`, `test/offline/test_dependencies.py`, `scripts/check_permissions_sync.py` | yes (gate 2) |
-| **Regression** | all prior behaviour still holds, invariants at zero violations | `test/offline/` (194 tests at S0 close) | yes (gate 5) |
+| **Regression** | all prior behaviour still holds, invariants at zero violations | `test/offline/` (195 tests at S0 close) | yes (gate 5) |
 | **Behavioural** | semantic quality (faithfulness ≥ 0.90, relevance ≥ 0.85), zero safety escapes | `scripts/eval_replay.py`, invariant suites | yes (gate 4) |
 
 ## 3. The mutation check

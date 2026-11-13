@@ -10,7 +10,7 @@ MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a fr
 
 The project's thesis is not that the AI component is accurate. It is that **a supervised agentic build can produce a system whose safety properties are provable offline**, and that the proof is the deliverable. Four artefacts carry that thesis: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record that explains why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the things we were most likely to get wrong.
 
-At the close of Sprint 0 the repository holds 194 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, seven recorded defects, thirteen debt rows (one repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
+At the close of Sprint 0 the repository holds 195 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, seven recorded defects, thirteen debt rows (one repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
 
 ---
 
@@ -200,7 +200,7 @@ Five sessions, thirty marked interventions: 8 REJECT, 9 REDIRECT, 4 CORRECT, 3 I
 
 Structural verification asks whether the code still matches the architecture: import directions, module-to-element mapping, single-authority sites, permission manifest consistency, and requirement traceability. It is implemented as architectural fitness functions, not as review checklists, because a checklist is a document and a fitness function is a build failure.
 
-Regression asks whether everything that worked still works. 194 offline tests, no network, no model, 7.5 seconds. This is deliberately cheap: a suite that takes ten minutes gets run weekly, and a suite that gets run weekly is not a regression suite.
+Regression asks whether everything that worked still works. 195 offline tests, no network, no model, 7.5 seconds. This is deliberately cheap: a suite that takes ten minutes gets run weekly, and a suite that gets run weekly is not a regression suite.
 
 Behavioural verification asks whether quality held: faithfulness ≥ 0.90 and relevance ≥ 0.85 on the frozen set, plus zero invariant violations. We are explicit that these are **proxy metrics** — faithfulness measures whether every advisory sentence traces to a finding, which is a structural property of the renderer, not a clinical judgement about the advisory's usefulness. The human audit (20% of cases per sprint) is what keeps the proxy from drifting; until that audit exists the score means less than it appears to.
 
@@ -430,7 +430,7 @@ What I would tell the next team: write the provenance of your evidence before th
 | D5 transcripts | `transcripts/60371620-DIAO-Liuxianjia-T1…T5-*.md` (30 annotated interventions) |
 | D6 report | this file |
 | D7 repository + CI | `.github/workflows/ci.yml` (6 gates), branch protection described in `README.md` |
-| D8 source and tests | `src/medcheck/` (7 packages), `test/offline/` (194), `test/live/` (3, marked) |
+| D8 source and tests | `src/medcheck/` (7 packages), `test/offline/` (195), `test/live/` (3, marked) |
 | D9 static prompt | `Prompt.md` (5 gated phases) |
 
 ## Appendix B — Gate results at S0 close
@@ -440,7 +440,7 @@ $ python scripts/validate_requirements.py
 PASS: 25 requirements (5 invariants) validate against req-schema.json
 
 $ python -m pytest test/offline -q
-194 passed in 7.50s
+195 passed in 7.59s
 
 $ python scripts/eval_replay.py
 cases: 25

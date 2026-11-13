@@ -23,6 +23,7 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 ├── Prompt.md                     static startup prompt, five gated phases (D9)
 ├── Report.md                     process report + reflections (D6, 8,560 words)
 ├── SUBMISSION-CHECKLIST.md       what only the team can do before zipping
+├── docs/compliance-matrix.md     every requirement-sheet clause → artefact → status
 ├── docs/
 │   ├── req/
 │   │   ├── requirements.yaml     25 requirements, 5 invariants, PRD block + MoSCoW (D1)
@@ -31,6 +32,7 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 │   │                             runtime policy catalog, evaluation table + logbook,
 │   │                             risk list, option ledger (D2)
 │   ├── code-governance/          structural + verification constraints, MCP tool manifest (D3, D4)
+│   ├── compliance-matrix.md      clause-by-clause audit against the requirement sheet
 │   ├── ai-use-log.yaml           mandatory; gate 6 blocks an unlogged code/prompt change
 │   ├── test-approvals.yaml       approval ledger for gate 1 / gate 6
 │   ├── review-memo.md            per-PR review record + verdict (D4)
@@ -54,7 +56,7 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 ├── scripts/                      validate_requirements, check_ai_use_log,
 │                                 check_test_approval, check_permissions_sync,
 │                                 eval_replay, build_ddi_fixtures
-├── test/offline/                 194 deterministic tests, no network, no model
+├── test/offline/                 195 deterministic tests, no network, no model
 ├── test/live/                    model-dependent, marked `live`, never in CI gate 5
 └── transcripts/                  five annotated agent sessions (D5) — protocol only, see README
 ```
@@ -107,7 +109,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | D3 coding governance | complete |
 | D4 verification governance | complete; review memo #0 = CHANGES REQUIRED |
 | D7 repo + CI gates | complete; gates self-tested |
-| D8 source + tests | deterministic core complete, 194 offline tests green; live extractor wired but unmeasured |
+| D8 source + tests | deterministic core complete, 195 offline tests green; live extractor wired but unmeasured |
 | D5 five annotated transcripts | recorded T1–T5, 30 annotated interventions; provenance stated in each file |
 | D6 report | complete in content (8,560 words, ~17 pages at Point 12); names, hours and personal reflections are the team's to fill (`⟨M1⟩`–`⟨M6⟩`) — see `SUBMISSION-CHECKLIST.md` §2 |
 
