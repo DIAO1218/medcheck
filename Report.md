@@ -348,7 +348,7 @@ This is the section the specification asks for directly, so it gets specifics ra
 
 ## 13. Reflections
 
-> **Draft status.** These six reflections are written from the build record, one per role, so that each member starts from their own events rather than a blank page. Each member must revise their entry in their own voice and sign it: a reflection submitted in someone else's words is not a reflection, and the specification asks for what *you* learned.
+> **Draft status.** These six reflections are written from the build record, one per role, so that each member starts from their own events rather than a blank page. Each entry now ends with its author's name and student number, as the specification requires — but a name line is attribution, not evidence of authorship. Each author must still revise the text into their own voice before submission: a reflection carrying the right name and someone else's words is not a reflection, and the specification asks for what *you* learned.
 
 ### 13.1 DIAO Liuxianjia (60371620) — requirements lead, session driver
 
@@ -362,6 +362,8 @@ My biggest mistake was the corpus. I wrote "100 frozen cases" in the threshold b
 
 What I would tell the next team: the requirements file is not where you describe the product, it is where you decide what you are allowed to trade. Write the check first. If a criterion cannot fail, it is a wish.
 
+— DIAO Liuxianjia, 60371620
+
 ### 13.2 ZHU Guxi (61016400) — architecture lead
 
 My first scoring table had effort weighted at ×3, and I defended it as realism. DIAO Liuxianjia called it fear, and was right. What I had actually done was weight the criterion that made my preferred answer win.
@@ -373,6 +375,8 @@ I also learned that rejecting an option and deleting it are different acts. I ha
 The amendment to INV-002 is the artefact I am least proud of and most glad exists. I wrote an invariant that could not be implemented, it passed every test because nothing exercised the case, and a human had to point out that an overdose must assert an over-ceiling dose. Appending the amendment instead of editing the ADR was LI Decheng's idea: the record should show that we once believed something weaker, otherwise the document becomes a press release and the next team learns nothing from our mistake.
 
 What I would tell the next team: write the weights before you score, write down what would reopen the decision, and when you change your mind, append — never edit.
+
+— ZHU Guxi, 61016400
 
 ### 13.3 TanXinyue (61050730) — build lead, extraction and prompts
 
@@ -386,6 +390,8 @@ What I did not do, and should have: I never measured the live extractor. I wrote
 
 What I would tell the next team: never put an authority field in a model-writable contract, even for convenience, because the convenience outlives the reason.
 
+— TanXinyue, 61050730
+
 ### 13.4 Lin Zijie (60839860) — build lead, rules and dose logic
 
 I built the part that decides, which means most of the interesting defects were mine.
@@ -398,6 +404,8 @@ Working with the table was also humbling in a different way. Forty assessed pair
 
 What I would tell the next team: when your code invents a number to make a comparison possible, stop. Either the number is in the table or the case is held.
 
+— Lin Zijie, 60839860
+
 ### 13.5 LI Decheng (61078578) — verification lead
 
 I owned the gates, which means I owned the things that were supposed to catch us, and my first version of several of them could not fail.
@@ -409,6 +417,8 @@ The mutation check changed my relationship with green. I had 165 passing tests (
 The thing I got wrong: I signed off the test-approval ledger late, and for a while gate 1 was red because the baseline had been written in one pass and nobody had approved its tests in advance. My instinct was to leave it red and describe it as rigour. The honest description is that we built a baseline without a test-approval step and then approved it retroactively; both facts are now in the review memo. A gate that was red for a legitimate reason and then went green for a slightly weaker reason should say so.
 
 What I would tell the next team: count your criteria, mutate your guards, and report the ratio rather than the total.
+
+— LI Decheng, 61078578
 
 ### 13.6 ZHANG Xinshuo (60310811) — process lead, transcripts and report
 
@@ -423,6 +433,8 @@ What I learned is that artefacts must be written at the moment of the work. We t
 My one regret is a process one: I let the report sit at "draft" while the artefacts were already finished, and assembling it took a day of reading my own project. A team that keeps the bug diary and the evaluation logbook current can write this section from them in an hour.
 
 What I would tell the next team: write the provenance of your evidence before the conclusion, and keep the two logs from hour one. The report is a by-product of those habits.
+
+— ZHANG Xinshuo, 60310811
 
 ## Appendix A — Deliverable index
 

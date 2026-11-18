@@ -32,7 +32,7 @@ All seven must print `PASS`. If one fails, the failure is real — do not edit t
 |---|---|
 | `Report.md` §1 and `Report.zh.md` §1 | six names + student numbers — **done**; per-sprint hours (Sprint 1–5) still blank |
 | `Report.md` §1 hours table | per-sprint productive hours, then compute weights with the formula |
-| `Report.md` §13 | each member rewrites their own reflection in their own voice, then signs it |
+| `Report.md` §13 / `Report.zh.md` §13 | name + student number lines are in — **each member still rewrites their own entry in their own voice** |
 | `transcripts/*.md` headers | "Annotating" lines carry real names — **done**; each annotator still has to certify the file |
 | `docs/test-approvals.yaml` | `approved_by` points at §1 for the names — **done** |
 | `README.md` bottom | the real GitHub URL |
@@ -93,7 +93,7 @@ Answer these out loud before you submit; if any answer is "uh", fix the artefact
 | D3 | coding governance | complete |
 | D4 | verification governance | complete (review memo #0 and #1) |
 | D5 | five annotated transcripts | recorded — **needs certification or re-recording** |
-| D6 | report | complete in content — **needs names, hours, reflections** |
+| D6 | report | complete in content — names in; **needs hours, and each reflection rewritten by its author** |
 | D7 | repo + six gates | complete, gates self-tested |
 | D8 | source + tests | complete (193 offline, 3 live marked) |
 | D9 | static prompt | complete |

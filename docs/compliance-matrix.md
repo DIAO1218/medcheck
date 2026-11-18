@@ -95,7 +95,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 | Single markdown file | `Report.md` | met |
 | All students' names and student numbers | §1 table (6 names, 6 student numbers) | met |
 | Whole team's relative contribution | §1 hours table + weight formula + worked example | structure met; hours **open** |
-| ≤ 10,000 words excluding diagrams | 9,571 words | met |
+| ≤ 10,000 words excluding diagrams | 9,623 words | met |
 | > 15 pages at Point 12, single spacing | ≈18 pages at ~500 words/page incl. 4 appendices and 12 tables | met (estimated; confirm in your PDF export) |
 | Team's SE process and how it is optimised | §3, §8 | met |
 | Self-reflection 300–500 words per student, with name and ID | §13, six sections at 314–384 words | length met; **voice + signature open** |
@@ -156,7 +156,7 @@ Structure check: every path in §5 exists, plus a mirror of the blueprint, `docs
 | # | Item | Who | Why it cannot be automated |
 |---|---|---|---|
 | 1 | Per-sprint hours (Sprint 1–Sprint 5, the five columns of the sheet's example) and the weights they imply | team | names and student numbers are in; hours are not recoverable from the repository, and inventing them corrupts the one measure the sheet asks for |
-| 2 | Six reflections rewritten in each member's own voice + signed | team | a reflection written by an agent is not a reflection |
+| 2 | Six reflections rewritten in each member's own voice (name and student number lines are in; the text is still a draft) | team | a reflection written by an agent is not a reflection, and a signature does not change that |
 | 3 | Transcripts certified or re-recorded | team | they are reconstructions; certification is a statement only the team can make |
 | 4 | Live extractor accuracy (`prompts/*.yaml: live_accuracy`) | team | needs an API key and real notes |
 | 5 | Mutation check for INV-002/004/005 | team | 1 hour of work, closes DEBT-09 |
