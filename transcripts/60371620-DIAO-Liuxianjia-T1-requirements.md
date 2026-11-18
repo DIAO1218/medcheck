@@ -1,7 +1,7 @@
 # Transcript T1 — Requirements classification
 
 - **Session:** T1 · requirements classification (D1)
-- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M1⟩ REQ lead, ⟨M5⟩ VERIFY lead
+- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** DIAO Liuxianjia (REQ lead), LI Decheng (VERIFY lead)
 - **Date:** 2026-11-14 · **Baseline:** empty repository, `docs/req/` not yet created
 - **Agent:** coding agent in plan mode, `AGENTS.md` not yet written — this session writes the rules the later ones obey
 - **Sprint:** 1

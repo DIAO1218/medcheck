@@ -1,7 +1,7 @@
 # Transcript T2 — Architecture candidate generation and evaluation
 
 - **Session:** T2 · candidate generation, scoring, ADR (D2)
-- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M2⟩ ARCH lead, ⟨M5⟩ VERIFY lead
+- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ZHU Guxi (ARCH lead), LI Decheng (VERIFY lead)
 - **Date:** 2026-11-14 · **Baseline:** T1 approved registry (24 reqs, 5 invariants)
 - **Sprint:** 1
 

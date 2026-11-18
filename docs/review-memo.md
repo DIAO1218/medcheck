@@ -57,7 +57,7 @@ Rationale: <one paragraph>
 
 ## PR #1 — Sprint 1 close: D5 and D6 delivered, ledger signed
 
-- Reviewer: ⟨M5⟩ VERIFY lead + ⟨M6⟩ PROCESS lead · Date: 2026-11-14 · ADR: ADR-001 §8
+- Reviewer: LI Decheng (VERIFY lead) + ZHANG Xinshuo (PROCESS lead) · Date: 2026-11-14 · ADR: ADR-001 §8
 - Changed: `docs/test-approvals.yaml`, `transcripts/T1–T5`, `docs/bug-diary.md` (+BUG-0007), `Report.md`, `test/fixtures/cases` (6 → 25), `REQ-Q-001`
 - Test approval record: all 8 modules `approved: true`, retroactive, see rationale
 - CI: gates 2–6 pass; gate 1 now passes
@@ -86,4 +86,4 @@ Rationale: <one paragraph>
 | PR | Title | Reviewer | Verdict | Date |
 |---|---|---|---|---|
 | #0 | Sprint 1 baseline (scaffold) | PENDING | CHANGES REQUIRED | 2026-11-14 |
-| #1 | Sprint 1 close: D5 + D6, ledger signed, eval set 25 | ⟨M5⟩ + ⟨M6⟩ | APPROVE | 2026-11-14 |
+| #1 | Sprint 1 close: D5 + D6, ledger signed, eval set 25 | LI Decheng + ZHANG Xinshuo | APPROVE | 2026-11-14 |

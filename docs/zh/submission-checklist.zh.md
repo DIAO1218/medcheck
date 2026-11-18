@@ -31,10 +31,10 @@ python scripts/check_ai_use_log.py --changed src/medcheck/rules/dose.py docs/ai-
 
 | 位置 | 填什么 |
 |---|---|
-| `Report.md` §1 与 `Report.zh.md` §1 | ⟨M1⟩–⟨M6⟩ 的真实姓名 + 学号 |
+| `Report.md` §1 与 `Report.zh.md` §1 | 六人姓名 + 学号——**已填**；每冲刺工时（Sprint 1–5）仍为空格 |
 | 两版报告 §1 工时表 | 每冲刺实际工时，然后用公式算权重 |
 | 两版报告 §13 | 每人用自己语气重写反思并签名 |
-| `transcripts/*.md` 文件头 | 「Annotating」行的 ⟨M1⟩–⟨M6⟩ 换成真实姓名 |
+| `transcripts/*.md` 文件头 | 「Annotating」行已换成真实姓名——**已填**；各人仍需逐份认证 |
 | `docs/test-approvals.yaml` | `approved_by` 换成真实姓名 |
 | `README.md` / `README.en.md` 末尾 | 真实 GitHub 地址 |
 

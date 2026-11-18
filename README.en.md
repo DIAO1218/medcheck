@@ -23,7 +23,7 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 ├── AGENTS.md                     coding-agent entry point: reading order, boundaries, hard stops
 ├── architecture-blueprint.md     master constraint document (D2.1)
 ├── Prompt.md                     static startup prompt, five gated phases (D9)
-├── Report.md                     process report + reflections (D6, 8,560 words)
+├── Report.md                     process report + reflections (D6, 9,571 words)
 ├── SUBMISSION-CHECKLIST.md       what only the team can do before zipping
 ├── docs/compliance-matrix.md     every requirement-sheet clause → artefact → status
 ├── docs/
@@ -124,7 +124,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | D7 repo + CI gates | complete; gates self-tested |
 | D8 source + tests | deterministic core complete, 199 offline tests green; live extractor wired but unmeasured |
 | D5 five annotated transcripts | recorded T1–T5, 30 annotated interventions; provenance stated in each file |
-| D6 report | complete in content (8,560 words, ~17 pages at Point 12); names, hours and personal reflections are the team's to fill (`⟨M1⟩`–`⟨M6⟩`) — see `SUBMISSION-CHECKLIST.md` §2 |
+| D6 report | complete in content (9,571 words, ~19 pages at Point 12); the six names and student numbers are in, **hours and personal reflections are still the team's to fill** — see `SUBMISSION-CHECKLIST.md` §2 |
 
 The transcripts are reconstructed from the Sprint 1 build log with agent output quoted verbatim and human turns condensed from recorded decisions. Each file says so at the top; the team must certify or re-record them (`transcripts/README.md`). A reader should treat the green suite as evidence about the deterministic core, and the transcripts as evidence about supervision only once certified.
 

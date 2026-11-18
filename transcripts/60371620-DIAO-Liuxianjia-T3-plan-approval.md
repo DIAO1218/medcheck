@@ -1,7 +1,7 @@
 # Transcript T3 — Plan approval before code
 
 - **Session:** T3 · execution plan, two rejections, approval (D9 gate)
-- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M3⟩ BUILD lead, ⟨M5⟩ VERIFY lead
+- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** TanXinyue (BUILD lead), LI Decheng (VERIFY lead)
 - **Date:** 2026-11-14 · **Baseline:** ADR-001 accepted, `AGENTS.md` present, `src/` empty
 - **Sprint:** 1
 

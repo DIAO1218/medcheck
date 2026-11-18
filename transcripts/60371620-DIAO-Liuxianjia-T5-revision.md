@@ -1,7 +1,7 @@
 # Transcript T5 — Architecture revision from test evidence
 
 - **Session:** T5 · invariants restated, ADR amended, evaluation set grown
-- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M2⟩ ARCH lead, ⟨M5⟩ VERIFY lead, ⟨M6⟩ PROCESS lead
+- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ZHU Guxi (ARCH lead), LI Decheng (VERIFY lead), ZHANG Xinshuo (PROCESS lead)
 - **Date:** 2026-11-14 · **Baseline:** 165 offline tests green, four gates passing, gate 1 blocked
 - **Sprint:** 1 close
 

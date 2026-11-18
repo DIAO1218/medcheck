@@ -16,16 +16,16 @@ At the close of Sprint 0 the repository holds 199 deterministic offline tests, a
 
 ## 1. Team and relative contribution
 
-**Member mapping.** For readability this report refers to members as ⟨M1⟩–⟨M6⟩. Replace each token with the member's name and student number before submission; the mapping table below is the single place to do it.
+**Members.** Names and student numbers as the specification requires. The accountability column is what each member owned, not a courtesy title: the plan and the gate output name the same person. §13 is where each of them says what that looked like in practice.
 
-| Token | Name | Student ID | Primary role |
-|---|---|---|---|
-| ⟨M1⟩ | `[[name]]` | `[[id]]` | requirements lead; drove sessions T1–T5 |
-| ⟨M2⟩ | `[[name]]` | `[[id]]` | architecture lead; ADR, evaluation table |
-| ⟨M3⟩ | `[[name]]` | `[[id]]` | build lead — extraction, prompts, renderer |
-| ⟨M4⟩ | `[[name]]` | `[[id]]` | build lead — rules, dose tables, audit |
-| ⟨M5⟩ | `[[name]]` | `[[id]]` | verification lead; gates, mutation checks |
-| ⟨M6⟩ | `[[name]]` | `[[id]]` | process lead; transcripts, report, coordination |
+| Member | Student ID | Accountability |
+|---|---|---|
+| DIAO Liuxianjia | 60371620 | requirements lead; drove sessions T1–T5 |
+| ZHU Guxi | 61016400 | architecture lead; ADR, evaluation table |
+| TanXinyue | 61050730 | build lead — extraction, prompts, renderer |
+| Lin Zijie | 60839860 | build lead — rules, dose tables, audit |
+| LI Decheng | 61078578 | verification lead; gates, mutation checks |
+| ZHANG Xinshuo | 60310811 | process lead; transcripts, report, coordination |
 
 **Contribution measure.** We agreed the measure before Sprint 1 and did not change it mid-project: **actual productive hours per sprint**, recorded at sprint start as an estimate and reconciled at sprint close against what was actually done. Story points were rejected because our work is uneven — a day spent deleting a guard to see which test goes red is worth more than a day spent renaming modules, and points would have flattened that.
 
@@ -33,18 +33,18 @@ Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, 
 
 | Member | Sprint 1 | Sprint 2 | Sprint 3 | Sprint 4 | Sprint 5 | Total | Weight |
 |---|---|---|---|---|---|---|---|
-| ⟨M1⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M2⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M3⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M4⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M5⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M6⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| DIAO Liuxianjia | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| ZHU Guxi | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| TanXinyue | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| Lin Zijie | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| LI Decheng | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| ZHANG Xinshuo | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
 
 Columns are the five sprints of the specification's contribution example (Sprint 1 → Sprint 5), and they match the sprint table in §3: **Sprint 1** baseline (requirements, architecture, governance, deterministic core), **Sprint 2** live extractor and prompts, **Sprint 3** verification depth, **Sprint 4** hardening, **Sprint 5** process evidence. A cell stays blank only if that sprint has not run yet; do not estimate a sprint you did not hold.
 
 **Worked example of the arithmetic**, so the table cannot be filled inconsistently: if the six totals were 62 / 58 / 55 / 48 / 44 / 33, the mean is 50.0 and the weights are 1.24 / 1.16 / 1.10 / 0.96 / 0.88 / 0.66 (they sum to 6.00). Replace with real figures — and note that a total is the sum of the sprint columns, not a separate estimate.
 
-Two decisions about the measure that we made deliberately. First, **a member who takes a hard task and fails it keeps the hours** — otherwise the incentive is to take easy work and the measure rewards the wrong behaviour. The counterweight is that "hard task" must be named in the sprint plan, not claimed afterwards. Second, **project management counts as work**: ⟨M6⟩'s coordination, transcript capture and report assembly are in the hours, because the specification explicitly asks the team to reward project management, and because that work is what made the other five members' hours productive.
+Two decisions about the measure that we made deliberately. First, **a member who takes a hard task and fails it keeps the hours** — otherwise the incentive is to take easy work and the measure rewards the wrong behaviour. The counterweight is that "hard task" must be named in the sprint plan, not claimed afterwards. Second, **project management counts as work**: ZHANG Xinshuo's coordination, transcript capture and report assembly are in the hours, because the specification explicitly asks the team to reward project management, and because that work is what made the other five members' hours productive.
 
 ---
 
@@ -350,7 +350,7 @@ This is the section the specification asks for directly, so it gets specifics ra
 
 > **Draft status.** These six reflections are written from the build record, one per role, so that each member starts from their own events rather than a blank page. Each member must revise their entry in their own voice and sign it: a reflection submitted in someone else's words is not a reflection, and the specification asks for what *you* learned.
 
-### 13.1 ⟨M1⟩ — requirements lead, 60371620 DIAO Liuxianjia
+### 13.1 DIAO Liuxianjia (60371620) — requirements lead, session driver
 
 I drove all five sessions, which means I had the most chances to be wrong in public, and the requirement phase is where I was wrong first.
 
@@ -358,23 +358,23 @@ I started by treating the registry as a documentation task: describe what the sy
 
 The harder lesson was about the word "invariant". I had classified the safety rules as functional with a note saying they were non-negotiable, and I genuinely believed the note carried weight. It does not. A type is a permission: functional requirements can be traded in a sprint review, and the note saying "but this one is important" has no mechanism behind it. Once the type changed, the schema enforced zero-tolerance, and the test had to assert a prohibited outcome rather than a desired one. That change of type is what made "unknown drugs are handled safely" become "verdict ≠ APPROVE, must carry COVERAGE_GAP", which is the sentence that found a real wrong approval twenty minutes later.
 
-My biggest mistake was the corpus. I wrote "100 frozen cases" in the threshold because it sounded rigorous, and it was never achievable in the time we had. The agent did not push back, because a number in a threshold looks like a decision. When we closed at 25 I wanted to leave the sentence alone — nobody would check, and the score passed either way. ⟨M5⟩ made me amend it in public. I now think of that instinct as the thing I have to watch in myself: the temptation to let a document be slightly wrong because correcting it is more visible than leaving it.
+My biggest mistake was the corpus. I wrote "100 frozen cases" in the threshold because it sounded rigorous, and it was never achievable in the time we had. The agent did not push back, because a number in a threshold looks like a decision. When we closed at 25 I wanted to leave the sentence alone — nobody would check, and the score passed either way. LI Decheng made me amend it in public. I now think of that instinct as the thing I have to watch in myself: the temptation to let a document be slightly wrong because correcting it is more visible than leaving it.
 
 What I would tell the next team: the requirements file is not where you describe the product, it is where you decide what you are allowed to trade. Write the check first. If a criterion cannot fail, it is a wish.
 
-### 13.2 ⟨M2⟩ — architecture lead
+### 13.2 ZHU Guxi (61016400) — architecture lead
 
-My first scoring table had effort weighted at ×3, and I defended it as realism. ⟨M1⟩ called it fear, and was right. What I had actually done was weight the criterion that made my preferred answer win.
+My first scoring table had effort weighted at ×3, and I defended it as realism. DIAO Liuxianjia called it fear, and was right. What I had actually done was weight the criterion that made my preferred answer win.
 
 The correction that changed how I think was the A4 recall score. I gave the chosen architecture a 4 on "recall on messy text" when it deserved a 3, because a 4 made the recommendation cleaner. Nothing in the project would have failed because of that one point — the architecture still won — and that is exactly why it is dangerous. An inflated score in an evaluation table is not a bug that shows up in a test; it is a small permanent lie in the document that justifies the design, and it makes the real weakness (the closed extraction grammar) invisible to whoever reads the table next.
 
 I also learned that rejecting an option and deleting it are different acts. I had rejected retrieval as a decision path and thrown the whole idea away; the right move was to keep it as a perception aid, because retrieval improves drug-name matching without touching authority. The option ledger now exists for that reason: twelve rejected options, each with the condition that would bring it back. A rejection without a trigger is a decision made on vibes.
 
-The amendment to INV-002 is the artefact I am least proud of and most glad exists. I wrote an invariant that could not be implemented, it passed every test because nothing exercised the case, and a human had to point out that an overdose must assert an over-ceiling dose. Appending the amendment instead of editing the ADR was ⟨M5⟩'s idea: the record should show that we once believed something weaker, otherwise the document becomes a press release and the next team learns nothing from our mistake.
+The amendment to INV-002 is the artefact I am least proud of and most glad exists. I wrote an invariant that could not be implemented, it passed every test because nothing exercised the case, and a human had to point out that an overdose must assert an over-ceiling dose. Appending the amendment instead of editing the ADR was LI Decheng's idea: the record should show that we once believed something weaker, otherwise the document becomes a press release and the next team learns nothing from our mistake.
 
 What I would tell the next team: write the weights before you score, write down what would reopen the decision, and when you change your mind, append — never edit.
 
-### 13.3 ⟨M3⟩ — build lead, extraction and prompts
+### 13.3 TanXinyue (61050730) — build lead, extraction and prompts
 
 My job was the perception layer, which is the part of the system that is allowed to be wrong as long as it is wrong loudly.
 
@@ -386,7 +386,7 @@ What I did not do, and should have: I never measured the live extractor. I wrote
 
 What I would tell the next team: never put an authority field in a model-writable contract, even for convenience, because the convenience outlives the reason.
 
-### 13.4 ⟨M4⟩ — build lead, rules and dose logic
+### 13.4 Lin Zijie (60839860) — build lead, rules and dose logic
 
 I built the part that decides, which means most of the interesting defects were mine.
 
@@ -398,19 +398,19 @@ Working with the table was also humbling in a different way. Forty assessed pair
 
 What I would tell the next team: when your code invents a number to make a comparison possible, stop. Either the number is in the table or the case is held.
 
-### 13.5 ⟨M5⟩ — verification lead
+### 13.5 LI Decheng (61078578) — verification lead
 
 I owned the gates, which means I owned the things that were supposed to catch us, and my first version of several of them could not fail.
 
-The permission gate is the example. I wrote it to check that the model was deny-by-default, and it passed, and I felt good about it. Then ⟨M1⟩ asked what the fit criterion actually said, and it said twelve paths, twelve denials. I implemented that and got eleven. The missing one was `.env` — our normaliser used `lstrip("./")`, which strips characters rather than a prefix, so `.env` became `env` and every deny rule keyed on a leading dot was dead. The configuration was correct; the code reading it was not; and the only reason we know is that the criterion counted.
+The permission gate is the example. I wrote it to check that the model was deny-by-default, and it passed, and I felt good about it. Then DIAO Liuxianjia asked what the fit criterion actually said, and it said twelve paths, twelve denials. I implemented that and got eleven. The missing one was `.env` — our normaliser used `lstrip("./")`, which strips characters rather than a prefix, so `.env` became `env` and every deny rule keyed on a leading dot was dead. The configuration was correct; the code reading it was not; and the only reason we know is that the criterion counted.
 
-The mutation check changed my relationship with green. I had 165 passing tests and I believed them. Deleting the coverage branch broke exactly one test — good, it was load-bearing. Disabling the authority check broke ten. But then I had to write down that three of five guards had never been checked that way, and the sentence "we have five invariant suites" became "we have two proven and three asserted". That is a worse sentence and a better report. I put it in the debt register before I put it in the report, because I did not want to be the person who discovers the gap while writing the summary.
+The mutation check changed my relationship with green. I had 165 passing tests (the suite is 199 now) and I believed them. Deleting the coverage branch broke exactly one test — good, it was load-bearing. Disabling the authority check broke ten. But then I had to write down that three of five guards had never been checked that way, and the sentence "we have five invariant suites" became "we have two proven and three asserted". That is a worse sentence and a better report. I put it in the debt register before I put it in the report, because I did not want to be the person who discovers the gap while writing the summary.
 
 The thing I got wrong: I signed off the test-approval ledger late, and for a while gate 1 was red because the baseline had been written in one pass and nobody had approved its tests in advance. My instinct was to leave it red and describe it as rigour. The honest description is that we built a baseline without a test-approval step and then approved it retroactively; both facts are now in the review memo. A gate that was red for a legitimate reason and then went green for a slightly weaker reason should say so.
 
 What I would tell the next team: count your criteria, mutate your guards, and report the ratio rather than the total.
 
-### 13.6 ⟨M6⟩ — process lead, transcripts and report
+### 13.6 ZHANG Xinshuo (60310811) — process lead, transcripts and report
 
 I owned the record, which is the easiest part to fake and the hardest to do honestly.
 

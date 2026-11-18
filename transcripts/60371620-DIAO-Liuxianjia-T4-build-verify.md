@@ -1,7 +1,7 @@
 # Transcript T4 — Build and verification compliance
 
 - **Session:** T4 · tests first, implementation, gates, one interrupted attempt
-- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M3⟩ BUILD lead, ⟨M4⟩ BUILD lead, ⟨M5⟩ VERIFY lead
+- **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** TanXinyue (BUILD lead), Lin Zijie (BUILD lead), LI Decheng (VERIFY lead)
 - **Date:** 2026-11-14 · **Baseline:** plan approved at 17:03 (T3)
 - **Sprint:** 1
 

@@ -126,7 +126,7 @@ signed statement at the bottom of each file — or (b) re-record the sessions li
 and append them. Submitting an uncertified reconstruction as a live transcript
 would be academic misconduct, and the report says which it is.
 
-**Distribution.** All five sessions were driven by M1. If other members drove parts,
+**Distribution.** All five sessions were driven by DIAO Liuxianjia. If other members drove parts,
 rename the file to the driver's `<student-id>-<student-name>` and record the split in
 the header. The set must stay at five sessions that are contiguous: the plan in T3
 is the plan T4 implements.
