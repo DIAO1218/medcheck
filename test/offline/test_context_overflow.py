@@ -1,4 +1,3 @@
-import pytest
 from medcheck.extractor import context
 
 def test_extreme_overflow_triggers_compaction_and_keeps_l2():
