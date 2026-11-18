@@ -191,9 +191,16 @@ entries:
 
   - date: 2026-11-18
     agent: "Claude 3.5 Sonnet"
+<<<<<<< HEAD
     task: "Safety boundary audit and shadow evaluation."
     files_changed:
       - "src/medcheck/contracts.py"
       - "src/medcheck/renderer/template.py"
       - "test/offline/test_llm_adapter.py"
       - "test/offline/test_llm_shadow_eval.py"
+=======
+    task: "Shadow evaluation of live extractor path using mocked model responses."
+    files_changed:
+      - "test/offline/test_llm_shadow_eval.py"
+    notes: "Proved the pipeline can process standard model payloads end-to-end without real API keys."
+>>>>>>> 4e81e94 (test: add shadow evaluation for live extractor path to address DEBT-06)
