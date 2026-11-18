@@ -61,7 +61,7 @@ MedCheck 读取一段自由文本的病例记录，返回一份可复核的裁�
 ├── scripts/                      validate_requirements、check_ai_use_log、
 │                                 check_test_approval、check_permissions_sync、
 │                                 eval_replay、build_ddi_fixtures、sync_blueprint
-├── test/offline/                 195 项确定性测试，无网络、无模型
+├── test/offline/                 199 项确定性测试，无网络、无模型
 ├── test/live/                    依赖模型，打 `live` 标记，不进 CI 门 5
 └── transcripts/                  T1–T5 五份带标注的智能体会话（D5）
 ```
@@ -96,7 +96,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 
 | # | 门 | 脚本 / CI job | 什么情况下拦下 |
 |---|---|---|---|
-| 1 | 测试审批 | `scripts/check_test_approval.py` | 改动的模块没有已审批的测试记录（安全关键模块还要求 ADR） |
+| 1 | 测试审批 | `scripts/check_test_approval.py` | 改动的模块没有已审批的测试记录；安全关键路径（含 `contracts.py`）还要求**本次改动中新增/修订 ADR** |
 | 2 | 静态分析 | `ruff`、`compileall`、结构测试、权限同步 | lint / 编译 / 跨层 import / 权限漂移 |
 | 3 | Schema | `scripts/validate_requirements.py` | 需求注册表违反 schema 或跨字段规则 |
 | 4 | 语义评估 | `scripts/eval_replay.py` | faithfulness < 0.90 或 relevance < 0.85 |
@@ -128,7 +128,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | D5 五份标注会话 | 已记录 T1–T5，共 30 处标注干预；每份文件开头写明取证来源 |
 | D6 报告 | 内容完成（英文 9,279 词 / 约 18 页；中文对照版在 `Report.zh.md`）；姓名、工时、个人反思需本人填写（`⟨M1⟩`–`⟨M6⟩`） |
 | D7 仓库 + 六道门 | 完成，门自身也被反向测试过 |
-| D8 源码 + 测试 | 确定性内核完成，195 项离线测试全绿；在线抽取器已接线但尚未实测 |
+| D8 源码 + 测试 | 确定性内核完成，199 项离线测试全绿；在线抽取器已接线但尚未实测 |
 | D9 静态提示词 | 完成 |
 
 五份会话记录是根据构建日志**重构**的：智能体输出逐字引用，人的回合由已记录的决策压缩而来。每个文件开头都写明这一点；团队必须逐份认证或重新录制（见 `transcripts/README.md`）。因此，绿色套件是对确定性内核的证据，而会话记录只有在被认证之后才是对「人工监督」的证据。

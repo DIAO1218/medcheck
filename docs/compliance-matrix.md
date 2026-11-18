@@ -116,7 +116,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 
 | Requirement | Artefact | Status |
 |---|---|---|
-| `src/` and `test/` with full source and cases | `src/medcheck/` (7 packages + 2 modules), `test/offline` (195), `test/live` (3) | met |
+| `src/` and `test/` with full source and cases | `src/medcheck/` (7 packages + 2 modules), `test/offline` (199), `test/live` (3) | met |
 | Module names match architectural elements | `structural-constraints.md` §1 table ↔ directory listing; enforced by `test_component_module_mapping` | met |
 | Test layout separates deterministic offline from live | `test/offline/`, `test/live/` with `pytestmark = live` | met |
 

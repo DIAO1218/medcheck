@@ -28,7 +28,7 @@ pip install -e ".[dev]"
 
 # 基线必须是绿的，否则先别改任何东西
 python -m pytest test/offline -q
-# 期望：195 passed
+# 期望：199 passed
 ```
 
 **没有 git 也行**：解压 `CS5351-MedCheck-clean.zip`，进目录后同样跑上面两条命令。
@@ -54,7 +54,7 @@ python -m pytest test/offline -q          # 1. 改之前，确认基线是绿的
 # 2. 改那一行
 python -m pytest test/offline -q          # 3. 看哪些测试红了，把输出抄下来
 git checkout -- <改过的文件>               # 4. 还原
-python -m pytest test/offline -q          # 5. 再跑一次，确认回到 195 passed
+python -m pytest test/offline -q          # 5. 再跑一次，确认回到 199 passed
 ```
 
 ---
@@ -149,7 +149,7 @@ if not self.table_version:
 
 | # | 不变量 | 破坏点 | 改之前 | 改之后 | 变红的测试 | 结论 |
 |---|---|---|---|---|---|---|
-| 1 | INV-002 完整性 | verdict.py:110 | 195 passed | ? failed | test_inv002_... | 承重 / 非承重 |
+| 1 | INV-002 完整性 | verdict.py:110 | 199 passed | ? failed | test_inv002_... | 承重 / 非承重 |
 | ... | | | | | | |
 
 ## 原始输出（贴 pytest 的失败摘要，不要只写"失败了"）
@@ -160,7 +160,7 @@ if not self.table_version:
 
 ## 还原确认
 
-每次改完都执行了 `git checkout -- <文件>`，最终 `git status` 为空、`pytest` 回到 195 passed。
+每次改完都执行了 `git checkout -- <文件>`，最终 `git status` 为空、`pytest` 回到 199 passed。
 ```
 
 **为什么写在 `docs/zh/` 而不是直接改主表**：`docs/code-governance/**` 是人工专属路径，任何智能体角色都不能写。你把结果交上来，由项目负责人合并进 `verification-constraints.md` §3 的主表。

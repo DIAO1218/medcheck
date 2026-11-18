@@ -18,7 +18,13 @@ sys.path.insert(0, str(ROOT / "src"))
 from medcheck.api.permissions import check, load_policy
 
 REQUIRED_HUMAN_ONLY = ("AGENTS.md", "architecture-blueprint.md", ".opencode/**", ".agent/**")
-REQUIRED_SAFETY = ("src/medcheck/adjudicator", "src/medcheck/rules", "src/medcheck/privacy", "src/medcheck/audit")
+REQUIRED_SAFETY = (
+    "src/medcheck/contracts.py",
+    "src/medcheck/adjudicator",
+    "src/medcheck/rules",
+    "src/medcheck/privacy",
+    "src/medcheck/audit",
+)
 
 
 def violations(policy: dict | None = None) -> list[str]:
@@ -39,7 +45,7 @@ def violations(policy: dict | None = None) -> list[str]:
                 problems.append(f"role '{role}' can write human-only path '{path}'")
 
     for path in REQUIRED_SAFETY:
-        if not (ROOT / path).is_dir():
+        if not (ROOT / path).exists():
             problems.append(f"safety-critical path does not exist: {path}")
 
     guarded = policy.get("guards", {}).get("safety_critical_paths", [])

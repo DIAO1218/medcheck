@@ -50,6 +50,11 @@ Growing the set to 25 added a fixture carrying an HKID-shaped string. REQ-S-001'
 → Fixture deleted; PHI coverage moved in-process to `test_privacy.py`, where the note exists only in memory; replacement fixture keeps the set at 25.
 **Consequence:** "synthetic" was re-read as a property of the *repository*, not of the string — a fake identifier is still an identifier-shaped artefact in a diff.
 
+**E-10 · 2026-11-18 · governance · a gate passed a change to a frozen file**
+PR #1 rewrote `contracts.py` with no ADR and six green gates. The gate asked "is an ADR recorded for this module?" and answered with the baseline ADR-001 from November 14 — a true answer to the wrong question.
+→ Gate 6 gained a fresh-ADR check (the diff must add or amend `docs/architecture/adr/*.md` when it touches a safety path), `contracts.py` joined `SAFETY_PATHS`, and four self-tests pin the PR #1 shape (BUG-0012).
+**Consequence:** the gate now measures a decision made *now*, not a document that exists. Debt DEBT-14 opened and repaid in the same change.
+
 ## Sprint 1 — build (to be filled at sprint close)
 | Planned measurement | Purpose | Threshold |
 |---|---|---|

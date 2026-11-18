@@ -86,9 +86,40 @@ def test_safety_path_change_requires_adr():
 
 
 def test_safety_path_with_adr_passes():
-    """[REQ-G-004] safety path with adr passes."""
-    ledger = {"modules": [{**LEDGER["modules"][0], "module": "rules", "adr": "ADR-001"}]}
-    assert check_test_approval.violations(["src/medcheck/rules/dose.py"], ledger=ledger) == []
+    """[REQ-G-004] safety path with a *fresh* ADR passes."""
+    ledger = {"modules": [{**LEDGER["modules"][0], "module": "rules", "adr": "ADR-002"}]}
+    changed = ["src/medcheck/rules/dose.py", "docs/architecture/adr/002-dose-banding.md"]
+    assert check_test_approval.violations(changed, ledger=ledger) == []
+
+
+def test_stale_adr_does_not_authorise_a_safety_change():
+    """[REQ-G-004] BUG-0012: citing the baseline ADR forever must not pass.
+
+    This is the exact shape of PR #1: contracts.py rewritten, ledger already says
+    `adr: ADR-001` from the baseline, so the old gate said PASS.
+    """
+    ledger = {"modules": [{**LEDGER["modules"][0], "module": "core", "adr": "ADR-001"}]}
+    problems = check_test_approval.violations(["src/medcheck/contracts.py"], ledger=ledger)
+    assert any("without a new or amended ADR" in problem for problem in problems)
+
+
+def test_contracts_py_counts_as_a_safety_path():
+    """[REQ-G-004] contracts.py is frozen (AGENTS.md section 3), so it is safety-relevant."""
+    assert check_test_approval.is_safety_path("src/medcheck/contracts.py")
+    assert check_test_approval.is_safety_path("src/medcheck/adjudicator/verdict.py")
+    assert not check_test_approval.is_safety_path("src/medcheck/renderer/template.py")
+
+
+def test_safety_change_with_new_adr_passes_even_with_stale_ledger_adr():
+    """[REQ-G-004] an amended ADR in the diff is what authorises the change."""
+    ledger = {"modules": [{**LEDGER["modules"][0], "module": "core", "adr": "ADR-001"}]}
+    changed = ["src/medcheck/contracts.py", "docs/architecture/adr/002-recursive-authority-check.md"]
+    assert check_test_approval.violations(changed, ledger=ledger) == []
+
+
+def test_docs_only_change_needs_no_adr():
+    """[REQ-G-004] documentation work is not architecture work."""
+    assert check_test_approval.violations(["README.md", "docs/zh/README.md"]) == []
 
 
 def test_module_derivation():

@@ -153,7 +153,7 @@ entries:
     human_checked:
       - "that the two ignores (E501, RUF001/003) are justified rather than convenient — the mask token uses angle quotes on purpose"
       - "that StrEnum did not change any output the tests assert"
-      - "that 195 offline tests stayed green after 33 auto-fixes touched 17 files"
+      - "that 199 offline tests stayed green after 33 auto-fixes touched 17 files"
     artefacts:
       - "pyproject.toml (ruff config with per-file ignores and two documented exceptions)"
       - "src/medcheck/{contracts,adjudicator/verdict,extractor/llm}.py, test/offline/*"

@@ -76,7 +76,7 @@ gh api -X PUT repos/:owner/medcheck/branches/main/protection \
 ## 5. 推之前先过一遍
 
 ```bash
-python -m pytest test/offline -q          # 195 passed
+python -m pytest test/offline -q          # 199 passed
 python scripts/validate_requirements.py    # PASS
 git status --porcelain                      # 应为空
 git log --oneline | head                   # 9 次提交，最新是 docs(zh)

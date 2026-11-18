@@ -58,7 +58,7 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 ├── scripts/                      validate_requirements, check_ai_use_log,
 │                                 check_test_approval, check_permissions_sync,
 │                                 eval_replay, build_ddi_fixtures
-├── test/offline/                 195 deterministic tests, no network, no model
+├── test/offline/                 199 deterministic tests, no network, no model
 ├── test/live/                    model-dependent, marked `live`, never in CI gate 5
 └── transcripts/                  five annotated agent sessions (D5) — protocol only, see README
 ```
@@ -93,7 +93,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 
 | # | Gate | Script / job | Blocks when |
 |---|---|---|---|
-| 1 | Test approval | `scripts/check_test_approval.py` | a touched module has no approved test record (or a safety-critical module has no ADR) |
+| 1 | Test approval | `scripts/check_test_approval.py` | a touched module has no approved test record; a safety-critical path (incl. `contracts.py`) also requires an ADR **added or amended in this change** |
 | 2 | Static analysis | `ruff`, `compileall`, structural tests, permission sync | lint/compile/import-boundary/permission drift |
 | 3 | Schema | `scripts/validate_requirements.py` | the registry violates its JSON schema or a cross-field rule |
 | 4 | Semantic evaluation | `scripts/eval_replay.py` | faithfulness < 0.90 or relevance < 0.85 on the frozen set |
@@ -122,7 +122,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | D3 coding governance | complete |
 | D4 verification governance | complete; review memo #0 = CHANGES REQUIRED |
 | D7 repo + CI gates | complete; gates self-tested |
-| D8 source + tests | deterministic core complete, 195 offline tests green; live extractor wired but unmeasured |
+| D8 source + tests | deterministic core complete, 199 offline tests green; live extractor wired but unmeasured |
 | D5 five annotated transcripts | recorded T1–T5, 30 annotated interventions; provenance stated in each file |
 | D6 report | complete in content (8,560 words, ~17 pages at Point 12); names, hours and personal reflections are the team's to fill (`⟨M1⟩`–`⟨M6⟩`) — see `SUBMISSION-CHECKLIST.md` §2 |
 

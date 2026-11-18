@@ -74,6 +74,7 @@
 
   "guards": {
     "safety_critical_paths": [
+      "src/medcheck/contracts.py",
       "src/medcheck/adjudicator/**",
       "src/medcheck/rules/**",
       "src/medcheck/privacy/**",

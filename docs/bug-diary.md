@@ -104,3 +104,19 @@ reading code names the reader, because that difference is itself evidence.
 | **Root cause** | The case was added to prove end-to-end masking, and the shortest way to prove it was to commit a note containing an identifier-shaped string. The rule said "fixtures are synthetic and contain no identifiers"; the intent was "no *real* identifiers", and that gap was enough. |
 | **Fix** | Fixture deleted. The PHI path is proven in-process in `test_privacy.py::test_outbound_payload_has_no_identifier` — the note is built in memory, the outbound payload is inspected, and the verdict is asserted to be the one the drugs earn. A replacement fixture (`c25_hold_qt_pair.json`) keeps the set at 25 with no PHI. |
 | **Invariant gap** | INV-004 was tested as "masking works", not as "no repository artefact ever carries an identifier". Those are different claims, and only the second one survives a reviewer opening the fixtures directory. |
+
+---
+
+## BUG-0012 — the gate that authorised contract changes could not fail
+
+| Field | Value |
+|---|---|
+| **Symptom** | PR #1 rewrote `src/medcheck/contracts.py` — a file AGENTS.md §3 marks *frozen*, "changes require an ADR amendment" — with no ADR anywhere in the diff. CI passed, all six gates green. |
+| **Reproduction** | `python scripts/check_test_approval.py --changed src/medcheck/contracts.py` → `PASS`, before the fix. |
+| **Classification** | Gate defect — a control that reports success for the change it exists to stop. |
+| **Found by** | A human reading PR #1's file list, not by any gate. |
+| **Root cause** | Two holes lined up. (1) `contracts.py` maps to module `core`, which is not in `SAFETY_CRITICAL`, so the module-level check never applied to it. (2) The ADR check asked "does the ledger name an ADR for this module?", and `core` has carried `adr: ADR-001` since the baseline — so citing the *original* decision authorised *any* later rewrite. The gate measured a document that existed, not a decision that was made. |
+| **Fix** | Gate 6 split into two checks: the ledger check (unchanged) plus a **fresh-ADR check** — any change touching a safety-relevant path must add or amend a file under `docs/architecture/adr/` in the same change. `contracts.py` joined `SAFETY_PATHS` and `permissions.jsonc`'s `safety_critical_paths`. Four self-tests added, including the exact PR #1 shape. |
+| **Invariant gap** | INV-003's *authorisation* (who may change the seam, and on what authority) was enforced only by prose. The behavioural tests proved the seam held *today*; nothing proved that changing it would require a decision. Now `test_stale_adr_does_not_authorise_a_safety_change` does. |
+
+**Note on PR #1 itself.** The change was good — a recursive `_assert_no_authority` closes a real bypass (a verdict hidden in a nested dict). The defect is that the process let a seal be broken quietly. The fix does not reject the change; it requires the team to record *why* the seam is being altered, which is the thing the ADR exists for.

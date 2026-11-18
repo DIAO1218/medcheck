@@ -25,7 +25,7 @@
 
 ## 4. Safety-critical change procedure
 
-A change to `src/medcheck/{adjudicator,rules,privacy,audit}` requires, in this order:
+A change to `src/medcheck/{adjudicator,rules,privacy,audit}` **or to `src/medcheck/contracts.py`** requires, in this order:
 
 1. an **ADR** (new, or an amendment naming which driver moved) — agents may draft it in a PR comment, only a human commits it;
 2. the **test plan approved** in `docs/test-approvals.yaml` before implementation;
