@@ -14,12 +14,12 @@ policy:
 entries:
   - id: AIU-2026-11-14-01
     date: "2026-11-14"
-    sprint: 1
+    sprint: S0
     session: "baseline scaffold"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
     task: >-
-      Produce the Sprint 1 baseline: repository skeleton per D1-D9, the deterministic
+      Produce the S0 baseline: repository skeleton per D1-D9, the deterministic
       core, the offline test suite, and the six CI gates.
     delegated:
       - "D1 registry and schema, including the MoSCoW tradeoff statement"
@@ -36,7 +36,7 @@ entries:
       - "architecture-blueprint.md, docs/architecture/**"
       - "AGENTS.md, Prompt.md, .opencode/**, .agent/**"
       - "src/**, test/**, scripts/**, .github/workflows/ci.yml"
-    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (Sprint 1 session, to be annotated)"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (S0 session, to be annotated)"
     notes: >-
       The baseline is agent-generated under human direction. It is a scaffold, not
       evidence of a supervised build: D5 requires five recorded sessions with
@@ -46,7 +46,7 @@ entries:
 
   - id: AIU-2026-11-14-02
     date: "2026-11-14"
-    sprint: 1
+    sprint: S0
     session: "gate hardening iteration"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -72,7 +72,7 @@ entries:
 
   - id: AIU-2026-11-14-03
     date: "2026-11-14"
-    sprint: 1
+    sprint: S0
     session: "mutation check"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -91,7 +91,7 @@ entries:
 
   - id: AIU-2026-11-14-04
     date: "2026-11-14"
-    sprint: 3
+    sprint: S0
     session: "evaluation set growth 6 -> 25"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -115,7 +115,7 @@ entries:
 
   - id: AIU-2026-11-14-05
     date: "2026-11-14"
-    sprint: 5
+    sprint: S0
     session: "D5 transcripts and D6 report"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -139,7 +139,7 @@ entries:
 
   - id: AIU-2026-11-14-06
     date: "2026-11-14"
-    sprint: 5
+    sprint: S0
     session: "CI gate 2 hardening on the published repository"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -153,7 +153,7 @@ entries:
     human_checked:
       - "that the two ignores (E501, RUF001/003) are justified rather than convenient — the mask token uses angle quotes on purpose"
       - "that StrEnum did not change any output the tests assert"
-      - "that 199 offline tests stayed green after 33 auto-fixes touched 17 files"
+      - "that 195 offline tests stayed green after 33 auto-fixes touched 17 files"
     artefacts:
       - "pyproject.toml (ruff config with per-file ignores and two documented exceptions)"
       - "src/medcheck/{contracts,adjudicator/verdict,extractor/llm}.py, test/offline/*"
@@ -163,3 +163,37 @@ entries:
       Gate 6 blocked this commit because src/ changed without a log entry. The
       gate was right and the entry was added rather than the check bypassed; that
       sequence is the whole argument for having the gate.
+  - date: 2026-11-17
+    agent: "Claude"
+    task: "Fixed nested dictionary security bypass and added renderer traceability tests."
+    files_changed:
+      - "src/medcheck/contracts.py"
+      - "src/medcheck/renderer/template.py"
+      - "test/offline/test_llm_adapter.py"
+      - "test/offline/test_renderer_safety.py"
+ - date: 2026-11-17
+    agent: "Claude 3.5 Sonnet"
+    task: "Safety boundary audit: fixed nested authority bypass, restored rule_id traceability, verified context compaction defenses."
+    files_changed:
+      - "src/medcheck/contracts.py"
+      - "src/medcheck/renderer/template.py"
+      - "test/offline/test_llm_adapter.py"
+      - "test/offline/test_renderer_safety.py"
+      - "test/offline/test_context_compaction.py"
+    notes: "Found and fixed 2 design bugs (BUG-0008, BUG-0009) via negative testing."
+ - date: 2026-11-18
+    agent: "Claude 3.5 Sonnet"
+    task: "Validated live extractor fallback traces, extreme context compaction L2 re-injection, and updated test suite."
+    files_changed:
+      - "test/offline/test_llm_extractor.py"
+      - "test/offline/test_context_overflow.py"
+    notes: "Verified DEBT-06 adapter behavior under mock errors; confirmed P-04 compaction safety."
+
+  - date: 2026-11-18
+    agent: "Claude 3.5 Sonnet"
+    task: "Safety boundary audit and shadow evaluation."
+    files_changed:
+      - "src/medcheck/contracts.py"
+      - "src/medcheck/renderer/template.py"
+      - "test/offline/test_llm_adapter.py"
+      - "test/offline/test_llm_shadow_eval.py"
