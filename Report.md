@@ -31,16 +31,18 @@ At the close of Sprint 0 the repository holds 199 deterministic offline tests, a
 
 Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, so the mean is exactly 1.0. The table is deliberately left with placeholders rather than invented numbers: hours are the one number in this report that cannot be reconstructed from the repository, and a fabricated hour is worse than a blank cell.
 
-| Member | S1 | S2 | S3 | S4 | Total | Weight |
-|---|---|---|---|---|---|---|
-| ⟨M1⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M2⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M3⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M4⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M5⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ⟨M6⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| Member | S0 | S1 | S2 | S3 | S4 | Total | Weight |
+|---|---|---|---|---|---|---|---|
+| ⟨M1⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| ⟨M2⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| ⟨M3⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| ⟨M4⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| ⟨M5⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| ⟨M6⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
 
-**Worked example of the arithmetic**, so the table cannot be filled inconsistently: if totals were 62 / 58 / 55 / 48 / 44 / 33, the mean is 50.0 and the weights are 1.24 / 1.16 / 1.10 / 0.96 / 0.88 / 0.66. Replace with real figures.
+Column meanings match the sprint table in §3: **S0** baseline (requirements, architecture, governance, deterministic core), **S1** live extractor and prompts, **S2** verification depth, **S3** hardening, **S4** process evidence. A cell stays blank only if that sprint has not run yet; do not estimate a sprint you did not hold.
+
+**Worked example of the arithmetic**, so the table cannot be filled inconsistently: if the six totals were 62 / 58 / 55 / 48 / 44 / 33, the mean is 50.0 and the weights are 1.24 / 1.16 / 1.10 / 0.96 / 0.88 / 0.66 (they sum to 6.00). Replace with real figures — and note that a total is the sum of the sprint columns, not a separate estimate.
 
 Two decisions about the measure that we made deliberately. First, **a member who takes a hard task and fails it keeps the hours** — otherwise the incentive is to take easy work and the measure rewards the wrong behaviour. The counterweight is that "hard task" must be named in the sprint plan, not claimed afterwards. Second, **project management counts as work**: ⟨M6⟩'s coordination, transcript capture and report assembly are in the hours, because the specification explicitly asks the team to reward project management, and because that work is what made the other five members' hours productive.
 
