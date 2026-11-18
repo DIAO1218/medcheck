@@ -21,6 +21,7 @@ MedCheck 读取一段自由文本的病例记录，返回一份可复核的裁�
 .
 ├── README.md                     本文件（中文）
 ├── 项目简介.md                    给同学看的项目简介：做了什么、为什么这么设计
+├── 各角色具体分工.md              分工清单：六个角色各自做什么、怎么算做完
 ├── README.en.md                  英文版（提交用）
 ├── AGENTS.md                     编码智能体的入口：阅读顺序、边界、硬性停止条件
 ├── architecture-blueprint.md     架构总纲 / 主约束文档（D2.1）
@@ -110,7 +111,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | 你想…… | 去读 |
 |---|---|
 | 5 分钟了解这个项目做了什么 | `项目简介.md` |
-| **组员不知道自己该干什么** | `docs/zh/roles-and-tasks.zh.md`（六个角色的具体待办与验收标准） |
+| **组员不知道自己该干什么** | [`各角色具体分工.md`](各角色具体分工.md)（六个角色的具体待办与验收标准） |
 | 逐条核对是否符合作业要求 | `docs/compliance-matrix.md`（中文版：`docs/zh/compliance-matrix.zh.md`） |
 | 知道只有团队能做什么 | `SUBMISSION-CHECKLIST.md`（中文版：`docs/zh/submission-checklist.zh.md`） |
 | 看那个「其他一切决定都从它推出来」的决定 | `docs/architecture/adr/001-…md`（中文导读：`docs/zh/architecture-overview.zh.md`） |
