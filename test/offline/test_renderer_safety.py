@@ -1,4 +1,3 @@
-import pytest
 import re
 from medcheck.contracts import AdjudicationResult, Finding, Severity, Verdict
 from medcheck.renderer import template
