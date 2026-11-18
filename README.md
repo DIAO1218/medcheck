@@ -110,6 +110,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | 你想…… | 去读 |
 |---|---|
 | 5 分钟了解这个项目做了什么 | `项目简介.md` |
+| **组员不知道自己该干什么** | `docs/zh/roles-and-tasks.zh.md`（六个角色的具体待办与验收标准） |
 | 逐条核对是否符合作业要求 | `docs/compliance-matrix.md`（中文版：`docs/zh/compliance-matrix.zh.md`） |
 | 知道只有团队能做什么 | `SUBMISSION-CHECKLIST.md`（中文版：`docs/zh/submission-checklist.zh.md`） |
 | 看那个「其他一切决定都从它推出来」的决定 | `docs/architecture/adr/001-…md`（中文导读：`docs/zh/architecture-overview.zh.md`） |
