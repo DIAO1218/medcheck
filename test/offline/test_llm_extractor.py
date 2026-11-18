@@ -1,9 +1,10 @@
-import pytest
 import json
 import urllib.error
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+import pytest
+
 from medcheck.extractor import llm
-from medcheck.contracts import ExtractionRecord
 
 # 模拟一个合法的模型响应
 MOCK_VALID_RESPONSE = {
@@ -28,10 +29,9 @@ def test_llm_api_error_raises_safely():
         # 模拟 HTTP 500 服务器错误
         mock_urlopen.side_effect = urllib.error.HTTPError("http://fake", 500, "Server Error", {}, None)
         
-        with patch.dict("os.environ", {"MEDCHECK_LLM_BASE_URL": "http://fake", "MEDCHECK_LLM_API_KEY": "fake"}):
+        with patch.dict("os.environ", {"MEDCHECK_LLM_BASE_URL": "http://fake", "MEDCHECK_LLM_API_KEY": "fake"}),              pytest.raises(urllib.error.HTTPError):
             # 目前 extract 会直接抛出 HTTPError，我们希望被包装成明确的错误
-            with pytest.raises(urllib.error.HTTPError):
-                llm.extract("test note")
+            llm.extract("test note")
 
 def test_llm_fallback_appends_trace():
     """REQ-I-001: If fallback is allowed, it must append a trace to unparsed."""

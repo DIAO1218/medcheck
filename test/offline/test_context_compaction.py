@@ -1,6 +1,6 @@
 # REQ-C-001: Context budget and constraint re-injection.
-import pytest
 from medcheck.extractor import context
+
 
 def test_compaction_reinjects_constraints_verbatim():
     """REQ-C-001: Layer 2 constraints must survive compaction."""

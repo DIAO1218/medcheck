@@ -1,6 +1,8 @@
 import re
+
 from medcheck.contracts import AdjudicationResult, Finding, Severity, Verdict
 from medcheck.renderer import template
+
 
 def test_renderer_unknown_finding_code():
     """REQ-F-006: Advisory prose must retain rule_id for traceability."""

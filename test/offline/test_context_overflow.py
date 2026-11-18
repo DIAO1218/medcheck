@@ -1,5 +1,6 @@
 from medcheck.extractor import context
 
+
 def test_extreme_overflow_triggers_compaction_and_keeps_l2():
     """REQ-C-001: Massive notes must be compacted, but never drop L2 constraints."""
     # 生成一篇超长垃圾病历，按 4 字符/token 估算，绝对超过 5000 token

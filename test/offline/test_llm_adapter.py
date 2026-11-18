@@ -1,5 +1,7 @@
 import pytest
-from medcheck.contracts import ExtractionRecord, AuthorityViolation
+
+from medcheck.contracts import AuthorityViolation, ExtractionRecord
+
 
 def test_nested_authority_field_rejected():
     """REQ-I-003: Model must not write authority fields at any depth."""
