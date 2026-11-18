@@ -3,9 +3,9 @@
 - **Session:** T3 · execution plan, two rejections, approval (D9 gate)
 - **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M3⟩ BUILD lead, ⟨M5⟩ VERIFY lead
 - **Date:** 2026-11-14 · **Baseline:** ADR-001 accepted, `AGENTS.md` present, `src/` empty
-- **Sprint:** S0
+- **Sprint:** 1
 
-> **Provenance.** Reconstructed from the S0 build log. The plan text is the plan actually implemented (it matches `AGENTS.md` §5–§7 and the module tree in the repository); the two rejections are the decisions recorded as BUG-0006 and as the "single APPROVE site" constraint in `structural-constraints.md` §5. Condensed where noted.
+> **Provenance.** Reconstructed from the Sprint 1 build log. The plan text is the plan actually implemented (it matches `AGENTS.md` §5–§7 and the module tree in the repository); the two rejections are the decisions recorded as BUG-0006 and as the "single APPROVE site" constraint in `structural-constraints.md` §5. Condensed where noted.
 
 ---
 

@@ -71,7 +71,7 @@ Every `REJECT`, `REDIRECT`, and `INTERRUPT` needs: what the agent proposed, whic
 - Date / time: <yyyy-mm-dd hh:mm–hh:mm>
 - Model / agent: <tool and version>
 - Baseline commit: <sha>
-- Sprint: <S1…S4>
+- Sprint: <1…5>
 
 ## Setup
 What was in context at the start: which files the agent read, in what order, and
@@ -112,7 +112,7 @@ what the human stated as the task.
 | T4 build + verification | `60371620-DIAO-Liuxianjia-T4-build-verify.md` | 6 | recorded, provenance stated |
 | T5 revision from test evidence | `60371620-DIAO-Liuxianjia-T5-revision.md` | 6 | recorded, provenance stated |
 
-**Provenance, stated once for the set.** These five files were reconstructed at S0
+**Provenance, stated once for the set.** These five files were reconstructed at Sprint 1
 close from the build's own log: agent output is quoted verbatim (the commands,
 failure counts and gate output are the real ones), and human turns are condensed
 from decisions that are independently recorded in `docs/bug-diary.md`,

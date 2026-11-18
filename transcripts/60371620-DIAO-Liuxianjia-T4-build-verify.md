@@ -3,9 +3,9 @@
 - **Session:** T4 · tests first, implementation, gates, one interrupted attempt
 - **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M3⟩ BUILD lead, ⟨M4⟩ BUILD lead, ⟨M5⟩ VERIFY lead
 - **Date:** 2026-11-14 · **Baseline:** plan approved at 17:03 (T3)
-- **Sprint:** S0
+- **Sprint:** 1
 
-> **Provenance.** Reconstructed from the S0 build log. Every command output below is a real line from the build (the failure counts, the `lstrip` defect and the `xfail` attempt are recorded as BUG-0002, BUG-0003 and the `Prompt.md` "never weaken a test" rule). Human turns are condensed from the decisions in `docs/bug-diary.md` and `docs/code-review` history.
+> **Provenance.** Reconstructed from the Sprint 1 build log. Every command output below is a real line from the build (the failure counts, the `lstrip` defect and the `xfail` attempt are recorded as BUG-0002, BUG-0003 and the `Prompt.md` "never weaken a test" rule). Human turns are condensed from the decisions in `docs/bug-diary.md` and `docs/code-review` history.
 
 ---
 

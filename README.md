@@ -103,7 +103,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | 5 | 回归 | `pytest test/offline` | 任何历史测试失败，或某条不变量套件出现非零违规 |
 | 6 | AI 使用日志 | `scripts/check_ai_use_log.py` | 改了 `src/` 或 `prompts/` 却没更新 `docs/ai-use-log.yaml` |
 
-**分支保护：** `ci` 必须通过；改动 `src/medcheck/{adjudicator,rules,privacy,audit}`、`data/rules/`、`.opencode/`、`.agent/` 时，还要求人工审查且在 PR 描述里写 ADR 编号。门 1 在 S0 收尾评审之前一直是红的——因为基线是一次性写完的，不存在「实现前的审批」；`docs/test-approvals.yaml` 现在记录的是那次追溯审批，审查备忘录里写明了为什么这件事要留着给人看，而不是抹平。
+**分支保护：** `ci` 必须通过；改动 `src/medcheck/{adjudicator,rules,privacy,audit}`、`data/rules/`、`.opencode/`、`.agent/` 时，还要求人工审查且在 PR 描述里写 ADR 编号。门 1 在 Sprint 1 收尾评审之前一直是红的——因为基线是一次性写完的，不存在「实现前的审批」；`docs/test-approvals.yaml` 现在记录的是那次追溯审批，审查备忘录里写明了为什么这件事要留着给人看，而不是抹平。
 
 ## 先看哪里
 

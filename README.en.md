@@ -100,7 +100,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | 5 | Regression | `pytest test/offline` | any prior test fails, or an invariant suite reports a violation |
 | 6 | AI-use log | `scripts/check_ai_use_log.py` | `src/` or `prompts/` changed without `docs/ai-use-log.yaml` |
 
-**Branch protection:** `ci` must pass; changes under `src/medcheck/{adjudicator,rules,privacy,audit}`, `data/rules/`, `.opencode/`, or `.agent/` additionally require a human review with an ADR id in the PR body. Gate 1 was red until the S0 close review, because the baseline was written in one pass and no prior approval existed; `docs/test-approvals.yaml` now records that approval retroactively, and the review memo says why that is visible rather than tidied away.
+**Branch protection:** `ci` must pass; changes under `src/medcheck/{adjudicator,rules,privacy,audit}`, `data/rules/`, `.opencode/`, or `.agent/` additionally require a human review with an ADR id in the PR body. Gate 1 was red until the Sprint 1 close review, because the baseline was written in one pass and no prior approval existed; `docs/test-approvals.yaml` now records that approval retroactively, and the review memo says why that is visible rather than tidied away.
 
 ## Where to look first
 
@@ -126,7 +126,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | D5 five annotated transcripts | recorded T1–T5, 30 annotated interventions; provenance stated in each file |
 | D6 report | complete in content (8,560 words, ~17 pages at Point 12); names, hours and personal reflections are the team's to fill (`⟨M1⟩`–`⟨M6⟩`) — see `SUBMISSION-CHECKLIST.md` §2 |
 
-The transcripts are reconstructed from the S0 build log with agent output quoted verbatim and human turns condensed from recorded decisions. Each file says so at the top; the team must certify or re-record them (`transcripts/README.md`). A reader should treat the green suite as evidence about the deterministic core, and the transcripts as evidence about supervision only once certified.
+The transcripts are reconstructed from the Sprint 1 build log with agent output quoted verbatim and human turns condensed from recorded decisions. Each file says so at the top; the team must certify or re-record them (`transcripts/README.md`). A reader should treat the green suite as evidence about the deterministic core, and the transcripts as evidence about supervision only once certified.
 
 ## Design decisions worth arguing with
 

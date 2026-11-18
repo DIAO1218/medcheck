@@ -4,9 +4,9 @@
 - **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M1⟩ REQ lead, ⟨M5⟩ VERIFY lead
 - **Date:** 2026-11-14 · **Baseline:** empty repository, `docs/req/` not yet created
 - **Agent:** coding agent in plan mode, `AGENTS.md` not yet written — this session writes the rules the later ones obey
-- **Sprint:** S0
+- **Sprint:** 1
 
-> **Provenance.** Reconstructed from the S0 build log of this repository. Agent output is quoted from the actual session; human turns are condensed from the decisions recorded in `docs/req/requirements.yaml`, `docs/bug-diary.md` BUG-0001 and `docs/architecture/evaluation-logbook.md` E-01/E-04. Where the reconstruction condenses, the annotation says so. The team must certify this transcript or re-record it (see `transcripts/README.md`).
+> **Provenance.** Reconstructed from the Sprint 1 build log of this repository. Agent output is quoted from the actual session; human turns are condensed from the decisions recorded in `docs/req/requirements.yaml`, `docs/bug-diary.md` BUG-0001 and `docs/architecture/evaluation-logbook.md` E-01/E-04. Where the reconstruction condenses, the annotation says so. The team must certify this transcript or re-record it (see `transcripts/README.md`).
 
 ---
 

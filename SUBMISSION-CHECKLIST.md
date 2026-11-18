@@ -34,7 +34,7 @@ All seven must print `PASS`. If one fails, the failure is real — do not edit t
 | `Report.md` §1 hours table | per-sprint productive hours, then compute weights with the formula |
 | `Report.md` §13 | each member rewrites their own reflection in their own voice, then signs it |
 | `transcripts/*.md` headers | replace `⟨M1⟩`–`⟨M6⟩` in the "Annotating" lines with real names |
-| `docs/test-approvals.yaml` | `approved_by: "S0 close review (⟨M1⟩–⟨M6⟩)"` → real names |
+| `docs/test-approvals.yaml` | `approved_by: "Sprint 1 close review (⟨M1⟩–⟨M6⟩)"` → real names |
 | `README.md` bottom | the real GitHub URL |
 
 **Do not invent hours.** The weight formula divides by the mean; invented inputs produce a distribution that looks authoritative and is fabricated. An empty cell that you fill honestly is worth more than a plausible one.

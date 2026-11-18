@@ -3,9 +3,9 @@
 - **Session:** T5 · invariants restated, ADR amended, evaluation set grown
 - **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M2⟩ ARCH lead, ⟨M5⟩ VERIFY lead, ⟨M6⟩ PROCESS lead
 - **Date:** 2026-11-14 · **Baseline:** 165 offline tests green, four gates passing, gate 1 blocked
-- **Sprint:** S0 close
+- **Sprint:** 1 close
 
-> **Provenance.** Reconstructed from the S0 close-out log. The three defects are BUG-0004, BUG-0005 and BUG-0007 in `docs/bug-diary.md`; the eval-set growth and the criterion amendment are E-08 in the logbook and DEBT-02's repayment in the debt register. Commands and counts are real.
+> **Provenance.** Reconstructed from the Sprint 1 close-out log. The three defects are BUG-0004, BUG-0005 and BUG-0007 in `docs/bug-diary.md`; the eval-set growth and the criterion amendment are E-08 in the logbook and DEBT-02's repayment in the debt register. Commands and counts are real.
 
 ---
 
@@ -78,7 +78,7 @@ Both are asserted; the second is asserted by `test_inv002_asserted_dose_above_ce
 
 > Then the criterion is wrong, and we amend the criterion in public rather than quietly evaluating on 25 and letting the reader assume 100. Change the registry, bump `revision`, record why in the logbook.
 
-**Instead.** `REQ-Q-001` threshold text now reads "on the frozen 25-case evaluation set"; registry `revision: 2`, `last_updated` refreshed. Logbook E-08 records the gap between what T1 promised and what S0 delivered. DEBT-02 moves to repaid, with the residual risk (25 cases is still small) moved to DEBT-11 rather than disappearing.
+**Instead.** `REQ-Q-001` threshold text now reads "on the frozen 25-case evaluation set"; registry `revision: 2`, `last_updated` refreshed. Logbook E-08 records the gap between what T1 promised and what Sprint 1 delivered. DEBT-02 moves to repaid, with the residual risk (25 cases is still small) moved to DEBT-11 rather than disappearing.
 
 ### [20:05] Agent — eval set expansion
 

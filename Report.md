@@ -31,7 +31,7 @@ At the close of Sprint 0 the repository holds 199 deterministic offline tests, a
 
 Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, so the mean is exactly 1.0. The table is deliberately left with placeholders rather than invented numbers: hours are the one number in this report that cannot be reconstructed from the repository, and a fabricated hour is worse than a blank cell.
 
-| Member | S0 | S1 | S2 | S3 | S4 | Total | Weight |
+| Member | Sprint 1 | Sprint 2 | Sprint 3 | Sprint 4 | Sprint 5 | Total | Weight |
 |---|---|---|---|---|---|---|---|
 | ⟨M1⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
 | ⟨M2⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
@@ -40,7 +40,7 @@ Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, 
 | ⟨M5⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
 | ⟨M6⟩ | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
 
-Column meanings match the sprint table in §3: **S0** baseline (requirements, architecture, governance, deterministic core), **S1** live extractor and prompts, **S2** verification depth, **S3** hardening, **S4** process evidence. A cell stays blank only if that sprint has not run yet; do not estimate a sprint you did not hold.
+Columns are the five sprints of the specification's contribution example (Sprint 1 → Sprint 5), and they match the sprint table in §3: **Sprint 1** baseline (requirements, architecture, governance, deterministic core), **Sprint 2** live extractor and prompts, **Sprint 3** verification depth, **Sprint 4** hardening, **Sprint 5** process evidence. A cell stays blank only if that sprint has not run yet; do not estimate a sprint you did not hold.
 
 **Worked example of the arithmetic**, so the table cannot be filled inconsistently: if the six totals were 62 / 58 / 55 / 48 / 44 / 33, the mean is 50.0 and the weights are 1.24 / 1.16 / 1.10 / 0.96 / 0.88 / 0.66 (they sum to 6.00). Replace with real figures — and note that a total is the sum of the sprint columns, not a separate estimate.
 
@@ -62,15 +62,15 @@ The consequence is the property we wanted: **every invariant has an offline test
 
 ## 3. Process
 
-Six members, four sprints, one semester. Our structure was a **gated pipeline per increment**, not a gantt chart: each increment went requirements → plan → approval → tests → implementation → verification → revision, with a human stop between every pair of stages.
+Six members, five sprints, one semester. Our structure was a **gated pipeline per increment**, not a gantt chart: each increment went requirements → plan → approval → tests → implementation → verification → revision, with a human stop between every pair of stages.
 
 | Sprint | Focus | Exit criteria | What actually happened |
 |---|---|---|---|
-| S0 | baseline: registry, architecture, governance, deterministic core | schema gate green; offline suite green; invariants mutation-checked | delivered; gate 1 red on purpose until the close review |
-| S1 | live extractor, prompt v1.0 → v1.1 | semantic gate measurable; prompt versions scored | prompts written, live path wired, accuracy still unmeasured |
-| S2 | verification depth | all five invariant guards mutation-verified | partially done: two proven, three logged as debt |
-| S3 | hardening | runtime catalogue implemented or marked planned | not started at the time of writing |
-| S4 | process evidence | five transcripts, this report | five sessions recorded, report drafted |
+| Sprint 1 | baseline: registry, architecture, governance, deterministic core | schema gate green; offline suite green; invariants mutation-checked | delivered; gate 1 red on purpose until the close review |
+| Sprint 2 | live extractor, prompt v1.0 → v1.1 | semantic gate measurable; prompt versions scored | prompts written, live path wired, accuracy still unmeasured |
+| Sprint 3 | verification depth | all five invariant guards mutation-verified | partially done: two proven, three logged as debt |
+| Sprint 4 | hardening | runtime catalogue implemented or marked planned | not started at the time of writing |
+| Sprint 5 | process evidence | five transcripts, this report | five sessions recorded, report drafted |
 
 **Role rotation** was the mechanism the specification asks for, and it had one effect worth reporting honestly: the member who wrote the requirements could not also mark their own work verified, because the verification role had moved. That is the entire value of rotation in a six-person team — not that people learn new skills, but that the person with an incentive to declare something done is not the person who signs it off.
 
@@ -192,7 +192,7 @@ Five sessions, thirty marked interventions: 8 REJECT, 9 REDIRECT, 4 CORRECT, 3 I
 | T4 | build and verification | 6 | an `xfail` on an invariant test, refused |
 | T5 | revision from test evidence | 6 | a "fix" that kept a fabricated renal ceiling, redirected |
 
-**Provenance.** These transcripts were reconstructed at S0 close from the build's own log: agent output is quoted verbatim and human turns are condensed from decisions independently recorded in the bug diary, the evaluation logbook and the registry. They are derived evidence, not live capture, and each file says so in its header. The team must either certify each file member by member or re-record the sessions before submission; submitting an uncertified reconstruction as a live transcript would be academic misconduct. We state this here because the alternative — presenting it as live capture — is exactly the kind of plausible, well-formatted, unverified claim the pipeline exists to prevent.
+**Provenance.** These transcripts were reconstructed at Sprint 1 close from the build's own log: agent output is quoted verbatim and human turns are condensed from decisions independently recorded in the bug diary, the evaluation logbook and the registry. They are derived evidence, not live capture, and each file says so in its header. The team must either certify each file member by member or re-record the sessions before submission; submitting an uncertified reconstruction as a live transcript would be academic misconduct. We state this here because the alternative — presenting it as live capture — is exactly the kind of plausible, well-formatted, unverified claim the pipeline exists to prevent.
 
 ---
 
@@ -270,14 +270,14 @@ One process change we tried and abandoned: a weekly 30-minute "agent review" mee
 
 ### 9.1 Requirement volatility
 
-Two registry revisions, five criteria changed, four of them before any code depended on them. Volatility measured as *requirements per week added after implementation started* is zero: we added no requirement after S0 without deleting one. We treat that as a weak signal, not a virtue — a project that never discovers a requirement is usually a project that stopped listening.
+Two registry revisions, five criteria changed, four of them before any code depended on them. Volatility measured as *requirements per week added after implementation started* is zero: we added no requirement after Sprint 1 without deleting one. We treat that as a weak signal, not a virtue — a project that never discovers a requirement is usually a project that stopped listening.
 
 ### 9.2 Defect trends
 
 | Sprint | Defects found | By gate / fitness | By test | By human | By code reading |
 |---|---|---|---|---|---|
-| S0 | 7 | 3 | 2 | 1 | 0 |
-| S1 | 1 | 0 | 0 | 1 | 0 |
+| Sprint 1 (baseline) | 7 | 3 | 2 | 1 | 0 |
+| Sprint 2–5 (to date) | 1 | 0 | 0 | 1 | 0 |
 
 The zero in the last column is the number this project is actually about. It is not a claim that our code is obviously correct; it is a claim about where correctness came from. We did not find defects by being careful. We found them by building machines that disagree with us.
 
@@ -295,7 +295,7 @@ Defect severity at discovery: five were caught before any output reached a calle
 
 ### 9.4 The gates as evidence
 
-Gate results are the cheapest audit trail we have, because they are reproducible by a stranger. At S0 close: gate 1 pass (retroactive, see review memo #1), gates 2–6 pass. The 7.4-second offline suite and the four gate scripts are the entirety of the claim that this system behaves as described; everything else in this report is interpretation of them.
+Gate results are the cheapest audit trail we have, because they are reproducible by a stranger. At Sprint 1 close: gate 1 pass (retroactive, see review memo #1), gates 2–6 pass. The 7.4-second offline suite and the four gate scripts are the entirety of the claim that this system behaves as described; everything else in this report is interpretation of them.
 
 ---
 
@@ -312,7 +312,7 @@ Every change propagated to four artefacts, and a stale artefact was treated as a
 | table row added | fixture corpus, table version hash, audit records | `build_ddi_fixtures.py --check` fails on a stale corpus |
 | evaluation set changes | `test_fixture_matrix.py`, `REQ-Q-001` threshold text | the matrix pins every verdict; the registry names the corpus |
 
-The freshness rule has teeth: if the registry's `last_updated` predates the last commit touching `AGENTS.md` by more than one sprint, the next PR is blocked until refreshed. It did not fire during S0, but it fires in the direction that matters — governance files are the ones that decay silently, because nothing imports them.
+The freshness rule has teeth: if the registry's `last_updated` predates the last commit touching `AGENTS.md` by more than one sprint, the next PR is blocked until refreshed. It did not fire during Sprint 1, but it fires in the direction that matters — governance files are the ones that decay silently, because nothing imports them.
 
 One case where co-evolution failed and we fixed it by policy: the evaluation set grew from 6 to 25 cases, and `REQ-Q-001` still said 100. Nothing in the build noticed, because a threshold does not know what corpus it is being measured on. The fix was to name the corpus in the criterion, and the residual gap — the schema has no field for corpus size — is logged as DEBT-12 rather than patched mid-sprint.
 
@@ -438,7 +438,7 @@ What I would tell the next team: write the provenance of your evidence before th
 | D8 source and tests | `src/medcheck/` (7 packages), `test/offline/` (199), `test/live/` (3, marked) |
 | D9 static prompt | `Prompt.md` (5 gated phases) |
 
-## Appendix B — Gate results at S0 close
+## Appendix B — Gate results at Sprint 1 close
 
 ```
 $ python scripts/validate_requirements.py

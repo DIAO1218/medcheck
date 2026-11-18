@@ -41,7 +41,7 @@ Mutation check: deleting the unknown-drug branch in `coverage.assess` failed `te
 **Consequence:** runtime pressure on the design is now known to be zero, which removes "performance" as a justification for any future shortcut through the deterministic core.
 
 **E-08 · 2026-11-14 · evaluation · the promised corpus was 100 cases; we closed at 25**
-T1 wrote "faithfulness and relevance on 100 frozen cases". S0 closed with 25 (6 APPROVE, 14 HOLD, 5 BLOCK). The gate could not tell the difference, because it evaluates scores, not corpus size.
+T1 wrote "faithfulness and relevance on 100 frozen cases". Sprint 1 closed with 25 (6 APPROVE, 14 HOLD, 5 BLOCK). The gate could not tell the difference, because it evaluates scores, not corpus size.
 → `REQ-Q-001` amended to name the 25-case set (registry revision 1 → 2), DEBT-02 moved to repaid, and the residual risk that 25 self-written cases under-represent the APPROVE family opened as DEBT-11.
 **Consequence:** a threshold without a corpus size is a threshold that can be met by shrinking the corpus. The schema now has nowhere to record corpus size — opening that gap as DEBT-12 rather than adding a field mid-sprint.
 

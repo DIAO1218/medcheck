@@ -155,7 +155,7 @@ Structure check: every path in §5 exists, plus a mirror of the blueprint, `docs
 
 | # | Item | Who | Why it cannot be automated |
 |---|---|---|---|
-| 1 | Six names + student numbers, per-sprint hours, weights | team | hours are not recoverable from the repository; inventing them corrupts the one measure the sheet asks for |
+| 1 | Six names + student numbers, per-sprint hours (Sprint 1–Sprint 5, the five columns of the sheet's example), weights = hours / mean | team | hours are not recoverable from the repository; inventing them corrupts the one measure the sheet asks for |
 | 2 | Six reflections rewritten in each member's own voice + signed | team | a reflection written by an agent is not a reflection |
 | 3 | Transcripts certified or re-recorded | team | they are reconstructions; certification is a statement only the team can make |
 | 5 | Live extractor accuracy (`prompts/*.yaml: live_accuracy`) | team | needs an API key and real notes |

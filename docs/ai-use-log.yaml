@@ -14,12 +14,12 @@ policy:
 entries:
   - id: AIU-2026-11-14-01
     date: "2026-11-14"
-    sprint: S0
+    sprint: 1
     session: "baseline scaffold"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
     task: >-
-      Produce the S0 baseline: repository skeleton per D1-D9, the deterministic
+      Produce the Sprint 1 baseline: repository skeleton per D1-D9, the deterministic
       core, the offline test suite, and the six CI gates.
     delegated:
       - "D1 registry and schema, including the MoSCoW tradeoff statement"
@@ -36,7 +36,7 @@ entries:
       - "architecture-blueprint.md, docs/architecture/**"
       - "AGENTS.md, Prompt.md, .opencode/**, .agent/**"
       - "src/**, test/**, scripts/**, .github/workflows/ci.yml"
-    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (S0 session, to be annotated)"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (Sprint 1 session, to be annotated)"
     notes: >-
       The baseline is agent-generated under human direction. It is a scaffold, not
       evidence of a supervised build: D5 requires five recorded sessions with
@@ -46,7 +46,7 @@ entries:
 
   - id: AIU-2026-11-14-02
     date: "2026-11-14"
-    sprint: S0
+    sprint: 1
     session: "gate hardening iteration"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -72,7 +72,7 @@ entries:
 
   - id: AIU-2026-11-14-03
     date: "2026-11-14"
-    sprint: S0
+    sprint: 1
     session: "mutation check"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -91,7 +91,7 @@ entries:
 
   - id: AIU-2026-11-14-04
     date: "2026-11-14"
-    sprint: S0
+    sprint: 3
     session: "evaluation set growth 6 -> 25"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -115,7 +115,7 @@ entries:
 
   - id: AIU-2026-11-14-05
     date: "2026-11-14"
-    sprint: S0
+    sprint: 5
     session: "D5 transcripts and D6 report"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"
@@ -139,7 +139,7 @@ entries:
 
   - id: AIU-2026-11-14-06
     date: "2026-11-14"
-    sprint: S0
+    sprint: 5
     session: "CI gate 2 hardening on the published repository"
     human: "DIAO Liuxianjia (60371620)"
     agent: "WorkBuddy coding assistant (agent mode)"

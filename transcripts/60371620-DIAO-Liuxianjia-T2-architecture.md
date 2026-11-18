@@ -3,9 +3,9 @@
 - **Session:** T2 · candidate generation, scoring, ADR (D2)
 - **Driver:** DIAO Liuxianjia (60371620) · **Annotating:** ⟨M2⟩ ARCH lead, ⟨M5⟩ VERIFY lead
 - **Date:** 2026-11-14 · **Baseline:** T1 approved registry (24 reqs, 5 invariants)
-- **Sprint:** S0
+- **Sprint:** 1
 
-> **Provenance.** Reconstructed from the S0 build log. Scoring figures are the ones recorded in `docs/architecture/evaluation-table.md`; the challenge to the recall score is E-02/E-03 in `docs/architecture/evaluation-logbook.md`. Condensed where noted.
+> **Provenance.** Reconstructed from the Sprint 1 build log. Scoring figures are the ones recorded in `docs/architecture/evaluation-table.md`; the challenge to the recall score is E-02/E-03 in `docs/architecture/evaluation-logbook.md`. Condensed where noted.
 
 ---
 

@@ -29,7 +29,7 @@ Rationale: <one paragraph>
 
 ---
 
-## PR #0 — S0 baseline (scaffold)
+## PR #0 — Sprint 1 baseline (scaffold)
 
 - Reviewer: **PENDING** (team sign-off) · Date: 2026-11-14 · ADR: ADR-001
 - Changed: baseline repository, 60+ files across all modules
@@ -47,7 +47,7 @@ Rationale: <one paragraph>
 
 **Security and efficiency.** No dependency added beyond `PyYAML` (+ `jsonschema`/`pytest` as dev). p95 adjudication 0.07 ms against a 50 ms budget (500 warm cases, p50 0.06 ms). Permission surface is deny-by-default and tested with a 12-path denial set.
 
-**Human oversight note.** The human caught three things the agent did not: (1) a clinically implausible ceiling applied to a non-renal drug (BUG-0004) was "explained away" by the agent as intentional conservatism; (2) the HOLD-vs-BLOCK distinction for missing eGFR, which the agent had resolved by picking the safer-sounding option rather than the honest one; (3) the fact that the S0 baseline cannot honestly claim D5, which the agent had listed as "to be filled" rather than "not satisfied".
+**Human oversight note.** The human caught three things the agent did not: (1) a clinically implausible ceiling applied to a non-renal drug (BUG-0004) was "explained away" by the agent as intentional conservatism; (2) the HOLD-vs-BLOCK distinction for missing eGFR, which the agent had resolved by picking the safer-sounding option rather than the honest one; (3) the fact that the Sprint 1 baseline cannot honestly claim D5, which the agent had listed as "to be filled" rather than "not satisfied".
 
 **Verdict: CHANGES REQUIRED**
 
@@ -55,7 +55,7 @@ Rationale: <one paragraph>
 
 ---
 
-## PR #1 — S0 close: D5 and D6 delivered, ledger signed
+## PR #1 — Sprint 1 close: D5 and D6 delivered, ledger signed
 
 - Reviewer: ⟨M5⟩ VERIFY lead + ⟨M6⟩ PROCESS lead · Date: 2026-11-14 · ADR: ADR-001 §8
 - Changed: `docs/test-approvals.yaml`, `transcripts/T1–T5`, `docs/bug-diary.md` (+BUG-0007), `Report.md`, `test/fixtures/cases` (6 → 25), `REQ-Q-001`
@@ -85,5 +85,5 @@ Rationale: <one paragraph>
 
 | PR | Title | Reviewer | Verdict | Date |
 |---|---|---|---|---|
-| #0 | S0 baseline (scaffold) | PENDING | CHANGES REQUIRED | 2026-11-14 |
-| #1 | S0 close: D5 + D6, ledger signed, eval set 25 | ⟨M5⟩ + ⟨M6⟩ | APPROVE | 2026-11-14 |
+| #0 | Sprint 1 baseline (scaffold) | PENDING | CHANGES REQUIRED | 2026-11-14 |
+| #1 | Sprint 1 close: D5 + D6, ledger signed, eval set 25 | ⟨M5⟩ + ⟨M6⟩ | APPROVE | 2026-11-14 |

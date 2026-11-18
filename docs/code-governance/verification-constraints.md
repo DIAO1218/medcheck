@@ -18,14 +18,14 @@ each requirement.
 | Tier | What it proves | Where | Blocking? |
 |---|---|---|---|
 | **Structural** | imports, module boundaries, permissions, single-authority sites, requirement traceability | `test/offline/test_structure.py`, `test/offline/test_dependencies.py`, `scripts/check_permissions_sync.py` | yes (gate 2) |
-| **Regression** | all prior behaviour still holds, invariants at zero violations | `test/offline/` (199 tests at S0 close) | yes (gate 5) |
+| **Regression** | all prior behaviour still holds, invariants at zero violations | `test/offline/` (199 tests at Sprint 1 close) | yes (gate 5) |
 | **Behavioural** | semantic quality (faithfulness ≥ 0.90, relevance ≥ 0.85), zero safety escapes | `scripts/eval_replay.py`, invariant suites | yes (gate 4) |
 
 ## 3. The mutation check
 
 For every invariant touched by a change, the reviewer asks: *if I delete the guard, does a test go red?* This is recorded per sprint in `docs/architecture/evaluation-logbook.md`.
 
-S0 results (verified by hand, commands in §6):
+Sprint 1 results (verified by hand, commands in §6):
 
 | Guard deleted | Test that failed | Verdict |
 |---|---|---|
