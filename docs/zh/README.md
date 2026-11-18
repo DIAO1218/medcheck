@@ -13,6 +13,7 @@
 | [`transcript-summaries.zh.md`](transcript-summaries.zh.md) | `transcripts/T1…T5` | 五场会话摘要，含 30 处干预的关键几条 |
 | [`compliance-matrix.zh.md`](compliance-matrix.zh.md) | `docs/compliance-matrix.md` | 逐条对照作业要求，含未结项与声明偏差 |
 | [`submission-checklist.zh.md`](submission-checklist.zh.md) | `SUBMISSION-CHECKLIST.md` | 提交前要跑的命令、要填的表、要背下来的七个问题 |
+| [`task-mutation-checks.zh.md`](task-mutation-checks.zh.md) | — | 派活用：给 INV-002/004/005 做变异检验的分步任务单（DEBT-09） |
 
 ## 还没翻译的（按需再翻）
 

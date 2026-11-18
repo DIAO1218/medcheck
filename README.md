@@ -114,6 +114,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | 知道只有团队能做什么 | `SUBMISSION-CHECKLIST.md`（中文版：`docs/zh/submission-checklist.zh.md`） |
 | 看那个「其他一切决定都从它推出来」的决定 | `docs/architecture/adr/001-…md`（中文导读：`docs/zh/architecture-overview.zh.md`） |
 | 看哪里坏过、是谁发现的 | `docs/bug-diary.md`（7 个缺陷，**0 个靠读代码发现**） |
+| 给组员派活（变异检验） | `docs/zh/task-mutation-checks.zh.md` |
 | 看智能体是怎么被监督的 | `transcripts/`（30 处标注干预，中文摘要：`docs/zh/transcript-summaries.zh.md`） |
 
 ## 诚实的完成度
