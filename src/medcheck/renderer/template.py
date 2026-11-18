@@ -12,7 +12,7 @@ care which, only that the words came from the adjudication.
 from __future__ import annotations
 
 import re
-from ..contracts import AdjudicationResult, Finding, Verdict
+from ..contracts import AdjudicationResult, Finding
 
 MAX_WORDS = 200
 TPL_HEADER = "TPL-HEADER"
