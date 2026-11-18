@@ -113,7 +113,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | 逐条核对是否符合作业要求 | `docs/compliance-matrix.md`（中文版：`docs/zh/compliance-matrix.zh.md`） |
 | 知道只有团队能做什么 | `SUBMISSION-CHECKLIST.md`（中文版：`docs/zh/submission-checklist.zh.md`） |
 | 看那个「其他一切决定都从它推出来」的决定 | `docs/architecture/adr/001-…md`（中文导读：`docs/zh/architecture-overview.zh.md`） |
-| 看哪里坏过、是谁发现的 | `docs/bug-diary.md`（7 个缺陷，**0 个靠读代码发现**） |
+| 看哪里坏过、是谁发现的 | `docs/bug-diary.md`（8 个缺陷，**0 个靠专门读代码找 bug 发现**） |
 | 给组员派活（变异检验） | `docs/zh/task-mutation-checks.zh.md` |
 | 看智能体是怎么被监督的 | `transcripts/`（30 处标注干预，中文摘要：`docs/zh/transcript-summaries.zh.md`） |
 
@@ -138,7 +138,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 - [ADR-001](docs/architecture/adr/001-deterministic-core-model-at-the-edges.md) — 接缝在哪，以及五个会让这个决定重开的条件。
 - [候选评估表](docs/architecture/evaluation-table.md) — 为什么在「保留可证明性」的所有权重下，所选架构都赢；以及唯一一种它会输的权重。
 - [选项台账](docs/architecture/option-ledger.md) — 十二个被否掉的选项，以及每个被重新考虑时的触发条件。
-- [缺陷日记](docs/bug-diary.md) — 七个由「制品之间互相矛盾」发现的缺陷，而非读代码发现。
+- [缺陷日记](docs/bug-diary.md) — 八个由「制品之间互相矛盾」或「有人去读别人的改动」发现的缺陷，而非专门读代码找 bug 发现。
 
 ---
 

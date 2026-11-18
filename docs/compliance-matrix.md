@@ -75,7 +75,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 | Three tiers: structural, regression, behavioural | `verification-constraints.md` §2 + gate map | met |
 | `review-memo.md`: per PR, spec/architecture/quality/operational, security + efficiency, verdict | `docs/review-memo.md` — PR #0 (CHANGES REQUIRED) and #1 (APPROVE) | met (2 memos, 2 PRs) |
 | `debt-register.md`: all eight AI-era categories | `docs/debt-register.md` — prompt rot (06), hallucinated dependency (13), untouchable code (05,10), hidden dependency (04), agent-induced bloat (08), evaluation debt (01,11,12), guardrail debt (03,09), human/cognitive debt (07) | met |
-| `bug-diary.md`: symptom, reproduction, classification, root cause, fix, invariant gap | `docs/bug-diary.md` — 7 entries, all six fields + gap | met |
+| `bug-diary.md`: symptom, reproduction, classification, root cause, fix, invariant gap | `docs/bug-diary.md` — 8 entries, all six fields + gap | met |
 
 ## D5 — Agent session transcripts
 

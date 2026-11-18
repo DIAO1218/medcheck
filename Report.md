@@ -10,7 +10,7 @@ MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a fr
 
 The project's thesis is not that the AI component is accurate. It is that **a supervised agentic build can produce a system whose safety properties are provable offline**, and that the proof is the deliverable. Four artefacts carry that thesis: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record that explains why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the things we were most likely to get wrong.
 
-At the close of Sprint 0 the repository holds 199 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, seven recorded defects, thirteen debt rows (one repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
+At the close of Sprint 0 the repository holds 199 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, eight recorded defects, thirteen debt rows (one repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
 
 ---
 
@@ -218,7 +218,7 @@ Two guards are proven load-bearing and three are asserted but unproven. We repor
 
 ### 7.3 Defects and what found them
 
-Seven defects, zero of them found by reading the implementation for bugs. Three were found by a gate or fitness function, two by a negative test, one by a human comparing a table against clinical sense, and one by our own security gate against our own evaluation set.
+Eight defects, zero of them found by reading the implementation looking for bugs. Two were found by a CI gate or fitness function, five by a test, and one by a human reading someone else's pull request — the last one matters most, because it found a defect *in the gates themselves*.
 
 | Bug | Detected by | What it exposed |
 |---|---|---|
@@ -229,6 +229,7 @@ Seven defects, zero of them found by reading the implementation for bugs. Three 
 | 0005 | CLI verdict test | INV-002 was unimplementable and collided with the overdose path |
 | 0006 | fitness function | the perception layer imported the judgement layer |
 | 0007 | security gate | our evaluation set carried an identifier-shaped fixture |
+| 0012 | human reviewing PR #1 | a frozen `contracts.py` rewrite passed all six gates by citing the baseline ADR — the gate measured a document that existed, not a decision that was made |
 
 The pattern is the report's central empirical claim: **defects were found by artefacts disagreeing with each other**, not by attention. The gate and the test found the bug before any human read the code, and the human's contribution was to insist the gate was right when the agent proposed adjusting the gate.
 
@@ -236,7 +237,7 @@ The pattern is the report's central empirical claim: **defects were found by art
 
 | # | Gate | Blocks when |
 |---|---|---|
-| 1 | test approval | a touched module has no approved test record, or a safety-critical module has no ADR |
+| 1 | test approval | a touched module has no approved test record; a safety-critical path (including the frozen `contracts.py`) must also have an ADR **added or amended in this change** |
 | 2 | static analysis | lint, compile, structural fitness, permission drift |
 | 3 | schema | the registry violates its schema or a cross-field rule |
 | 4 | semantic evaluation | faithfulness < 0.90 or relevance < 0.85 |
@@ -274,7 +275,7 @@ Two registry revisions, five criteria changed, four of them before any code depe
 | Sprint | Defects found | By gate / fitness | By test | By human | By code reading |
 |---|---|---|---|---|---|
 | S0 | 7 | 3 | 2 | 1 | 0 |
-| S1 | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| S1 | 1 | 0 | 0 | 1 | 0 |
 
 The zero in the last column is the number this project is actually about. It is not a claim that our code is obviously correct; it is a claim about where correctness came from. We did not find defects by being careful. We found them by building machines that disagree with us.
 
@@ -324,6 +325,8 @@ This is the section the specification asks for directly, so it gets specifics ra
 **An invariant that could not fail.** The agent wrote "no output may assert a dose above the ceiling" and it passed every test we had, because no test exercised the overdose path with a valid ceiling. A human noticed the sentence was unimplementable — an overdose case must assert an over-ceiling dose — and forced the restatement into two properties. The general form: an invariant that has never failed is not evidence of correctness, it is evidence that nothing has tried.
 
 **An honest status table.** The agent's first README described D5 (transcripts) as "to be filled", which implies a minor gap. A human changed it to "not satisfied", because a scaffold cannot contain supervision that never happened. This is the failure mode of agentic work in one example: not a wrong line of code, but a plausible, well-formatted claim of near-completeness.
+
+**A seal broken quietly.** A teammate's PR rewrote `contracts.py` — a file our own governance marks frozen — and all six gates passed, because gate 6 asked whether the ledger *named* an ADR, and `core` had carried ADR-001 since the baseline. A human reading the PR's file list asked the question the gate did not: *where is the decision?* That is BUG-0012, and gate 6 now measures freshness instead of presence. The change itself was good; what it exposed is that the control guarding the seam could not fail.
 
 **What the agent caught that we did not:** a path-normalisation bypass nobody would have found by reading (`lstrip("./")`), and a latent collision between an invariant and normal operation that only surfaced when a fixture hit the overdose path. We are not claiming supervision is sufficient without the machines, and the reverse is obviously false too. The useful finding is the division of labour: **machines found defects in the code, humans found defects in the claims.**
 

@@ -110,7 +110,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | check the submission against the requirement sheet | `docs/compliance-matrix.md` (clause → artefact → status) |
 | know what only the team can do | `SUBMISSION-CHECKLIST.md` |
 | see the one decision everything else follows from | `docs/architecture/adr/001-…md` |
-| see what broke and what found it | `docs/bug-diary.md` (7 defects, 0 found by reading code) |
+| see what broke and what found it | `docs/bug-diary.md` (8 defects, 0 found by reading code looking for bugs) |
 | see the agent being supervised | `transcripts/` (30 marked interventions) |
 
 ## Status, honestly
