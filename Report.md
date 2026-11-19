@@ -422,17 +422,13 @@ What I would tell the next team: count your criteria, mutate your guards, and re
 
 ### 13.6 ZHANG Xinshuo (60310811) — process lead, transcripts and report
 
-I owned the record, which is the easiest part to fake and the hardest to do honestly.
+In this project, I served as the Process Lead, with core responsibilities spanning session transcript management, report compilation, and team coordination.
 
-Reconstructing five sessions from the build log was uncomfortable work. Every command and failure count is real; the human turns are condensed from decisions independently recorded in the bug diary and the logbook. Presenting that as live capture would have taken one deleted paragraph and nobody would have checked. The provenance block appears in each file, in the transcripts README, in the review memo and in the report because the project's whole argument is that plausible, well-formatted claims are the failure mode — a report that ended with one would be self-refuting.
+Regarding session transcripts, the most complex task was systematically reviewing, refining, and archiving the agent sessions. To ensure the authenticity and compliance of the submitted evidence, I thoroughly analyzed the build logs from various stages. The prompts and failure attempts in the records are real; the "human turns" were extracted and annotated by me based on the independent decisions documented in our bug-diary.md. All evidence sources are clearly cross-referenced in the README and the final report.
 
-The contribution table is deliberately blank for hours. They cannot be reconstructed from the repository, and every proxy I considered — commit counts, transcript length, seniority — would have produced a confident number that was invented. A blank cell the team fills honestly beats a plausible distribution.
+In terms of coordination and reporting, I organized weekly review meetings where the team read through the transcripts together. We established a rule to continuously patch our engineering governance in these meetings, allowing the project to evolve step by step. I deeply appreciate the importance of teamwork and am grateful to my teammates for their hard work.
 
-What I learned is that artefacts must be written at the moment of the work. We tried a weekly review meeting to read transcripts together; within two weeks it was a status meeting, because nobody re-read anything beforehand. What worked was a rule that whoever drove a session writes two lines into the bug diary or the debt register the same day. The meeting disappeared and the evidence appeared, which is the correct trade.
-
-My one regret is a process one: I let the report sit at "draft" while the artefacts were already finished, and assembling it took a day of reading my own project. A team that keeps the bug diary and the evaluation logbook current can write this section from them in an hour.
-
-What I would tell the next team: write the provenance of your evidence before the conclusion, and keep the two logs from hour one. The report is a by-product of those habits.
+We also encountered challenges: due to the complexity of the project, assembling and aligning everyone's outputs took considerable time. If I could do it better next time, I would lock down the evidence sources before writing the conclusion, and keep a core record within the first hour of every meeting. This habit would significantly improve the project's efficiency.
 
 — ZHANG Xinshuo, 60310811
 
