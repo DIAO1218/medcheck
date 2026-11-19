@@ -12,6 +12,28 @@ policy:
   rule: "an entry that cannot be tied to a transcript entry is not evidence"
 
 entries:
+  - id: AIU-2026-11-19-M4-01
+    date: "2026-11-19"
+    session: "M4 selected conversation excerpts and mutation evidence"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Compile two excerpts from the existing conversation for the individual D5 record."
+    delegated:
+      - "Select actual messages and tool output documenting task correction and five mutation checks."
+      - "Distinguish copied excerpts from editorial annotations and state provenance limits."
+    human_checked:
+      - "Asked to confirm the baseline before starting mutations."
+      - "Asked whether the mutation result had actually been saved."
+      - "Requested the individual conversation record; final personal review remains pending."
+    artefacts:
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      Prepared from this existing chat on November 19. The linked mutation report
+      records November 18 as the test date. Exact message times are unavailable.
+      The assistant executed the commands under human direction. This entry
+      does not certify reconstructed transcripts or claim exhaustive safety.
+
   - id: AIU-2026-11-14-01
     date: "2026-11-14"
     sprint: 1
