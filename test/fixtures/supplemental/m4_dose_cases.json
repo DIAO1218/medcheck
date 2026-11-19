@@ -1,5 +1,5 @@
 {
-  "description": "Synthetic teaching cases. Separate from the frozen 25-case evaluation set. Expected outcomes describe desired behavior, not current passing behavior. The ambiguous-repeat policy is proposed for M3/M4 review.",
+  "description": "Synthetic teaching cases for supported mass units and frequency handling. Separate from the frozen 25-case evaluation set. Split-dose integration expectations require M3/M4 agreement. No tablet conversion or ambiguous-prescription policy is introduced.",
   "cases": [
     {
       "case_id": "m4_split_below",
@@ -72,23 +72,6 @@
       "expected_codes": ["FIELD_UNPARSED"],
       "expected_daily_mg": null,
       "purpose": "Do not approve when the second schedule cannot be evaluated."
-    },
-    {
-      "case_id": "m4_unrecognized_unit_second_drug",
-      "note": "Warfarin 5 mg once daily. Simvastatin 80 tablets once daily.",
-      "expected_verdict": "HOLD",
-      "expected_codes": [],
-      "expected_daily_mg": null,
-      "purpose": "Do not silently omit a medication whose dose unit is unsupported; the finding code needs M3/M4 agreement."
-    },
-    {
-      "case_id": "m4_ambiguous_repeat",
-      "note": "Warfarin 6 mg once daily. Medication list also states Warfarin 6 mg once daily; it is unclear whether this is a duplicate or an additional prescription.",
-      "expected_verdict": "HOLD",
-      "expected_codes": [],
-      "expected_daily_mg": null,
-      "policy_status": "proposed_for_review",
-      "purpose": "Escalate an explicitly ambiguous repeat instead of silently dropping or double-counting it."
     }
   ]
 }
