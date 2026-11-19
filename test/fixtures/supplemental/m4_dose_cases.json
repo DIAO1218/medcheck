@@ -1,0 +1,94 @@
+{
+  "description": "Synthetic teaching cases. Separate from the frozen 25-case evaluation set. Expected outcomes describe desired behavior, not current passing behavior. The ambiguous-repeat policy is proposed for M3/M4 review.",
+  "cases": [
+    {
+      "case_id": "m4_split_below",
+      "note": "Warfarin 4 mg mane. Warfarin 4 mg nocte.",
+      "expected_verdict": "APPROVE",
+      "expected_codes": ["ALL_CHECKS_PASSED"],
+      "expected_daily_mg": 8,
+      "purpose": "Sum separate morning and evening doses below the daily ceiling."
+    },
+    {
+      "case_id": "m4_split_at_limit",
+      "note": "Warfarin 5 mg mane. Warfarin 5 mg nocte.",
+      "expected_verdict": "APPROVE",
+      "expected_codes": ["ALL_CHECKS_PASSED"],
+      "expected_daily_mg": 10,
+      "purpose": "Sum separate doses exactly at the inclusive daily ceiling."
+    },
+    {
+      "case_id": "m4_split_above",
+      "note": "Warfarin 6 mg mane. Warfarin 6 mg nocte.",
+      "expected_verdict": "BLOCK",
+      "expected_codes": ["DOSE_CEILING"],
+      "expected_daily_mg": 12,
+      "purpose": "Detect excess daily dose even though each separate entry is below the ceiling."
+    },
+    {
+      "case_id": "m4_twice_daily_equivalent",
+      "note": "Warfarin 6 mg twice daily.",
+      "expected_verdict": "BLOCK",
+      "expected_codes": ["DOSE_CEILING"],
+      "expected_daily_mg": 12,
+      "purpose": "Compare one twice-daily entry with the equivalent split schedule."
+    },
+    {
+      "case_id": "m4_grams_twice_daily",
+      "note": "Warfarin 0.006 g twice daily.",
+      "expected_verdict": "BLOCK",
+      "expected_codes": ["DOSE_CEILING"],
+      "expected_daily_mg": 12,
+      "purpose": "Verify grams-to-milligrams conversion through the full pipeline."
+    },
+    {
+      "case_id": "m4_micrograms_at_limit",
+      "note": "Warfarin 5000 mcg twice daily.",
+      "expected_verdict": "APPROVE",
+      "expected_codes": ["ALL_CHECKS_PASSED"],
+      "expected_daily_mg": 10,
+      "purpose": "Verify microgram conversion at the daily ceiling."
+    },
+    {
+      "case_id": "m4_morning_only",
+      "note": "Warfarin 5 mg mane.",
+      "expected_verdict": "APPROVE",
+      "expected_codes": ["ALL_CHECKS_PASSED"],
+      "expected_daily_mg": 5,
+      "purpose": "Exercise the supported morning frequency directly."
+    },
+    {
+      "case_id": "m4_evening_only",
+      "note": "Warfarin 5 mg nocte.",
+      "expected_verdict": "APPROVE",
+      "expected_codes": ["ALL_CHECKS_PASSED"],
+      "expected_daily_mg": 5,
+      "purpose": "Exercise the supported evening frequency directly."
+    },
+    {
+      "case_id": "m4_split_unparsed_frequency",
+      "note": "Warfarin 5 mg mane. Warfarin 6 mg when required.",
+      "expected_verdict": "HOLD",
+      "expected_codes": ["FIELD_UNPARSED"],
+      "expected_daily_mg": null,
+      "purpose": "Do not approve when the second schedule cannot be evaluated."
+    },
+    {
+      "case_id": "m4_unrecognized_unit_second_drug",
+      "note": "Warfarin 5 mg once daily. Simvastatin 80 tablets once daily.",
+      "expected_verdict": "HOLD",
+      "expected_codes": [],
+      "expected_daily_mg": null,
+      "purpose": "Do not silently omit a medication whose dose unit is unsupported; the finding code needs M3/M4 agreement."
+    },
+    {
+      "case_id": "m4_ambiguous_repeat",
+      "note": "Warfarin 6 mg once daily. Medication list also states Warfarin 6 mg once daily; it is unclear whether this is a duplicate or an additional prescription.",
+      "expected_verdict": "HOLD",
+      "expected_codes": [],
+      "expected_daily_mg": null,
+      "policy_status": "proposed_for_review",
+      "purpose": "Escalate an explicitly ambiguous repeat instead of silently dropping or double-counting it."
+    }
+  ]
+}
