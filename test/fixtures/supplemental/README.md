@@ -1,13 +1,15 @@
 # Supplemental M4 dose cases
 
-`m4_dose_cases.json` contains 11 synthetic case proposals for M3/M4 integration.
+`m4_dose_cases.json` contains 9 synthetic case proposals for M3/M4 integration.
 It is a collection with a `cases` array, not a single CLI case file. To run a
 case through the CLI, save one entry as a separate JSON object and pass its path
 using `--case`. The additional expected-value fields are test metadata.
 
 The frozen 25-case set is unchanged. These cases are not yet wired into pytest
-or the semantic evaluation gate. The ambiguous-repeat policy needs team review;
-finding codes for unresolved extraction behavior are intentionally not invented.
+or the semantic evaluation gate. Split-dose integration expectations need M3/M4
+agreement. Tablet conversion and a new ambiguous-prescription policy are outside
+this set. The unsupported-frequency case follows the existing FIELD_UNPARSED
+behavior already exercised by the frozen case c16.
 
 ## Initial local observations
 
@@ -17,8 +19,7 @@ finding codes for unresolved extraction behavior are intentionally not invented.
 | `m4_split_above` | Expected BLOCK; actual APPROVE. |
 | `m4_twice_daily_equivalent`, `m4_grams_twice_daily` | Expected BLOCK; actual BLOCK. |
 | `m4_micrograms_at_limit`, `m4_morning_only`, `m4_evening_only` | Expected APPROVE; actual APPROVE. |
-| `m4_split_unparsed_frequency`, `m4_unrecognized_unit_second_drug` | Expected HOLD; actual APPROVE. |
-| `m4_ambiguous_repeat` | Proposed expected HOLD; actual APPROVE. |
+| `m4_split_unparsed_frequency` | Expected HOLD; actual APPROVE. |
 
 Future automated assertions must check the extracted entries and normalized
 daily total as well as verdict and finding codes. Matching a verdict alone can
