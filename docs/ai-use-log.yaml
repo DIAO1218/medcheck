@@ -12,6 +12,55 @@ policy:
   rule: "an entry that cannot be tied to a transcript entry is not evidence"
 
 entries:
+  - id: AIU-2026-11-19-M4-03
+    date: "2026-11-19"
+    session: "M4 ADR approval and final verification"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Verify the human-added ADR amendment and update the M4 report and transcript status."
+    delegated:
+      - "Run requirements, offline regression, permission, AI-use-log, and test-approval/ADR checks."
+      - "Update the M4 reflection and individual conversation record with the completed NaN work."
+    human_checked:
+      - "Added Amendment 2 to ADR-001."
+      - "Confirmed the amendment should be included in final verification."
+    artefacts:
+      - "Report.md §13.4"
+      - "Report.zh.md §13.4"
+      - "docs/architecture/adr/001-deterministic-core-model-at-the-edges.md"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      Verification passed: requirements schema, 210 offline tests, permission
+      sync, AI-use log gate and test-approval/ADR gate. The human added the ADR;
+      the assistant did not modify the human-only architecture file.
+
+  - id: AIU-2026-11-19-M4-02
+    date: "2026-11-19"
+    session: "Non-finite dose validation"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Reject non-finite doses and normalization overflow under ADR-001."
+    delegated:
+      - "Write regression tests before implementation and demonstrate their failures."
+      - "Add finite-number checks in rules.units using existing error handling."
+    human_checked:
+      - "Explicitly authorized implementation after the 10 failing regression cases were reported."
+    artefacts:
+      - "src/medcheck/rules/units.py"
+      - "test/offline/test_units.py"
+      - "test/offline/test_adjudicator.py"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      No dependency, contract, table or adjudicator implementation changes.
+      Three individual guard mutations were executed: input and daily-dose
+      mutations were detected; converted-dose mutation survived because the
+      daily-dose guard also rejects overflow. After human approval, a separate
+      direct to_mg overflow regression was added; the repeated conversion
+      mutation failed that test. Existing tests were not weakened. All guards
+      were restored; 210 tests passed afterwards. ADR amendment remains pending.
+
   - id: AIU-2026-11-19-M4-01
     date: "2026-11-19"
     session: "M4 selected conversation excerpts and mutation evidence"
@@ -185,3 +234,27 @@ entries:
       Gate 6 blocked this commit because src/ changed without a log entry. The
       gate was right and the entry was added rather than the check bypassed; that
       sequence is the whole argument for having the gate.
+
+  - id: AIU-2026-11-19-M4-04
+    date: "2026-11-19"
+    session: "Rule-table loader validation"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Reject invalid authoritative configuration under ADR-001 Amendment 3."
+    delegated:
+      - "Write six failing rejection tests and a valid-table control before implementation."
+      - "Validate numeric configuration, severity values and duplicate renal thresholds."
+      - "Temporarily disable each approved rejection check to verify test detection."
+    human_checked:
+      - "Explicitly approved the plan and the six failing rejection tests."
+      - "Added Amendment 3 before implementation."
+    artefacts:
+      - "src/medcheck/rules/loader.py"
+      - "test/offline/test_rule_table_validation.py"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      All six targeted guard mutations were detected and restored. The full
+      offline suite reached 217 passing tests. Requirements, permission,
+      AI-use-log and test-approval/ADR gates passed. Ruff is unavailable locally.
+      Existing uncommitted NaN changes and the human-authored ADR were preserved.

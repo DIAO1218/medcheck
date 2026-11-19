@@ -2,7 +2,7 @@
 
 [中文对照版](zh/mutation-results-M4.zh.md)
 
-Test date: November 18, 2026. Name and student ID pending.
+Test date: November 18, 2026. Lin Zijie, 60839860.
 
 | # | Invariant | Temporary mutation | Baseline | Mutated result | Failing tests | Conclusion |
 |---|---|---|---|---|---|---|

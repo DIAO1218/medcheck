@@ -58,3 +58,27 @@ def test_negative_dose_rejected(tables):
     """[REQ-F-002] A negative dose is nonsense; refuse rather than compute."""
     with pytest.raises(ValueError):
         to_mg(-5.0, "mg", tables)
+
+
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
+def test_nonfinite_dose_rejected(tables, value):
+    """REQ-F-002 / INV-002: invalid numbers must not enter normalized doses."""
+    with pytest.raises(UnconvertibleUnit):
+        to_mg(value, "mg", tables)
+
+
+def test_unit_conversion_overflow_rejected(tables):
+    """REQ-F-002 / INV-002: to_mg itself must reject conversion overflow."""
+    with pytest.raises(UnconvertibleUnit):
+        to_mg(1e308, "g", tables)
+
+
+@pytest.mark.parametrize("value,unit,frequency", [
+    (1e308, "g", "once daily"),
+    (1e308, "mg", "twice daily"),
+])
+def test_normalization_overflow_rejected(tables, value, unit, frequency):
+    """REQ-F-002 / INV-002: finite input must not overflow into an infinite daily dose."""
+    medication = Medication("Warfarin", "warfarin", value, unit, frequency)
+    with pytest.raises(UnconvertibleUnit):
+        to_mg_per_day(medication, tables)
