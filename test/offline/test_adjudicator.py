@@ -18,8 +18,10 @@ from medcheck.contracts import (
     CODE_COVERAGE_GAP,
     CODE_DDI_MAJOR,
     CODE_DOSE_CEILING,
+    CODE_UNIT_UNSUPPORTED,
     AdjudicationResult,
     AuthorityViolation,
+    ExtractionRecord,
     Finding,
     NormalizedDose,
     Severity,
@@ -148,3 +150,29 @@ def test_pipeline_blocks_contraindicated_pair(tables):
     """[REQ-F-005] pipeline blocks contraindicated pair."""
     outcome = process_case(_load("c04_block_contraindicated.json"), tables=tables)
     assert outcome.verdict is Verdict.BLOCK
+
+
+@pytest.mark.parametrize("value,unit,frequency", [
+    ("NaN", "mg", "once daily"),
+    ("Infinity", "mg", "once daily"),
+    ("-Infinity", "mg", "once daily"),
+    (1e308, "g", "once daily"),
+    (1e308, "mg", "twice daily"),
+])
+def test_pipeline_holds_nonfinite_dose(tables, value, unit, frequency):
+    """REQ-F-002 / REQ-F-004 / INV-002: unusable doses hold without approval or a crash."""
+    def extractor(note, vocabulary):
+        return ExtractionRecord.from_payload(
+            {"medications": [{
+                "name_raw": "Warfarin", "name_canonical": "warfarin",
+                "dose_value": value, "dose_unit": unit, "frequency_text": frequency,
+            }]},
+            "nonfinite-regression",
+        )
+
+    result = process_case(
+        {"case_id": "nonfinite-regression", "note": "Warfarin dose requires review."},
+        tables=tables, extractor=extractor,
+    ).result
+    assert result.verdict is Verdict.HOLD
+    assert result.codes == [CODE_UNIT_UNSUPPORTED]

@@ -149,3 +149,31 @@ would assert "this dose is too high"; what we know is "we cannot evaluate it".
 **Why this is recorded here rather than edited in place:** a reader must be able to
 see that we once believed something weaker. An ADR that only contains the final
 belief is a press release.
+
+## 9. Amendment 2 — 2026-11-19
+
+**The architectural decision and invariant wording remain unchanged. Dose normalization gains an explicit finite-value requirement.**
+
+A regression case showed that a `NaN` dose could reach `APPROVE`: it passed the negative-value check and never compared greater than the dose ceiling. Infinity and arithmetic overflow could also cause unhandled errors during result formatting.
+
+D1 remains "a wrong APPROVE is unacceptable". A dose must be a finite number before it can be evaluated against a ceiling. `rules/units.py` now checks three boundaries:
+
+1. **Input validity** — reject `NaN` and positive or negative infinity before conversion.
+2. **Conversion validity** — reject overflow when converting a dose to milligrams.
+3. **Daily-dose validity** — reject overflow when multiplying by the daily frequency.
+
+Each failure raises the existing `UnconvertibleUnit` exception. The dose checker emits `UNIT_UNSUPPORTED`, requiring review; existing `BLOCK` conditions retain precedence. No contract, rule table, dependency, or verdict precedence changes.
+
+Eleven regression cases were added, bringing the offline suite to `210 passed`. Each new guard was independently disabled and detected by tests, then restored. The conversion-result mutation initially survived because the daily-dose guard caught the overflow; a direct `to_mg()` test closed that coverage gap.
+
+## 10. Amendment 3 — 2026-11-19
+
+**The architectural decision remains unchanged. Rule tables must be rejected at load time when their values could make deterministic checks meaningless or produce an incorrect verdict.**
+
+A set of temporary rule-table mutations showed that the loader accepted a zero unit-conversion factor, a negative frequency, an unknown interaction severity, a zero dose ceiling, a negative renal adjustment factor, and duplicate renal-band thresholds. A negative frequency allowed a case to reach `APPROVE`; a misspelled `contraindicated` severity was treated as `moderate`, reducing the result from `BLOCK` to `HOLD`.
+
+The driver did not move. D1 remains “a wrong APPROVE is unacceptable.” The loader will reject these configurations with `TableInvalid`: conversion factors, frequencies, dose ceilings, and renal adjustment factors must be finite and positive; interaction severity must be one of the supported values; renal-band thresholds must be finite and strictly increasing.
+
+No rule-table values, data contracts, dependencies, or verdict precedence are changed. The approved regression tests currently fail because the loader accepts these invalid configurations. Implementation and post-fix verification remain pending.
+
+**Why this is recorded here rather than edited in place:** an invalid authoritative table can undermine deterministic checks while appearing to load successfully. The decision and its verification should be reviewable before the loader changes.
