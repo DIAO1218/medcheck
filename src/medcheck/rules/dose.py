@@ -6,6 +6,7 @@ against it, may never recompute or override it (INV-002).
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 
 from ..contracts import (
@@ -36,13 +37,19 @@ def check(
     egfr: float | None,
     tables: RuleTables,
 ) -> DoseCheck:
+    """REQ-F-004 / INV-002: compare each drug's combined daily dose to its ceiling."""
     result = DoseCheck()
     # eGFR only narrows the ceiling for drugs that are renally cleared. For the
     # rest, the full ceiling applies even when eGFR is missing -- holding every
     # non-renal drug on a missing creatinine would make APPROVE unreachable.
     unrestricted = tables.renal_band(10_000.0)
 
+    schedules: dict[str, list[Medication]] = {}
     for medication in medications:
+        schedules.setdefault(medication.name_canonical, []).append(medication)
+
+    for entries in schedules.values():
+        medication = entries[0]
         row = tables.dose_row(medication.name_canonical)
         if row is None:
             continue  # coverage.py owns the unknown-drug path
@@ -70,7 +77,11 @@ def check(
         band = tables.renal_band(egfr) if row.get("renal_sensitive") else unrestricted
 
         try:
-            daily = to_mg_per_day(medication, tables)
+            daily = 0.0
+            for entry in entries:
+                daily += to_mg_per_day(entry, tables)
+                if not math.isfinite(daily):
+                    raise UnconvertibleUnit("combined daily dose must be finite")
         except (UnconvertibleUnit, UnsupportedFrequency) as exc:
             result.unsupported.append(medication.name_canonical)
             result.findings.append(

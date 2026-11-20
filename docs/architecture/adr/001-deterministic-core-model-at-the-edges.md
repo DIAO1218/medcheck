@@ -177,3 +177,13 @@ The driver did not move. D1 remains “a wrong APPROVE is unacceptable.” The l
 No rule-table values, data contracts, dependencies, or verdict precedence are changed. The approved regression tests currently fail because the loader accepts these invalid configurations. Implementation and post-fix verification remain pending.
 
 **Why this is recorded here rather than edited in place:** an invalid authoritative table can undermine deterministic checks while appearing to load successfully. The decision and its verification should be reviewable before the loader changes.
+
+## 11. Amendment 4 — 2026-11-20
+
+**The architectural decision remains unchanged. Daily dose ceilings apply to the combined dose of each medication.**
+
+Two preserved Warfarin schedules of 6 mg each were checked separately against the 10 mg/day ceiling, allowing a combined 12 mg/day dose to reach `APPROVE`.
+
+Under REQ-F-004 and INV-002, `rules.dose` will normalize each independent schedule, group entries by canonical medication name, and compare their combined daily dose against one applicable ceiling, including renal adjustment. Different medications remain separate. Unconvertible entries retain the existing review findings.
+
+The extractor remains responsible for distinguishing independent schedules from repeated descriptions. No contract fields, rule tables, dependencies, or verdict precedence change. Regression tests cover totals below, at, and above the ceiling, mixed units, renal adjustment, and downstream adjudication with both schedules preserved. 

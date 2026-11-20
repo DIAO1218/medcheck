@@ -16,6 +16,7 @@ import math
 from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import lru_cache
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -163,7 +164,7 @@ def load_tables(rules_dir: Path | str | None = None) -> RuleTables:
         thresholds.append(threshold)
     # Evaluation already sorts thresholds; require strict separation after sorting.
     ordered = sorted(thresholds)
-    if any(first >= second for first, second in zip(ordered, ordered[1:], strict=False)):
+    if any(first >= second for first, second in pairwise(ordered)):
         raise TableInvalid("renal thresholds must be strictly increasing without duplicates")
 
     vocabulary = tuple(sorted(set(drugs) | {drug for row in interactions for drug in row["pair"]}))

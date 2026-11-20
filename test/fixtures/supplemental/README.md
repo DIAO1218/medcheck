@@ -13,6 +13,14 @@ behavior already exercised by the frozen case c16.
 
 ## Initial local observations
 
+These observations predate the M4 accumulation fix. As of November 20, M4's
+tests independently verify summed doses and HOLD for an unusable schedule when
+both records reach the rules layer. The default extractor still drops the second
+same-name record, so the original text cases are not claimed fixed. M4 emits
+`UNIT_UNSUPPORTED`; the `FIELD_UNPARSED` expectation for the ninth case requires
+M3 to populate the existing extraction warning. Do not weaken that expectation
+just to match the current extractor.
+
 | Cases | Observation |
 |---|---|
 | `m4_split_below`, `m4_split_at_limit` | Verdict matches, but only one medication entry is extracted. These are not evidence of correct dose aggregation. |
