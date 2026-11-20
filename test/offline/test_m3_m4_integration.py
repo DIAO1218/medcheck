@@ -3,7 +3,6 @@ import json
 import pytest
 from pathlib import Path
 from medcheck.pipeline import process_case
-from medcheck.contracts import Verdict
 
 CASES_FILE = Path(__file__).parent.parent / "fixtures" / "supplemental" / "m4_dose_cases.json"
 
