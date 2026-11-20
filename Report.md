@@ -400,7 +400,9 @@ After that assignment, I reproduced a separate dose bug: a model extraction cont
 
 I also ran mutation checks on the three new checks. Two mutations were caught immediately. Disabling the conversion-result check initially left the suite green because the daily-dose check caught the same overflow. I asked for a direct `to_mg()` regression case, then repeated the mutation; the new test failed as intended. This was useful evidence about the difference between a failure being blocked somewhere in the pipeline and a particular guard having its own test.
 
-The full offline suite now has 210 passing tests. The requirement, permission, AI-use-log, and test-approval/ADR checks also passed after the human-authored ADR amendment was added. I directed and reviewed this work, while the assistant made the code and ran the commands; I do not claim that I personally typed those changes. The evidence supports the specific cases we tested, not every possible invalid dose or every safety failure. For future work I would keep the same sequence: reproduce a concrete problem, test it before the fix, check that the guard is load-bearing, and record the actual output.
+I then directed a same-drug accumulation fix. With both extracted schedules preserved, morning and evening doses now share one daily total and ceiling. Tests also show that an unsupported or missing frequency returns `HOLD` without publishing a partial total, even without an extractor warning. M3 still needs to preserve the second record in the default extraction path; the tests verify the M4 boundary, not a completed natural-language fix.
+
+The local integration suite reached 241 passing tests. After transferring only M4 changes back to the independent M4 branch, its suite passed 230 tests; the difference is M3's 11 tests, which were not transferred. I directed and reviewed this work, while the assistant edited code and ran commands. The evidence supports the specific cases tested. I would retain the same process: reproduce a problem, test it before the fix, check whether removing the guard causes failure, and preserve the actual output.
 
 — Lin Zijie, 60839860
 
