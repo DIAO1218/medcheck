@@ -25,15 +25,22 @@ each requirement.
 
 For every invariant touched by a change, the reviewer asks: *if I delete the guard, does a test go red?* This is recorded per sprint in `docs/architecture/evaluation-logbook.md`.
 
-Sprint 1 results (verified by hand, commands in §6):
+Sprint 1 measured results are the two rows below. They match evaluation-logbook E-06: deleting the unknown-drug branch failed 1 test; disabling the authority-field check failed 10. Commands are in §6.
 
 | Guard deleted | Test that failed | Verdict |
 |---|---|---|
-| `coverage.assess` unknown-drug branch | `test_inv001_unknown_drug_is_not_approved` | load-bearing |
-| `assert_ceiling` no-silent-overdose branch | `test_inv002_asserted_dose_above_ceiling_rejected` | load-bearing |
-| `_assert_no_authority` in `from_payload` | `test_inv003_model_verdict_rejected` (10 params) | load-bearing |
-| `strict` residual/unclassified scan in `mask` | `test_masking_failure_blocks_the_call` | load-bearing |
-| `Finding.__post_init__` rule-id check | `test_inv005_missing_rule_id_aborts` | load-bearing |
+| `coverage.assess` unknown-drug branch | `test_inv001_unknown_drug_is_not_approved` (1 failure) | load-bearing, measured |
+| `_assert_no_authority` in `from_payload` | `test_inv003_model_verdict_rejected` (10 params) | load-bearing, measured |
+
+INV-002, INV-004 and INV-005 have tests, but nobody has deleted their guards and recorded pytest output. The names below are the tests `docs/zh/task-mutation-checks.zh.md` expects to go red; that expectation was read from the code, not measured. `docs/zh/mutation-results-*.md` does not exist. DEBT-09 stays open until that file contains the raw pytest output.
+
+| Guard | Test expected to fail | Verdict |
+|---|---|---|
+| `assert_ceiling` integrity check (`verdict.py`, ceiling must equal the table) | `test_inv002_ceiling_cannot_be_raised_at_runtime` | not measured |
+| `assert_ceiling` no-silent-overdose branch | `test_inv002_asserted_dose_above_ceiling_rejected` | not measured |
+| `strict` residual/unclassified scan in `mask` | `test_masking_failure_blocks_the_call` | not measured |
+| `Finding.__post_init__` rule-id and table-version checks | `test_inv005_missing_rule_id_aborts`, `test_inv005_missing_table_version_aborts` | not measured |
+| `resolve()` final `raise UnresolvableFinding` | `test_inv005_unresolvable_rule_aborts` | not measured |
 
 A guard whose deletion breaks nothing is either untested or unnecessary — both are findings for the debt register.
 

@@ -81,9 +81,48 @@ Rationale: <one paragraph>
 
 ---
 
+## GitHub PR #1 — fix(M3): authority seam and renderer traceability
+
+This section is not the Sprint 1 close recorded above. That entry stays as written. This one reviews the open pull request https://github.com/DIAO1218/medcheck/pull/1, head `b4b8d960`, branch `feat/m3-safety-boundaries`. The review was done by reading that branch and running tests in a separate worktree. Nothing was pushed to that branch.
+
+- Reviewer: LI Decheng (verification) · Date: 2026-11-22 · ADR: ADR-002 is in the diff; whether it is sufficient is for the architecture owner
+- Changed: 15 files, including `src/medcheck/contracts.py`, `src/medcheck/renderer/template.py`, new offline tests, `docs/ai-use-log.yaml`, `docs/bug-diary.md`, `docs/architecture/adr/002-recursive-authority-check.md`
+- Test approval record: not updated in this pull request
+- CI: the head commit has no reported check statuses (pending, zero statuses). Gate results below are from a local run, not from GitHub.
+- Invariant suite: not separately counted; the offline run is the evidence
+
+**Spec alignment.** The nested-verdict rejection is INV-003. The renderer change is aimed at INV-005 (a rule id must appear in the advisory). The pull request also adds split-dose cases under REQ-F-004. Those cases do not pass.
+
+**Architecture alignment.** `contracts.py` is a frozen file. ADR-002 is present in the diff. Its revisit condition is performance of the recursive scan, not a safety condition. Sign-off on that decision belongs to the architecture owner. This review does not approve or reject the ADR.
+
+**Code and test quality.** Local command, on commit `b4b8d960`, after `pip install -e ".[dev]"`:
+
+```
+FAILED test/offline/test_m3_m4_integration.py::test_m4_supplemental_cases[m4_split_above]
+FAILED test/offline/test_m3_m4_integration.py::test_m4_supplemental_cases[m4_split_unparsed_frequency]
+2 failed, 217 passed in 8.81s
+```
+
+`m4_split_above` expected `BLOCK` and returned `APPROVE`. `m4_split_unparsed_frequency` expected `HOLD` and returned `APPROVE`. The pull-request text says the offline suite passed. This run does not.
+
+`test_nested_authority_field_rejected` does fail when the recursive walk is removed and only the top-level key check remains: `1 failed, 1 passed` in `test/offline/test_llm_adapter.py`, failure `DID NOT RAISE AuthorityViolation`. `test_top_level_authority_rejected` stayed green. The broken file was restored with `git checkout -- src/medcheck/contracts.py` and was not committed. The renderer tests assert the repaired text; this review did not delete the new sentence format and re-run them.
+
+**Operational metadata.** `docs/ai-use-log.yaml` on this branch is 30 lines. The previous log is gone. The same four-line entry is repeated three times, with `EOFcat << 'EOF' > docs/ai-use-log.yaml` between the copies. `scripts/check_ai_use_log.py` only checks that the path appears in the diff, so gate 6 does not catch a destroyed log.
+
+**Security and efficiency.** No new dependency is requested by the pull request. Permission files are not in the diff. The failing split-dose case is a safety miss: a dose the new test expects to block is approved.
+
+**Human oversight note.** The pull-request text reports a green suite and an updated AI-use log. The local suite has two failures, and the log file contains shell text rather than the previous entries.
+
+**Verdict: CHANGES REQUIRED**
+
+**Rationale.** Restore `docs/ai-use-log.yaml` from `main` and append one entry for this change, without the `EOFcat` lines. Make `test_m4_supplemental_cases` pass, or remove the cases if they are not part of this change. Paste the raw pytest summary into the pull request after that. Do not merge on the claim that 199 tests passed. ADR-002 still needs the architecture owner's review.
+
+---
+
 ## PR log
 
 | PR | Title | Reviewer | Verdict | Date |
 |---|---|---|---|---|
 | #0 | Sprint 1 baseline (scaffold) | PENDING | CHANGES REQUIRED | 2026-11-14 |
 | #1 | Sprint 1 close: D5 + D6, ledger signed, eval set 25 | LI Decheng + ZHANG Xinshuo | APPROVE | 2026-11-14 |
+| GitHub #1 | fix(M3): authority seam and renderer traceability | LI Decheng | CHANGES REQUIRED | 2026-11-22 |
