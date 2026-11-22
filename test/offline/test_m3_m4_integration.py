@@ -1,7 +1,9 @@
 # REQ-F-004: Enforce maximum daily dose incl. renal adjustment band.
 import json
-import pytest
 from pathlib import Path
+
+import pytest
+
 from medcheck.pipeline import process_case
 
 CASES_FILE = Path(__file__).parent.parent / "fixtures" / "supplemental" / "m4_dose_cases.json"
