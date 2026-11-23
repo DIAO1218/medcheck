@@ -32,15 +32,17 @@ Sprint 1 measured results are the two rows below. They match evaluation-logbook 
 | `coverage.assess` unknown-drug branch | `test_inv001_unknown_drug_is_not_approved` (1 failure) | load-bearing, measured |
 | `_assert_no_authority` in `from_payload` | `test_inv003_model_verdict_rejected` (10 params) | load-bearing, measured |
 
-INV-002, INV-004 and INV-005 have tests, but nobody has deleted their guards and recorded pytest output. The names below are the tests `docs/zh/task-mutation-checks.zh.md` expects to go red; that expectation was read from the code, not measured. `docs/zh/mutation-results-*.md` does not exist. DEBT-09 stays open until that file contains the raw pytest output.
+INV-002, INV-004 and INV-005 were measured on 2026-11-18 by Lin Zijie (60839860) on branch `m4-mutation-evidence`. The raw pytest summaries are in `docs/mutation-results-M4.md` on that branch. The file is not on `main`; it lands when that branch is merged. Baseline before each deletion: 199 passed. Each mutation was reverted before the next check, and `git diff --exit-code -- src test` was clean afterwards. The "199" is that day's suite. It is not a recount against later commits on `main`.
 
-| Guard | Test expected to fail | Verdict |
+| Guard deleted | Test that failed | Verdict |
 |---|---|---|
-| `assert_ceiling` integrity check (`verdict.py`, ceiling must equal the table) | `test_inv002_ceiling_cannot_be_raised_at_runtime` | not measured |
-| `assert_ceiling` no-silent-overdose branch | `test_inv002_asserted_dose_above_ceiling_rejected` | not measured |
-| `strict` residual/unclassified scan in `mask` | `test_masking_failure_blocks_the_call` | not measured |
-| `Finding.__post_init__` rule-id and table-version checks | `test_inv005_missing_rule_id_aborts`, `test_inv005_missing_table_version_aborts` | not measured |
-| `resolve()` final `raise UnresolvableFinding` | `test_inv005_unresolvable_rule_aborts` | not measured |
+| ceiling threshold raised from `1e-9` to `1e9` in `verdict.py:110` | `test_inv002_ceiling_cannot_be_raised_at_runtime` (1 failed, 198 passed) | load-bearing, measured |
+| missing excess-dose finding check disabled in `verdict.py:119` | `test_inv002_asserted_dose_above_ceiling_rejected` (1 failed, 198 passed) | load-bearing, measured |
+| strict masking checks disabled in `mask.py:80` | `test_masking_failure_blocks_the_call` (1 failed, 198 passed) | load-bearing, measured |
+| both required-field checks disabled in `contracts.py:203,205` | `test_inv005_missing_rule_id_aborts`, `test_inv005_missing_table_version_aborts` (2 failed, 197 passed) | load-bearing, measured |
+| exception for unknown rules suppressed in `verdict.py:76` | `test_inv005_unresolvable_rule_aborts`, `test_inv005_compose_refuses_unresolvable_finding` (2 failed, 197 passed) | load-bearing, measured |
+
+The task sheet `docs/zh/task-mutation-checks.zh.md` expected only `test_inv005_unresolvable_rule_aborts` for the last row. The run also failed `test_inv005_compose_refuses_unresolvable_finding`. Both detected the missing rejection. DEBT-09 is repaid on the strength of that file.
 
 A guard whose deletion breaks nothing is either untested or unnecessary — both are findings for the debt register.
 
