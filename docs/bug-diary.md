@@ -120,3 +120,17 @@ reading code names the reader, because that difference is itself evidence.
 | **Invariant gap** | INV-003's *authorisation* (who may change the seam, and on what authority) was enforced only by prose. The behavioural tests proved the seam held *today*; nothing proved that changing it would require a decision. Now `test_stale_adr_does_not_authorise_a_safety_change` does. |
 
 **Note on PR #1 itself.** The change was good — a recursive `_assert_no_authority` closes a real bypass (a verdict hidden in a nested dict). The defect is that the process let a seal be broken quietly. The fix does not reject the change; it requires the team to record *why* the seam is being altered, which is the thing the ADR exists for.
+
+---
+
+## BUG-0013 — split doses bypassed the cumulative daily ceiling
+
+| Field | Value |
+|---|---|
+| **Symptom** | Two entries for the same drug, `Warfarin 6 mg mane` and `Warfarin 6 mg nocte`, returned `APPROVE`. Each entry is 6 mg/day, so neither breached the 10 mg/day ceiling on its own; the 12 mg/day total was never compared against it. |
+| **Reproduction** | `python -m medcheck.api.cli --case <case with two same-drug entries>` before the fix returned `APPROVE` with `ALL_CHECKS_PASSED`. After the fix the same case returns `BLOCK` with `DOSE_CEILING`. The regression cases are `test_split_schedule_has_one_daily_total` and `test_unparsed_schedule_does_not_publish_partial_total` in `test/offline/test_dose_accumulation.py`. |
+| **Classification** | Safety logic — the ceiling was evaluated per instruction, not per day. |
+| **Found by** | Human coordination across M3 and M4 during cross-module regression, not by a gate: the extractor was dropping the second same-drug entry, so no test could see the total. |
+| **Root cause** | Two holes lined up. (1) The extractor kept one record per drug name, discarding a second schedule for the same drug. (2) `dose.check` summed nothing — it normalised each record independently, so a fragmented prescription was never added up. |
+| **Fix** | The extractor retains every same-drug schedule; `rules/dose.py` sums them into one daily total and compares that against the same ceiling, including the renal-banded one. Landed with ADR-002's branch work and merged as the M4 accumulation change on 2026-11-24. |
+| **Invariant gap** | INV-002 is worded for "a dose", and its tests all used a single instruction. The invariant that matters is about the **cumulative daily total**; that reading is now enforced by the cases above, but `requirements.yaml` still states it in the singular — a wording gap, recorded rather than silently fixed. |
