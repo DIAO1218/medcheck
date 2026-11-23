@@ -1,0 +1,142 @@
+SEG1
+A wrong approval hurts a patient.
+An extra hold costs a reviewer one minute.
+Everything you are about to see follows from that one asymmetry.
+
+MedCheck reads a free text case note.
+It returns exactly one verdict: approve, hold, or block.
+But the interesting part is not the verdict.
+It is that the model is not allowed to produce it.
+And we can prove that offline, in eight seconds, without a network, and without an A P I key.
+
+SEG2
+Three cases. Three verdicts.
+
+The first is warfarin at five milligrams, with normal kidney function.
+Every check passes, so it is approved.
+Notice that the approval itself is a finding with a rule i d.
+It is not a sentence written by a model.
+
+The second is simvastatin plus clarithromycin.
+The table marks that pair as contraindicated, so it is blocked.
+And the reason names the rule: D D I zero zero seven.
+
+The third is the one I want you to remember.
+Digoxin, one hundred twenty five micrograms.
+And the note never says what the kidney function is.
+The system does not approve it. And it does not block it either.
+
+Blocking would mean: this dose is too high.
+We do not know that.
+What we know is that we cannot evaluate it.
+So the verdict is hold.
+And the finding says exactly that: renal data missing.
+
+That distinction is the whole design.
+Hold is not an error state.
+Hold is the system telling the truth about the limits of its own knowledge.
+
+SEG3
+These three pairs are not mock ups.
+Each one is a real defect from our bug diary.
+And each one can be reproduced by removing a single guard.
+
+On the left of the first pair, the coverage check is switched off.
+Metformin plus ciprofloxacin becomes approve.
+Because not in the table was silently read as no interaction.
+That is the fail open mistake.
+And it is the reason the table now declares unassessed pairs explicitly.
+
+In the middle, the old behaviour banded a missing kidney function as the most conservative band, and then compared against it.
+So digoxin was blocked.
+Blocking was the safer sounding answer, and the wrong one.
+
+On the right, our own gate.
+It asked whether the ledger named an A D R.
+And the answer was yes, because the baseline A D R had been there since day one.
+A frozen contract was rewritten, and all six gates went green.
+We fixed the gate, not the pull request.
+
+Every one of these was found by a machine disagreeing with us.
+Not by reading code carefully.
+
+SEG4
+None of these is a business feature.
+They are constraints that make a class of mistake impossible.
+And each has a test that fails when you delete it.
+
+First, the authority seam.
+The extraction contract has no field for a verdict, a severity, or a dose.
+A model cannot author one, because there is nowhere to put it.
+This is not a prompt that asks the model to behave.
+It is a type that gives it no vocabulary.
+
+Second, the structural rule.
+The perception layer may not import the adjudication layer.
+If someone tried to let the extractor see the verdict, the build would fail before review.
+
+Third, the table declares its own holes.
+Absence of a pair means assessed, no interaction.
+It does not mean we never looked.
+Those are different claims.
+And only one of them is safe to act on.
+
+Together, these give us a property we can state in one sentence.
+No output of this system can assert a conclusion that the code did not derive.
+
+SEG5
+Traceability here is not a spreadsheet somebody maintains.
+It is enforced.
+
+Every requirement has an i d.
+Every test docstring must name the requirement or invariant it verifies.
+And a structural test fails the build if one does not.
+That is why the matrix cannot rot.
+The cheapest way to add a test is also the compliant way.
+
+Then the agent.
+The agent reads A G E N T S dot M D first.
+And that file tells it what it may not touch.
+The permission model is deny by default: no read, no write, unless a path is explicitly listed.
+Nine surfaces are human only. Including the rules that judge the agent.
+
+The launch prompt is not build me an app.
+It is: produce an execution plan with traceability, interface contract, scope, and test strategy.
+Then stop, and wait for a human.
+
+In our transcripts, thirty interventions were recorded.
+Six were approvals.
+The other twenty four changed what the agent was doing.
+
+SEG6
+Six gates. All blocking.
+Test approval. Static analysis. Requirements schema. Semantic evaluation. Regression. And the A I use log.
+
+The last one is unusual.
+If you change code or a prompt, without recording the session that produced it, the build fails.
+That gate caught us twice.
+And both times, we added the record, instead of loosening the gate.
+
+The gate you just saw fail is the fix for our own defect.
+A change to a frozen contract must now add or amend an A D R, in the same change.
+Citation of an old decision no longer counts.
+
+And the invariants are not just asserted.
+Two of the five have been mutation checked.
+Delete the guard, and a named test goes red.
+The other three are recorded as debt, with a task sheet, rather than described as done.
+
+SEG7
+Three things are not done.
+And they are written down, rather than hidden.
+
+The live model path has never been measured on real notes.
+That field is still null.
+
+Three of five invariants have no mutation evidence yet.
+
+And the transcripts are reconstructions from the build log, awaiting member certification.
+
+A safety claim is only worth the list of things you admit you have not shown.
+
+A system that can refuse is more trustworthy than one that always answers.
