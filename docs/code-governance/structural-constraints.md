@@ -94,4 +94,4 @@ def assess(medications, tables) -> CoverageReport:
 
 ## 7. Change policy reminders
 
-Changes under `src/medcheck/{adjudicator,rules,privacy,audit}` **or to `src/medcheck/contracts.py`** need: an ADR added or amended in the same change, a human approval, and a green invariant suite. Gate 6 now checks the ADR is *fresh*, not just that the ledger names one (BUG-0012). `data/rules/**` is not writable by any agent — propose a diff in a PR comment.
+Changes under `src/medcheck/{adjudicator,rules,privacy,audit}` **or to `src/medcheck/contracts.py`** need: an ADR added or amended in the same change, a human approval, and a green invariant suite. Gate 1 now checks the ADR is *fresh*, not just that the ledger names one (BUG-0012). `data/rules/**` is not writable by any agent — propose a diff in a PR comment.

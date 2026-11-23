@@ -6,7 +6,7 @@ Format: `E-nn · date · area · evidence → consequence`.
 
 ---
 
-## Sprint 0 — set-up and first decisions
+## Sprint 1 — set-up and first decisions
 
 **E-01 · 2026-11-14 · requirements · schema gate caught a non-falsifiable criterion**
 The first registry draft failed its own gate: `REQ-P-001`'s fit criterion was `"p95 <= 50 ms."` — 14 characters, rejected by the schema's `minLength: 20`. On inspection the problem was not length but content: the criterion named a number without naming *what was measured*, *on what corpus*, or *where the result is reported*.
@@ -52,7 +52,7 @@ Growing the set to 25 added a fixture carrying an HKID-shaped string. REQ-S-001'
 
 **E-10 · 2026-11-18 · governance · a gate passed a change to a frozen file**
 PR #1 rewrote `contracts.py` with no ADR and six green gates. The gate asked "is an ADR recorded for this module?" and answered with the baseline ADR-001 from November 14 — a true answer to the wrong question.
-→ Gate 6 gained a fresh-ADR check (the diff must add or amend `docs/architecture/adr/*.md` when it touches a safety path), `contracts.py` joined `SAFETY_PATHS`, and four self-tests pin the PR #1 shape (BUG-0012).
+→ Gate 1 gained a fresh-ADR check (the diff must add or amend `docs/architecture/adr/*.md` when it touches a safety path), `contracts.py` joined `SAFETY_PATHS`, and four self-tests pin the PR #1 shape (BUG-0012).
 **Consequence:** the gate now measures a decision made *now*, not a document that exists. Debt DEBT-14 opened and repaid in the same change.
 
 ## Sprint 1 — build (to be filled at sprint close)

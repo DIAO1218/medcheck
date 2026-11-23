@@ -36,7 +36,7 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 │   ├── code-governance/          structural + verification constraints, MCP tool manifest (D3, D4)
 │   ├── compliance-matrix.md      clause-by-clause audit against the requirement sheet
 │   ├── ai-use-log.yaml           mandatory; gate 6 blocks an unlogged code/prompt change
-│   ├── test-approvals.yaml       approval ledger for gate 1 / gate 6
+│   ├── test-approvals.yaml       approval ledger for gate 1
 │   ├── review-memo.md            per-PR review record + verdict (D4)
 │   ├── debt-register.md          debt in AI-era categories (D4)
 │   └── bug-diary.md              six real defects with the invariant gap each exposed (D4)

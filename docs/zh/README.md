@@ -15,6 +15,9 @@
 | [`compliance-matrix.zh.md`](compliance-matrix.zh.md) | `docs/compliance-matrix.md` | 逐条对照作业要求，含未结项与声明偏差 |
 | [`submission-checklist.zh.md`](submission-checklist.zh.md) | `SUBMISSION-CHECKLIST.md` | 提交前要跑的命令、要填的表、要背下来的七个问题 |
 | [`task-mutation-checks.zh.md`](task-mutation-checks.zh.md) | — | 派活用：给 INV-002/004/005 做变异检验的分步任务单（DEBT-09） |
+| [`demo-video-script.zh.md`](demo-video-script.zh.md) | — | 10 分钟演示视频脚本：分镜、台词、命令、预期输出 |
+| [`demo-before-after.zh.md`](demo-before-after.zh.md) | — | 视频段 3 用：三组前后对比的实测复现步骤 |
+| [`presentation-outline.zh.md`](presentation-outline.zh.md) | — | 现场演示大纲：七项必答点、十五页、问答准备 |
 
 ## 还没翻译的（按需再翻）
 

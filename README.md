@@ -40,7 +40,7 @@ MedCheck 读取一段自由文本的病例记录，返回一份可复核的裁�
 │   ├── code-governance/          结构约束、验证约束、MCP 工具清单（D3、D4）
 │   ├── compliance-matrix.md      逐条对照作业要求（中文版在 docs/zh/）
 │   ├── ai-use-log.yaml           强制维护；门 6 会拦下未更新的代码/提示词改动
-│   ├── test-approvals.yaml       测试审批台账（门 1 / 门 6）
+│   ├── test-approvals.yaml       测试审批台账（门 1，含 ADR 检查）
 │   ├── review-memo.md            每个 PR 的审查记录（D4）
 │   ├── debt-register.md          按 AI 时代分类的技术债（D4）
 │   └── bug-diary.md              7 个真实缺陷 + 各自暴露的不变量缺口（D4）
@@ -116,6 +116,8 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | 知道只有团队能做什么 | `SUBMISSION-CHECKLIST.md`（中文版：`docs/zh/submission-checklist.zh.md`） |
 | 看那个「其他一切决定都从它推出来」的决定 | `docs/architecture/adr/001-…md`（中文导读：`docs/zh/architecture-overview.zh.md`） |
 | 看哪里坏过、是谁发现的 | `docs/bug-diary.md`（8 个缺陷，**0 个靠专门读代码找 bug 发现**） |
+| 要做演示视频 | `docs/zh/demo-video-script.zh.md`（分镜与台词）+ `docs/zh/demo-before-after.zh.md`（前后对比复现） |
+| 要准备现场答辩 | `docs/zh/presentation-outline.zh.md`（七项必答点 + 问答） |
 | 给组员派活（变异检验） | `docs/zh/task-mutation-checks.zh.md` |
 | 看智能体是怎么被监督的 | `transcripts/`（30 处标注干预，中文摘要：`docs/zh/transcript-summaries.zh.md`） |
 

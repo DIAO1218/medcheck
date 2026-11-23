@@ -46,7 +46,7 @@ def test_ai_use_log_gate_requires_log_for_prompt_change():
 
 
 # --------------------------------------------------------------------------- #
-# gate 1 / gate 6 — test approval and ADR
+# gate 1 — test approval and the ADR checks
 # --------------------------------------------------------------------------- #
 LEDGER = {
     "modules": [
@@ -79,7 +79,7 @@ def test_test_approval_gate_passes_for_approved_module():
 
 
 def test_safety_path_change_requires_adr():
-    """[REQ-G-004] Gate 6: safety-critical modules need an ADR id, not just an approval."""
+    """[REQ-G-004] Gate 1: safety-critical modules need an ADR id, not just an approval."""
     ledger = {"modules": [{**LEDGER["modules"][0], "module": "rules", "adr": None}]}
     problems = check_test_approval.violations(["src/medcheck/rules/dose.py"], ledger=ledger)
     assert any("no ADR id" in problem for problem in problems)
