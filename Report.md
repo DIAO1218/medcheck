@@ -10,7 +10,7 @@ MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a fr
 
 The project's thesis is not that the AI component is accurate. It is that **a supervised agentic build can produce a system whose safety properties are provable offline**, and that the proof is the deliverable. Four artefacts carry that thesis: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record that explains why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the things we were most likely to get wrong.
 
-At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, eight recorded defects, fourteen debt rows (two repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
+At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, nine recorded defects, fourteen debt rows (two repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
 
 ---
 
@@ -220,7 +220,7 @@ Two guards are proven load-bearing and three are asserted but unproven. We repor
 
 ### 7.3 Defects and what found them
 
-Eight defects, zero of them found by reading the implementation looking for bugs. Two were found by a CI gate or fitness function, five by a test, and one by a human reading someone else's pull request — the last one matters most, because it found a defect *in the gates themselves*.
+Nine defects, zero of them found by reading the implementation looking for bugs. Two were found by a CI gate or fitness function, five by a test, and two by a human — one reading someone else's pull request, one during cross-module coordination. The first of those two matters most, because it found a defect *in the gates themselves*.
 
 | Bug | Detected by | What it exposed |
 |---|---|---|
@@ -231,6 +231,7 @@ Eight defects, zero of them found by reading the implementation looking for bugs
 | 0005 | CLI verdict test | INV-002 was unimplementable and collided with the overdose path |
 | 0006 | fitness function | the perception layer imported the judgement layer |
 | 0007 | security gate | our evaluation set carried an identifier-shaped fixture |
+| 0013 | human coordination (M3 + M4) | the extractor dropped a second schedule for the same drug, so the daily ceiling was never applied to the total |
 | 0012 | human reviewing PR #1 | a frozen `contracts.py` rewrite passed all six gates by citing the baseline ADR — the gate measured a document that existed, not a decision that was made |
 
 The pattern is the report's central empirical claim: **defects were found by artefacts disagreeing with each other**, not by attention. The gate and the test found the bug before any human read the code, and the human's contribution was to insist the gate was right when the agent proposed adjusting the gate.
