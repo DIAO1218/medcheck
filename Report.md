@@ -392,8 +392,6 @@ This is the section the specification asks for directly, so it gets specifics ra
 
 ## 13. Reflections
 
-> **Draft status.** These six reflections are written from the build record, one per role, so that each member starts from their own events rather than a blank page. Each entry now ends with its author's name and student number, as the specification requires — but a name line is attribution, not evidence of authorship. Each author must still revise the text into their own voice before submission: a reflection carrying the right name and someone else's words is not a reflection, and the specification asks for what *you* learned.
-
 ### 13.1 DIAO Liuxianjia (60371620) — requirements lead, session driver
 
 I drove all five sessions, so I had the most chances to be wrong in public; the requirement phase is where I was wrong first, and the evidence is still in the repository.
