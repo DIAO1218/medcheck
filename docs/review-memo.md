@@ -146,6 +146,31 @@ FAILED test/offline/test_m3_m4_integration.py::test_m4_supplemental_cases[m4_spl
 
 ---
 
+## PR #2 — split-dose aggregation and duplicate handling in the extractor
+
+- Reviewer: Tan Xinyue (build A) + Lin Zijie (build B) · Date: 2026-11-20 · ADR: ADR-002 (branch work)
+- Changed: `src/medcheck/extractor/`, `src/medcheck/rules/dose.py`, `test/fixtures/supplemental/`
+- Test approval record: `extractor` and `rules` are approved in the ledger; this change added no new record
+- CI: the six gates pass on the rebased head · Invariant suite: 0 violations
+
+**Spec alignment.** Closes the gap for daily-ceiling enforcement (`REQ-F-004` / `INV-002`). The cases that prove it are `test_split_schedule_has_one_daily_total` and `test_unparsed_schedule_does_not_publish_partial_total` in `test/offline/test_dose_accumulation.py` — cumulative totals are evaluated, not single instructions.
+
+**Architecture alignment.** The authority seam holds: the extractor (perception) keeps every same-drug schedule and hands them to the rules engine (authority). `dose.py` sums them; no cross-layer import was added.
+
+**Code and test quality.** Both cases failed before the change and pass after it. Deleting the accumulation turns `test_split_schedule_has_one_daily_total` red, which is the evidence that the guard is load-bearing.
+
+**Operational metadata.** AI-use log updated for the session; `BUG-0013` in `docs/bug-diary.md` records the invariant gap: INV-002 is worded for a single instruction and says nothing about the cumulative total.
+
+**Security and efficiency.** No new dependencies. Aggregation is O(n) over the medications in a case, and the p95 budget is unaffected.
+
+**Human oversight note.** The agent did not notice that the same drug prescribed at two times has to be summed before the ceiling check. M3 and M4 found it by comparing their modules and reading the red test output — code that looked locally correct, failing a system-level property.
+
+**Verdict: APPROVE**
+
+**Rationale.** The change closes a silent safety bypass. The regression cases pin it, and the coordination between M3 and M4 is the reason it was found at all.
+
+---
+
 ## PR log
 
 | PR | Title | Reviewer | Verdict | Date |
