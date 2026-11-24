@@ -111,6 +111,7 @@ what the human stated as the task.
 | T3 plan approval | `60371620-DIAO-Liuxianjia-T3-plan-approval.md` | 5 | recorded, provenance stated |
 | T4 build + verification | `60371620-DIAO-Liuxianjia-T4-build-verify.md` | 6 | recorded, provenance stated |
 | T5 revision from test evidence | `60371620-DIAO-Liuxianjia-T5-revision.md` | 6 | recorded, provenance stated |
+| M5 verification review (not a sixth pipeline session) | `61078578-LI-Decheng.md` | 5 | recorded 2026-11-23, provenance stated |
 
 **Provenance, stated once for the set.** These five files were reconstructed at Sprint 1
 close from the build's own log: agent output is quoted verbatim (the commands,

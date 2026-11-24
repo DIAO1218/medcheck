@@ -32,7 +32,7 @@ Sprint 1 measured results are the two rows below. They match evaluation-logbook 
 | `coverage.assess` unknown-drug branch | `test_inv001_unknown_drug_is_not_approved` (1 failure) | load-bearing, measured |
 | `_assert_no_authority` in `from_payload` | `test_inv003_model_verdict_rejected` (10 params) | load-bearing, measured |
 
-INV-002, INV-004 and INV-005 were measured on 2026-11-18 by Lin Zijie (60839860) on branch `m4-mutation-evidence`. The raw pytest summaries are in `docs/mutation-results-M4.md` on that branch. The file is not on `main`; it lands when that branch is merged. Baseline before each deletion: 199 passed. Each mutation was reverted before the next check, and `git diff --exit-code -- src test` was clean afterwards. The "199" is that day's suite. It is not a recount against later commits on `main`.
+INV-002, INV-004 and INV-005 were measured on 2026-11-18 by Lin Zijie (60839860). The raw pytest summaries are in `docs/mutation-results-M4.md` on `main`. They were first committed on `m4-mutation-evidence` and landed on `main` with that evidence. Baseline before each deletion: 199 passed. Each mutation was reverted before the next check, and `git diff --exit-code -- src test` was clean afterwards. The "199" is that day's suite. It is not a recount against later commits on `main`.
 
 | Guard deleted | Test that failed | Verdict |
 |---|---|---|
@@ -42,7 +42,7 @@ INV-002, INV-004 and INV-005 were measured on 2026-11-18 by Lin Zijie (60839860)
 | both required-field checks disabled in `contracts.py:203,205` | `test_inv005_missing_rule_id_aborts`, `test_inv005_missing_table_version_aborts` (2 failed, 197 passed) | load-bearing, measured |
 | exception for unknown rules suppressed in `verdict.py:76` | `test_inv005_unresolvable_rule_aborts`, `test_inv005_compose_refuses_unresolvable_finding` (2 failed, 197 passed) | load-bearing, measured |
 
-The task sheet `docs/zh/task-mutation-checks.zh.md` expected only `test_inv005_unresolvable_rule_aborts` for the last row. The run also failed `test_inv005_compose_refuses_unresolvable_finding`. Both detected the missing rejection. DEBT-09 is repaid on the strength of that file.
+The task sheet `docs/zh/task-mutation-checks.zh.md` expected only `test_inv005_unresolvable_rule_aborts` for the last row. The run also failed `test_inv005_compose_refuses_unresolvable_finding`. Both detected the missing rejection. DEBT-09 is repaid on the strength of `docs/mutation-results-M4.md`.
 
 A guard whose deletion breaks nothing is either untested or unnecessary — both are findings for the debt register.
 
