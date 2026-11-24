@@ -69,6 +69,10 @@ EN_PASSED = re.compile(r"(?<![\d.])(\d{2,4})\s+passed\b", re.IGNORECASE)
 ZH = re.compile(r"(?<![\d.])(\d{2,4})\s*(?:项|个)\s*(?:确定性|离线)?\s*测试")
 ZH_SUITE = re.compile(r"(?<![\d.])(\d{2,4})\s*项(?:确定性)? (?:离线)?测试")
 
+#: Suite sizes are three digits here. Smaller numbers ("M3's 11 tests") are
+#: subsets, not claims about the suite, so they are not compared.
+MIN_COUNT = 50
+
 
 def collect_count() -> int:
     """Number of tests pytest would run offline, asked from pytest itself."""
@@ -99,7 +103,9 @@ def claims(path: Path) -> list[tuple[int, int, str]]:
             continue
         for pattern in (EN, EN_PASSED, ZH, ZH_SUITE):
             for match in pattern.finditer(line):
-                found.append((number, int(match.group(1)), line.strip()))
+                value = int(match.group(1))
+                if value >= MIN_COUNT:
+                    found.append((number, value, line.strip()))
     return found
 
 

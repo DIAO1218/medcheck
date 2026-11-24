@@ -171,7 +171,7 @@
 只跑两条，其余用截图：
 
 ```bash
-python -m pytest test/offline -q          # 199 passed
+python -m pytest test/offline -q          # 230 passed
 python -m medcheck.api.cli --case test/fixtures/cases/c11_hold_missing_egfr_renal.json
 ```
 

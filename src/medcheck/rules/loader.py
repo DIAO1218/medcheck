@@ -12,15 +12,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import lru_cache
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from ..contracts import TableInvalid
+from ..contracts import Severity, TableInvalid
 
 DEFAULT_RULES_DIR = Path(__file__).resolve().parents[3] / "data" / "rules"
 REQUIRED_FILES = ("units.yaml", "ddi.yaml", "dose.yaml")
@@ -92,7 +94,20 @@ def _content_version(documents: Mapping[str, dict[str, Any]]) -> str:
     return f"{declared}+sha:{digest}"
 
 
+def _finite_number(value: Any, label: str, *, positive: bool = True) -> None:
+    """REQ-F-002/004: reject invalid authoritative numbers before evaluation."""
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(value)
+        or (positive and value <= 0)
+    ):
+        requirement = "finite positive number" if positive else "finite number"
+        raise TableInvalid(f"{label} must be a {requirement}")
+
+
 def load_tables(rules_dir: Path | str | None = None) -> RuleTables:
+    """REQ-F-002/003/004: validate pinned rule values before exposing the tables."""
     directory = Path(rules_dir) if rules_dir else DEFAULT_RULES_DIR
     documents = {name: _read_yaml(directory / name) for name in REQUIRED_FILES}
 
@@ -114,6 +129,11 @@ def load_tables(rules_dir: Path | str | None = None) -> RuleTables:
         if key not in dose:
             raise TableInvalid(f"dose.yaml missing '{key}'")
 
+    for unit, factor in units["conversions"].items():
+        _finite_number(factor, f"conversion factor for {unit}")
+    for frequency, count in units["frequencies"].items():
+        _finite_number(count, f"frequency {frequency}")
+
     interactions = tuple(ddi["interactions"])
     for row in interactions:
         missing = {"rule_id", "pair", "severity"} - set(row)
@@ -121,12 +141,31 @@ def load_tables(rules_dir: Path | str | None = None) -> RuleTables:
             raise TableInvalid(f"interaction row missing {sorted(missing)}: {row}")
         if len(row["pair"]) != 2:
             raise TableInvalid(f"interaction pair must have two drugs: {row}")
+        if row["severity"] not in {
+            Severity.CONTRAINDICATED.value,
+            Severity.MAJOR.value,
+            Severity.MODERATE.value,
+            Severity.MINOR.value,
+        }:
+            raise TableInvalid(f"unknown interaction severity: {row['severity']}")
 
     drugs = dose["drugs"]
     for name, row in drugs.items():
         missing = {"rule_id", "max_mg_per_day"} - set(row)
         if missing:
             raise TableInvalid(f"dose row for {name} missing {sorted(missing)}")
+        _finite_number(row["max_mg_per_day"], f"dose ceiling for {name}")
+
+    thresholds: list[float] = []
+    for band in dose["renal_bands"]:
+        _finite_number(band.get("factor"), f"renal factor for {band.get('name')}")
+        threshold = band.get("max_egfr")
+        _finite_number(threshold, f"renal threshold for {band.get('name')}", positive=False)
+        thresholds.append(threshold)
+    # Evaluation already sorts thresholds; require strict separation after sorting.
+    ordered = sorted(thresholds)
+    if any(first >= second for first, second in pairwise(ordered)):
+        raise TableInvalid("renal thresholds must be strictly increasing without duplicates")
 
     vocabulary = tuple(sorted(set(drugs) | {drug for row in interactions for drug in row["pair"]}))
 
