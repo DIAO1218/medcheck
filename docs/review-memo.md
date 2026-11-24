@@ -171,6 +171,85 @@ FAILED test/offline/test_m3_m4_integration.py::test_m4_supplemental_cases[m4_spl
 
 ---
 
+## Merge-queue review, 2026-11-24 — six pull requests
+
+The six entries below were written on 2026-11-24, after the merge queue closed, from each pull request's diff and its CI run on the rebased head. They are retrospective: the reviewer line names the role that owns that surface, not a person who signed at the time. Where a correction was needed before merge, the entry says what it was.
+
+### GitHub PR #11 — fix(M4): same-drug dose accumulation, finite-value guards, mutation evidence
+
+- Reviewer: verification lead (retrospective) · Date: 2026-11-24 · ADR: ADR-001 Amendment 2 (finite-value requirement) is in the diff
+- Changed: `src/medcheck/rules/{dose,units,loader}.py`, `test/offline/test_dose_accumulation.py`, supplemental fixtures, `docs/mutation-results-M4.md`, `docs/architecture/adr/001-*.md`, `Report*.md`, transcripts
+- Test approval record: `rules` is approved in the ledger; this change added tests, not a new module
+- CI: gates 1–6 pass on `c458af8` · Suite on the branch: 230 passed
+
+**Spec alignment.** Closes the INV-002 reading that BUG-0013 exposed: the ceiling applies to the cumulative daily total, not to one instruction. Adds the finite-value guard that BUG-0013's sibling case (NaN dose reaching APPROVE) required.
+
+**Architecture alignment.** The seam holds — the extractor keeps every same-drug schedule, `rules` sums them, nothing crosses into the adjudicator. ADR-001 gains an amendment rather than an edit, which is what the decision record asks for.
+
+**Code and test quality.** Eleven cases fail against the pre-change code and pass after it. Deleting the accumulation turns `test_split_schedule_has_one_daily_total` red.
+
+**Operational metadata.** AI-use log entry present; `docs/mutation-results-M4.md` records the five mutation runs with pytest counts.
+
+**Correction before merge.** The branch predated the documentation-count gate; 29 places still said 199/230. They were brought to 250 (the count after this and PR #1 land) and the branch was rebased.
+
+**Verdict: APPROVE**
+
+### GitHub PR #7 — docs: correct the mutation table and review GitHub PR 1
+
+- Reviewer: verification lead (retrospective) · Date: 2026-11-24 · ADR: none
+- Changed: `docs/code-governance/verification-constraints.md`, `docs/debt-register.md`, `docs/review-memo.md`
+- CI: gates 1–6 pass
+
+**Spec alignment.** Withdraws three mutation rows that were marked "verified by hand" and measured only two; adds the five rows measured on 2026-11-18 with pytest counts. This is the D4 requirement applied to our own verification claims.
+
+**Correction before merge.** DEBT-09 was marked repaid against `docs/mutation-results-M4.md`, which existed only on a branch. The evidence file was landed on `main` first (`499805a`), so the claim and the artefact sit in the same tree.
+
+**Verdict: APPROVE**
+
+### GitHub PR #8 — docs: add BUG-0013
+
+- Reviewer: verification lead (retrospective) · Date: 2026-11-24 · ADR: none
+- Changed: `docs/bug-diary.md`, plus the defect counts in `README.md` and both reports
+
+**Spec alignment.** D4 asks for a diary entry per significant bug, including the invariant gap. The defect is real: two same-drug entries of 6 mg returned APPROVE against a 10 mg/day ceiling.
+
+**Correction before merge.** The entry named two tests that did not exist (`m4_split_above`, `m4_split_unparsed_frequency`) and said the fix was in `main` before it was. It now cites the cases that exist and states where the fix landed. Defect count 8 → 9 everywhere it is quoted.
+
+**Verdict: APPROVE after correction**
+
+### GitHub PR #9 — docs: review memo for PR #2
+
+- Reviewer: verification lead (retrospective) · Date: 2026-11-24 · ADR: none
+- Changed: `docs/review-memo.md`
+
+**Spec alignment.** D4 requires a memo per pull request; the split-dose change had none.
+
+**Correction before merge.** The memo described a PR #2 that did not match the repository (test names that do not exist, "195 offline tests"). It now describes the change that actually landed, with the tests that prove it.
+
+**Verdict: APPROVE after correction**
+
+### GitHub PR #10 — docs(report): expand M6 self-reflection
+
+- Reviewer: process lead's own section; verification lead noted the claim (retrospective) · Date: 2026-11-24 · ADR: none
+- Changed: `Report.md` §13.6
+
+**Correction before merge.** The text said we "updated our invariants" after BUG-0013. `requirements.yaml` is unchanged: what exists is two regression cases and a diary entry that records the wording gap. The sentence now says that.
+
+**Open concern.** The replacement text reads more templated than the section it replaced and drops "what I got wrong", which D6 asks each reflection to contain. Recorded here rather than fixed on the author's behalf.
+
+**Verdict: APPROVE with the concern above**
+
+### GitHub PR #5 — docs(report): update M6 self-reflection (Chinese)
+
+- Reviewer: verification lead (retrospective) · Date: 2026-11-24 · ADR: none
+- Changed: `Report.zh.md` §13.6
+
+Same content as PR #10 in Chinese. The same open concern applies: the prose is generic and the failure narrative is gone.
+
+**Verdict: APPROVE with the concern above**
+
+---
+
 ## PR log
 
 | PR | Title | Reviewer | Verdict | Date |
@@ -178,4 +257,10 @@ FAILED test/offline/test_m3_m4_integration.py::test_m4_supplemental_cases[m4_spl
 | #0 | Sprint 1 baseline (scaffold) | PENDING | CHANGES REQUIRED | 2026-11-14 |
 | #1 | Sprint 1 close: D5 + D6, ledger signed, eval set 25 | LI Decheng + ZHANG Xinshuo | APPROVE | 2026-11-14 |
 | #2 | Fix split dose aggregation and extractor duplicate handling | TAN Xinyue + LIN Zijie | APPROVE | 2026-11-20 |
-| GitHub #1 | fix(M3): authority seam and renderer traceability | LI Decheng | CHANGES REQUIRED | 2026-11-23 |
+| GitHub #1 | fix(M3): authority seam and renderer traceability | LI Decheng | CHANGES REQUIRED → APPROVE on rebase | 2026-11-24 |
+| GitHub #5 | docs(report): update M6 self-reflection (zh) | merge-queue review | APPROVE with concern | 2026-11-24 |
+| GitHub #7 | docs: correct the mutation table and review PR #1 | merge-queue review | APPROVE | 2026-11-24 |
+| GitHub #8 | docs: add BUG-0013 | merge-queue review | APPROVE after correction | 2026-11-24 |
+| GitHub #9 | docs: review memo for PR #2 | merge-queue review | APPROVE after correction | 2026-11-24 |
+| GitHub #10 | docs(report): expand M6 reflection (en) | merge-queue review | APPROVE with concern | 2026-11-24 |
+| GitHub #11 | fix(M4): dose accumulation and mutation evidence | merge-queue review | APPROVE | 2026-11-24 |
