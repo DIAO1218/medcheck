@@ -163,3 +163,33 @@ entries:
       Gate 6 blocked this commit because src/ changed without a log entry. The
       gate was right and the entry was added rather than the check bypassed; that
       sequence is the whole argument for having the gate.
+
+  - id: AIU-2026-11-23-01
+    date: "2026-11-23"
+    sprint: 3
+    session: "M5 verification review"
+    human: "LI Decheng (61078578)"
+    agent: "Cursor coding assistant"
+    task: >-
+      Record the verification review: correct the mutation table, review GitHub
+      PR #1, merge the overlapping review memo, and enter Lin Zijie's pasted
+      pytest summaries.
+    delegated:
+      - "read the open branches and the two review-memo edits"
+      - "rebase docs/m5-verification-status onto origin/main"
+      - "draft the combined memo, the measured rows, and the DEBT-09 repayment"
+      - "run the six local checks named in the role sheet"
+    human_checked:
+      - "hours, the §13.5 rewrite, and Certified lines were taken out of the plan"
+      - "nothing was pushed to feat/m3-safety-boundaries and GitHub Approve was not used"
+      - "the three docs were committed locally rather than uploaded onto the stale branch tip"
+      - "DEBT-09 is repaid only by citation of docs/mutation-results-M4.md, which is not on main"
+    artefacts:
+      - "docs/code-governance/verification-constraints.md"
+      - "docs/review-memo.md"
+      - "docs/debt-register.md"
+      - "transcripts/61078578-LI-Decheng.md"
+    transcript: "transcripts/61078578-LI-Decheng.md"
+    notes: >-
+      The transcript is a reconstruction of the 2026-11-22 and 2026-11-23
+      verification sessions. It does not certify T1-T5.
