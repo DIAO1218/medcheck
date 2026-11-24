@@ -63,4 +63,4 @@
 
 如果想 10 分钟看懂这个项目：先读本目录的 `architecture-overview.zh.md` §1–§5，再读 `transcript-summaries.zh.md` 的「总览」和「五场连起来说明了什么」。
 
-如果要照着做一遍：读 `architecture-overview.zh.md` §11「如果你想动手改」，然后跑 `python -m pytest test/offline -q`，看 230 个测试是怎么把「模型不能决定任何事」这句话变成可执行检查的。
+如果要照着做一遍：读 `architecture-overview.zh.md` §11「如果你想动手改」，然后跑 `python -m pytest test/offline -q`，看 250 个测试是怎么把「模型不能决定任何事」这句话变成可执行检查的。

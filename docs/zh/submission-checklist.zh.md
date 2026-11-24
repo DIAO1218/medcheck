@@ -12,7 +12,7 @@
 pip install -e ".[dev]"
 
 python scripts/validate_requirements.py          # 门 3
-python -m pytest test/offline -q                 # 门 2 + 5  → 期望 230 passed
+python -m pytest test/offline -q                 # 门 2 + 5  → 期望 250 passed
 python scripts/eval_replay.py                    # 门 4      → 期望 25 cases, 1.0 / 1.0
 python scripts/check_permissions_sync.py         # 门 2
 python scripts/sync_blueprint.py --check         # 蓝图两处一致
@@ -96,7 +96,7 @@ zip 里也包含 `.git/`（9 次提交、tag `s0-baseline`），这样提交历�
 | D5 | 五份标注会话 | 已记录 —— **需认证或重录** |
 | D6 | 报告 | 内容完成 —— 姓名已填；**仍需工时，且反思须本人改写** |
 | D7 | 仓库 + 六道门 | 完成，门自身做过反向测试 |
-| D8 | 源码 + 测试 | 完成（离线 230、在线 3 带标记） |
+| D8 | 源码 + 测试 | 完成（离线 250、在线 3 带标记） |
 | D9 | 静态提示词 | 完成 |
 
 有两个格子还得靠你们，而且它们在报告里也被标出来了。这是预期状态：必须由团队亲自拥有的制品，正是那些关于团队的制品。

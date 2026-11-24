@@ -192,6 +192,6 @@ A system that can refuse is more trustworthy than one that always answers.
 
 - 每段开头**先吸一口气再出声**，剪辑时好切
 - `HOLD` 念得比周围慢半拍——这是全片最重要的词
-- 数字念清楚：`DDI-007`、`230`、`thirty`（不要念 thirty-one）
+- 数字念清楚：`DDI-007`、`250`、`thirty`（不要念 thirty-one）
 - 不要念文件路径（`src/medcheck/...`），念「the extraction contract」即可
 - 卡住就重念**这一句**，不要整段重来（分段录音时）

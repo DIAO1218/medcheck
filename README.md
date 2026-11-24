@@ -62,7 +62,7 @@ MedCheck 读取一段自由文本的病例记录，返回一份可复核的裁�
 ├── scripts/                      validate_requirements、check_ai_use_log、
 │                                 check_test_approval、check_permissions_sync、
 │                                 eval_replay、build_ddi_fixtures、sync_blueprint
-├── test/offline/                 230 项确定性测试，无网络、无模型
+├── test/offline/                 250 项确定性测试，无网络、无模型
 ├── test/live/                    依赖模型，打 `live` 标记，不进 CI 门 5
 └── transcripts/                  T1–T5 五份带标注的智能体会话（D5）
 ```
@@ -132,7 +132,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | D5 五份标注会话 | 已记录 T1–T5，共 30 处标注干预；每份文件开头写明取证来源 |
 | D6 报告 | 内容完成（英文 9,623 词 / 约 19 页；中文对照版在 `Report.zh.md`）；六人姓名学号已填，**工时与个人反思仍需本人补** |
 | D7 仓库 + 六道门 | 完成，门自身也被反向测试过 |
-| D8 源码 + 测试 | 确定性内核完成，230 项离线测试全绿；在线抽取器已接线但尚未实测 |
+| D8 源码 + 测试 | 确定性内核完成，250 项离线测试全绿；在线抽取器已接线但尚未实测 |
 | D9 静态提示词 | 完成 |
 
 五份会话记录是根据构建日志**重构**的：智能体输出逐字引用，人的回合由已记录的决策压缩而来。每个文件开头都写明这一点；团队必须逐份认证或重新录制（见 `transcripts/README.md`）。因此，绿色套件是对确定性内核的证据，而会话记录只有在被认证之后才是对「人工监督」的证据。

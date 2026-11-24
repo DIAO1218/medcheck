@@ -12,3 +12,353 @@ policy:
   rule: "an entry that cannot be tied to a transcript entry is not evidence"
 
 entries:
+  - id: AIU-2026-11-24-M3-01
+    date: "2026-11-24"
+    human: "TanXinyue (61050730)"
+    agent: "Claude / Codex assistant"
+    task: "Close the recursive authority bypass (a verdict hidden in a nested payload) and make the renderer cite a resolvable rule."
+    delegated:
+      - "Recursive `_assert_no_authority` over the whole payload, plus negative tests."
+      - "Renderer traceability change so every advisory line carries a rule id."
+      - "Rebase onto main after the Sprint 1 close, resolving the log and bug-diary conflicts."
+    human_checked:
+      - "Rejected the first version that only inspected top-level keys."
+      - "Read the ADR-002 draft; its revisit condition still describes performance, not safety, and belongs to the architecture lead."
+    artefacts:
+      - "src/medcheck/contracts.py"
+      - "src/medcheck/renderer/template.py"
+      - "docs/architecture/adr/002-recursive-authority-check.md"
+    transcript: "transcripts/00371620-T3-plan-approval.md"
+    notes: "Gate 1 rejected this branch until ADR-002 was added to the same change; that is the fresh-ADR check working as intended."
+
+  - id: AIU-2026-11-20-M4-04
+    date: "2026-11-20"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Transfer only M4 accumulation work to the independent M4 branch for push."
+    delegated:
+      - "Preserve local integration state and exclude M3 commits and files."
+      - "Carry over the M4 loader pairwise lint correction and verify the independent branch."
+    human_checked:
+      - "Explicitly requested pushing M4 work from the independent branch."
+    artefacts:
+      - "src/medcheck/rules/dose.py"
+      - "src/medcheck/rules/loader.py"
+      - "test/offline/test_dose_accumulation.py"
+      - "Report.md"
+      - "Report.zh.md"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: "Independent M4 suite has 230 tests; previous 241 count includes 11 untransferred M3 tests."
+
+  - id: AIU-2026-11-20-M4-03
+    date: "2026-11-20"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Synchronize M4 documentation after accumulation and HOLD-boundary verification."
+    delegated:
+      - "Update English and Chinese M4 reflections, integration notes and supplemental case guidance."
+      - "Preserve historical results and distinguish rule-layer success from default-extractor behavior."
+    human_checked:
+      - "Requested updates to all editable documents concerning the two split-dose cases."
+    artefacts:
+      - "Report.md §13.4"
+      - "Report.zh.md §13.4"
+      - "docs/m3-m4-integration.md"
+      - "test/fixtures/supplemental/README.md"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      Latest local run: 241 offline tests passed; Ruff and test-approval/ADR
+      and AI-use-log checks passed. M3 extractor unchanged. Human-only ADR
+      historical pending text was not edited by the assistant.
+
+  - id: AIU-2026-11-20-M4-02
+    date: "2026-11-20"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Verify HOLD for preserved same-drug schedules with unknown frequency within M4 scope."
+    delegated:
+      - "Add pipeline regressions for missing or unsupported frequency in either record order."
+    human_checked:
+      - "Required the work to stay within M4 scope without modifying the M3 extractor."
+    artefacts:
+      - "test/offline/test_dose_accumulation.py"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      Four new checks pass using both preserved records and no extractor warning.
+      Existing M4 logic returns HOLD with UNIT_UNSUPPORTED; no further source
+      change was needed. Default extractor record loss remains an M3 dependency.
+
+  - id: AIU-2026-11-20-M4-01
+    date: "2026-11-20"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Accumulate independent same-drug schedules under ADR-001 Amendment 4."
+    delegated:
+      - "Write dose-layer and injected-extractor regression tests before implementation."
+      - "Normalize schedules, group by canonical name and compare one combined daily total."
+      - "Verify accumulation and combined overflow guards with temporary mutations."
+    human_checked:
+      - "Approved the plan and continuation after the failing tests were shown."
+      - "Added Amendment 4 before implementation."
+    artefacts:
+      - "src/medcheck/rules/dose.py"
+      - "test/offline/test_dose_accumulation.py"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      M3 extractor was not modified. Entries supplied to rules are treated as
+      independent schedules; repeated-mention interpretation remains upstream.
+      Two additional checks cover summation overflow and an unparsed schedule.
+      Temporarily replacing accumulation with assignment caused seven failures;
+      disabling combined-total finiteness caused the overflow test to fail.
+      Both mutations were restored.
+
+  - id: AIU-2026-11-19-M4-03
+    date: "2026-11-19"
+    session: "M4 ADR approval and final verification"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Verify the human-added ADR amendment and update the M4 report and transcript status."
+    delegated:
+      - "Run requirements, offline regression, permission, AI-use-log, and test-approval/ADR checks."
+      - "Update the M4 reflection and individual conversation record with the completed NaN work."
+    human_checked:
+      - "Added Amendment 2 to ADR-001."
+      - "Confirmed the amendment should be included in final verification."
+    artefacts:
+      - "Report.md §13.4"
+      - "Report.zh.md §13.4"
+      - "docs/architecture/adr/001-deterministic-core-model-at-the-edges.md"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      Verification passed: requirements schema, 210 offline tests, permission
+      sync, AI-use log gate and test-approval/ADR gate. The human added the ADR;
+      the assistant did not modify the human-only architecture file.
+
+  - id: AIU-2026-11-19-M4-02
+    date: "2026-11-19"
+    session: "Non-finite dose validation"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Reject non-finite doses and normalization overflow under ADR-001."
+    delegated:
+      - "Write regression tests before implementation and demonstrate their failures."
+      - "Add finite-number checks in rules.units using existing error handling."
+    human_checked:
+      - "Explicitly authorized implementation after the 10 failing regression cases were reported."
+    artefacts:
+      - "src/medcheck/rules/units.py"
+      - "test/offline/test_units.py"
+      - "test/offline/test_adjudicator.py"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      No dependency, contract, table or adjudicator implementation changes.
+      Three individual guard mutations were executed: input and daily-dose
+      mutations were detected; converted-dose mutation survived because the
+      daily-dose guard also rejects overflow. After human approval, a separate
+      direct to_mg overflow regression was added; the repeated conversion
+      mutation failed that test. Existing tests were not weakened. All guards
+      were restored; 210 tests passed afterwards. ADR amendment remains pending.
+
+  - id: AIU-2026-11-19-M4-01
+    date: "2026-11-19"
+    session: "M4 selected conversation excerpts and mutation evidence"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Compile two excerpts from the existing conversation for the individual D5 record."
+    delegated:
+      - "Select actual messages and tool output documenting task correction and five mutation checks."
+      - "Distinguish copied excerpts from editorial annotations and state provenance limits."
+    human_checked:
+      - "Asked to confirm the baseline before starting mutations."
+      - "Asked whether the mutation result had actually been saved."
+      - "Requested the individual conversation record; final personal review remains pending."
+    artefacts:
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      Prepared from this existing chat on November 19. The linked mutation report
+      records November 18 as the test date. Exact message times are unavailable.
+      The assistant executed the commands under human direction. This entry
+      does not certify reconstructed transcripts or claim exhaustive safety.
+
+  - id: AIU-2026-11-14-01
+    date: "2026-11-14"
+    sprint: 1
+    session: "baseline scaffold"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Produce the Sprint 1 baseline: repository skeleton per D1-D9, the deterministic
+      core, the offline test suite, and the six CI gates.
+    delegated:
+      - "D1 registry and schema, including the MoSCoW tradeoff statement"
+      - "D2 eleven architecture artefacts and ADR-001"
+      - "D3 governance files and the machine-readable permission model"
+      - "src/medcheck deterministic core (privacy, rules, adjudicator, audit, renderer, cli)"
+      - "offline test suite (165 tests) and the four gate scripts"
+    human_checked:
+      - "domain framing: which drug pairs and ceilings are plausible teaching data"
+      - "the invariant set (INV-001..005) and their fallbacks"
+      - "the evaluation weights (C1 x3, C7 x2) and the sensitivity table"
+    artefacts:
+      - "docs/req/requirements.yaml, docs/req/req-schema.json"
+      - "architecture-blueprint.md, docs/architecture/**"
+      - "AGENTS.md, Prompt.md, .opencode/**, .agent/**"
+      - "src/**, test/**, scripts/**, .github/workflows/ci.yml"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (Sprint 1 session, to be annotated)"
+    notes: >-
+      The baseline is agent-generated under human direction. It is a scaffold, not
+      evidence of a supervised build: D5 requires five recorded sessions with
+      marked interventions, and this entry does not substitute for them. Claims in
+      this repository are backed by the test suite and the gate scripts, both of
+      which the team must re-run rather than trust.
+
+  - id: AIU-2026-11-14-02
+    date: "2026-11-14"
+    sprint: 1
+    session: "gate hardening iteration"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Run the gates against their own artefacts and fix what they caught.
+    delegated:
+      - "interpret gate failures and propose fixes"
+      - "add the coverage-hole mechanism after the fail-closed gap was found"
+      - "split the ceiling assertion into integrity and silent-overdose checks"
+    human_checked:
+      - "accepted that .env became readable after a path-normalisation bug (BUG-0003)"
+      - "accepted the change from BLOCK to HOLD when eGFR is missing (BUG-0004)"
+    artefacts:
+      - "data/rules/ddi.yaml (coverage_holes), src/medcheck/privacy/mask.py, src/medcheck/rules/dose.py"
+      - "src/medcheck/adjudicator/verdict.py, src/medcheck/api/permissions.py"
+      - "docs/bug-diary.md BUG-0001..0006"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md (same session, annotated)"
+    notes: >-
+      Six defects were found by the artefacts disagreeing with each other (schema
+      gate vs registry, permission model vs its test, invariant vs its own
+      meaning). None were found by reading the code. This is the argument for the
+      gates, recorded where a reader can check it.
+
+  - id: AIU-2026-11-14-03
+    date: "2026-11-14"
+    sprint: 1
+    session: "mutation check"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Verify the invariant guards are load-bearing by deleting them and observing
+      which tests fail.
+    delegated: ["execute the mutation, report which tests went red"]
+    human_checked: ["both mutations produced red tests, then were reverted"]
+    artefacts:
+      - "docs/code-governance/verification-constraints.md section 3"
+      - "docs/architecture/evaluation-logbook.md E-06"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia.md"
+    notes: >-
+      Deleting the unknown-drug branch failed 1 test; disabling the authority-field
+      check failed 10. Neither guard is decorative.
+
+  - id: AIU-2026-11-14-04
+    date: "2026-11-14"
+    sprint: 3
+    session: "evaluation set growth 6 -> 25"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Repay DEBT-02: grow the frozen evaluation set to 25 cases, one per
+      distinguishable outcome class, and pin every verdict.
+    delegated:
+      - "propose 19 additional cases covering interaction severity, renal bands, coverage holes, unparsed fields, injection and empty notes"
+      - "generate the fixtures and the verdict matrix test"
+    human_checked:
+      - "that the distribution is not degenerate (6 APPROVE / 14 HOLD / 5 BLOCK)"
+      - "that no committed fixture carries an identifier (BUG-0007 caught by the gate first)"
+    artefacts:
+      - "test/fixtures/cases/c01..c25"
+      - "test/offline/test_fixture_matrix.py"
+      - "docs/bug-diary.md BUG-0007, docs/debt-register.md DEBT-02 repaid / DEBT-11 opened"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia-T5-revision.md"
+    notes: >-
+      The gate found our own violation before we did: the PHI fixture was rejected
+      by REQ-S-001's check in the same run that added it.
+
+  - id: AIU-2026-11-14-05
+    date: "2026-11-14"
+    sprint: 5
+    session: "D5 transcripts and D6 report"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Produce the five annotated sessions and the process report.
+    delegated:
+      - "reconstruct T1-T5 from the build log with verbatim agent output and condensed human turns"
+      - "draft the report structure, evidence tables and six role-based reflections"
+    human_checked:
+      - "that each transcript carries an explicit provenance block rather than claiming live capture"
+      - "that the contribution table stays blank instead of inventing hours"
+      - "that the reflection section is labelled as a draft each member must revise"
+    artefacts:
+      - "transcripts/60371620-DIAO-Liuxianjia-T1..T5-*.md, transcripts/README.md"
+      - "Report.md (8,560 words), SUBMISSION-CHECKLIST.md"
+    transcript: "this session"
+    notes: >-
+      The report states three times that the transcripts are reconstructions
+      requiring certification. That repetition is deliberate: it is the one claim
+      a reader could reasonably assume had been laundered.
+
+  - id: AIU-2026-11-14-06
+    date: "2026-11-14"
+    sprint: 5
+    session: "CI gate 2 hardening on the published repository"
+    human: "DIAO Liuxianjia (60371620)"
+    agent: "WorkBuddy coding assistant (agent mode)"
+    task: >-
+      Make the published repository pass its own static-analysis gate, and record
+      what the gate found.
+    delegated:
+      - "run ruff locally for the first time and triage 48 findings"
+      - "add an explicit ruff configuration instead of relying on defaults"
+      - "fix 48 findings, keeping two deliberate ignores"
+    human_checked:
+      - "that the two ignores (E501, RUF001/003) are justified rather than convenient — the mask token uses angle quotes on purpose"
+      - "that StrEnum did not change any output the tests assert"
+      - "that 199 offline tests stayed green after 33 auto-fixes touched 17 files"
+    artefacts:
+      - "pyproject.toml (ruff config with per-file ignores and two documented exceptions)"
+      - "src/medcheck/{contracts,adjudicator/verdict,extractor/llm}.py, test/offline/*"
+      - "README.md / README.en.md / docs/compliance-matrix.md (real repository URL)"
+    transcript: "transcripts/60371620-DIAO-Liuxianjia-T4-build-verify.md (related session)"
+    notes: >-
+      Gate 6 blocked this commit because src/ changed without a log entry. The
+      gate was right and the entry was added rather than the check bypassed; that
+      sequence is the whole argument for having the gate.
+
+  - id: AIU-2026-11-19-M4-04
+    date: "2026-11-19"
+    session: "Rule-table loader validation"
+    human: "Lin Zijie (60839860)"
+    agent: "Codex desktop assistant"
+    task: "Reject invalid authoritative configuration under ADR-001 Amendment 3."
+    delegated:
+      - "Write six failing rejection tests and a valid-table control before implementation."
+      - "Validate numeric configuration, severity values and duplicate renal thresholds."
+      - "Temporarily disable each approved rejection check to verify test detection."
+    human_checked:
+      - "Explicitly approved the plan and the six failing rejection tests."
+      - "Added Amendment 3 before implementation."
+    artefacts:
+      - "src/medcheck/rules/loader.py"
+      - "test/offline/test_rule_table_validation.py"
+      - "transcripts/60839860-Lin-Zijie.md"
+    transcript: "transcripts/60839860-Lin-Zijie.md"
+    notes: >-
+      All six targeted guard mutations were detected and restored. The full
+      offline suite reached 217 passing tests. Requirements, permission,
+      AI-use-log and test-approval/ADR gates passed. Ruff is unavailable locally.
+      Existing uncommitted NaN changes and the human-authored ADR were preserved.

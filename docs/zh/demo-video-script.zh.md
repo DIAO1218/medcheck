@@ -14,7 +14,7 @@
 cd "GROUP PROJECT/MedCheck"
 pip install -e ".[dev]"        # 若已装过可跳过
 export PYTHONPATH=src          # 不装包时必须；装了包也可以留着，无副作用
-python -m pytest test/offline -q   # 确认 230 passed
+python -m pytest test/offline -q   # 确认 250 passed
 ```
 
 > 注意：`python -m medcheck.api.cli` 需要 `PYTHONPATH=src` 或 `pip install -e .`。忘记这一步，视频第一秒就会报 `ModuleNotFoundError`。
@@ -252,7 +252,7 @@ python -m pytest test/offline/test_structure.py -q
 ### 段 6｜7:20–8:50 验证强度与六道门
 
 ```bash
-python -m pytest test/offline -q          # 230 passed in ~8s
+python -m pytest test/offline -q          # 250 passed in ~8s
 python scripts/eval_replay.py             # faithfulness 1.0 / relevance 1.0（25 例冻结集）
 ```
 
