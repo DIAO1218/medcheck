@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>MedCheck — 视频卡片</title>
+<style>
+  :root{
+    --bg:#0b0f14; --fg:#e8eef5; --dim:#8b9bb0;
+    --ok:#4ade80; --warn:#fbbf24; --bad:#f87171; --accent:#5eead4;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .slide{
+    width:100%; max-width:1600px; padding:6vh 8vw;
+    display:none; animation:fade .35s ease both;
+  }
+  .slide.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  h1{font-size:clamp(40px,5.2vw,86px); line-height:1.12; margin:0 0 1.2rem; letter-spacing:-.02em}
+  h2{font-size:clamp(26px,2.6vw,42px); color:var(--dim); font-weight:500; margin:0 0 2.4rem}
+  .sub{font-size:clamp(18px,1.5vw,26px); color:var(--dim); margin-top:2.2rem; line-height:1.7}
+  .mono{font-family:"Cascadia Mono",Consolas,"SF Mono",monospace}
+
+  .row{display:flex; gap:2.4rem; align-items:flex-start; margin:1.4rem 0; font-size:clamp(22px,2.2vw,38px)}
+  .row .k{min-width:11ch; font-weight:700}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)} .accent{color:var(--accent)}
+
+  .verdicts{display:grid; gap:1.6rem; margin-top:1rem}
+  .v{display:grid; grid-template-columns:9ch 1fr; gap:2rem; align-items:baseline;
+     border-left:6px solid var(--dim); padding-left:1.6rem}
+  .v .tag{font-size:clamp(26px,2.4vw,44px); font-weight:800; letter-spacing:.02em}
+  .v .txt{font-size:clamp(18px,1.5vw,28px); color:#c3cfdd; line-height:1.55}
+  .v.okv{border-color:var(--ok)} .v.holdv{border-color:var(--warn)} .v.blockv{border-color:var(--bad)}
+
+  .big{font-size:clamp(60px,9vw,180px); font-weight:900; letter-spacing:.04em; line-height:1}
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:6vw; text-align:center}
+
+  ul{font-size:clamp(20px,1.8vw,32px); line-height:1.9; padding-left:1.2em; margin:1rem 0}
+  li{margin:.35em 0}
+  li b{color:var(--accent)}
+
+  .stats{display:flex; gap:5vw; margin-top:3rem; flex-wrap:wrap}
+  .stat .n{font-size:clamp(48px,6vw,104px); font-weight:900; color:var(--accent); line-height:1}
+  .stat .l{font-size:clamp(14px,1.2vw,20px); color:var(--dim); margin-top:.6rem; letter-spacing:.06em; text-transform:uppercase}
+
+  footer{position:fixed; bottom:2.2vh; left:0; right:0; display:flex; justify-content:space-between;
+         padding:0 3vw; font-size:clamp(11px,1vw,15px); color:#5c6b7d; letter-spacing:.08em}
+  .hide footer{opacity:0}
+  .hint{position:fixed; top:2vh; right:3vw; font-size:13px; color:#3f4c5c}
+  .hide .hint{opacity:0}
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide on">
+  <h1>MedCheck</h1>
+  <h2>A medication checker that refuses to answer</h2>
+  <div class="sub mono">CS5351 · 6 members · github.com/DIAO1218/medcheck</div>
+  <div class="sub" style="color:#f87171;font-size:clamp(14px,1.2vw,18px)">NOT FOR CLINICAL USE · teaching data only</div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2 style="color:#e8eef5">The only asymmetry that matters</h2>
+  <div class="row"><span class="k bad">wrong APPROVE</span><span>a patient is harmed</span></div>
+  <div class="row"><span class="k warn">extra HOLD</span><span>a reviewer spends one minute</span></div>
+  <div class="sub">Every design decision follows from this line.</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2 style="color:#e8eef5">Three verdicts, three different claims</h2>
+  <div class="verdicts">
+    <div class="v okv"><div class="tag ok">APPROVE</div><div class="txt">We checked. No interaction, dose within the ceiling.<br><span class="mono" style="color:#8b9bb0">warfarin 5&nbsp;mg, eGFR 90</span></div></div>
+    <div class="v blockv"><div class="tag bad">BLOCK</div><div class="txt">We know there is a problem.<br><span class="mono" style="color:#8b9bb0">simvastatin + clarithromycin → DDI-007</span></div></div>
+    <div class="v holdv"><div class="tag warn">HOLD</div><div class="txt">We do not know — and we say so.<br><span class="mono" style="color:#8b9bb0">digoxin, no eGFR → RENAL_DATA_MISSING</span></div></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="split">
+    <div>
+      <div class="big bad">BEFORE</div>
+      <div class="sub">the guard removed</div>
+    </div>
+    <div>
+      <div class="big ok">AFTER</div>
+      <div class="sub">the guard in place</div>
+    </div>
+  </div>
+  <div class="sub" style="text-align:center">Same case. One line of code apart.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2 style="color:#e8eef5">Not features — constraints</h2>
+  <ul>
+    <li><b>Authority seam</b> — the extraction contract has no field for a verdict, a severity, or a dose.</li>
+    <li><b>Structural rule</b> — perception may not import adjudication. The build fails before review.</li>
+    <li><b>Declared holes</b> — “not in the table” never means “no interaction”.</li>
+  </ul>
+  <div class="sub">The model is not asked to behave. It is given no vocabulary.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2 style="color:#e8eef5">Six gates, all blocking</h2>
+  <ul style="font-size:clamp(18px,1.6vw,28px);line-height:1.75">
+    <li>1 · test approval + ADR for safety paths</li>
+    <li>2 · static analysis &amp; structural fitness</li>
+    <li>3 · requirements schema</li>
+    <li>4 · semantic evaluation (25 frozen cases)</li>
+    <li>5 · regression (199 offline tests)</li>
+    <li>6 · AI-use log — code changed without a record?</li>
+  </ul>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2 style="color:#e8eef5">What the numbers are</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">199</div><div class="l">offline tests</div></div>
+    <div class="stat"><div class="n">25</div><div class="l">requirements</div></div>
+    <div class="stat"><div class="n">5</div><div class="l">zero-tolerance invariants</div></div>
+    <div class="stat"><div class="n">30</div><div class="l">marked interventions</div></div>
+  </div>
+  <div class="sub">8 seconds, no network, no API key.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2 style="color:#e8eef5">Not done, and written down</h2>
+  <ul>
+    <li>live model accuracy — <span class="mono">null</span> (DEBT-06)</li>
+    <li>3 of 5 invariants — no mutation evidence yet (DEBT-09)</li>
+    <li>transcripts — reconstructions awaiting certification</li>
+  </ul>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="big" style="font-size:clamp(34px,4.4vw,72px);line-height:1.25">
+    A system that can refuse is<br>more trustworthy than one<br>that always answers.
+  </div>
+  <div class="sub mono">github.com/DIAO1218/medcheck</div>
+</section>
+
+<div class="hint">← → 翻页 · F 全屏 · B 黑屏 · H 隐藏提示</div>
+<footer><span>MedCheck · CS5351</span><span id="page">1 / 9</span></footer>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0, black=false;
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('on',k===i));
+  document.getElementById('page').textContent=(i+1)+' / '+slides.length;
+}
+document.addEventListener('keydown',e=>{
+  const k=e.key.toLowerCase();
+  if(k==='arrowright'||k===' '||k==='pagedown'){show(i+1);e.preventDefault();}
+  if(k==='arrowleft'||k==='pageup'){show(i-1);e.preventDefault();}
+  if(k==='home'){show(0);}
+  if(k==='end'){show(slides.length-1);}
+  if(k==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  if(k==='h'){document.body.classList.toggle('hide');}
+  if(k==='b'){black=!black;document.body.style.background=black?'#000':'var(--bg)';
+             slides.forEach(s=>s.style.visibility=black?'hidden':'visible');}
+});
+</script>
+</body>
+</html>

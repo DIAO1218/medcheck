@@ -50,14 +50,11 @@ def extract(note: str, vocabulary: tuple[str, ...] | list[str] = ()) -> Extracti
     vocab = {name.lower() for name in vocabulary}
     medications: list[Medication] = []
     unparsed: list[str] = []
-    seen: set[str] = set()
+    seen: set[tuple] = set()
 
     for match in _DOSE.finditer(note):
         raw_name = match.group("name").strip()
         canonical = raw_name.lower()
-        if canonical in seen:
-            continue
-        seen.add(canonical)
         tail = note[match.end() : match.end() + 40]
         frequency, matched_phrase = _find_frequency(tail)
 
@@ -67,6 +64,12 @@ def extract(note: str, vocabulary: tuple[str, ...] | list[str] = ()) -> Extracti
             # Not an error at extraction time: coverage will escalate it. The
             # extractor must not decide that an unknown word is not a drug.
             unparsed.append(f"{canonical}: unknown vocabulary")
+
+        # True duplicate check: same name, dose, AND frequency
+        signature = (canonical, match.group("value"), match.group("unit").lower(), matched_phrase)
+        if signature in seen:
+            continue
+        seen.add(signature)
 
         medications.append(
             Medication(

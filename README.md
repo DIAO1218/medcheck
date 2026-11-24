@@ -40,7 +40,7 @@ MedCheck 读取一段自由文本的病例记录，返回一份可复核的裁�
 │   ├── code-governance/          结构约束、验证约束、MCP 工具清单（D3、D4）
 │   ├── compliance-matrix.md      逐条对照作业要求（中文版在 docs/zh/）
 │   ├── ai-use-log.yaml           强制维护；门 6 会拦下未更新的代码/提示词改动
-│   ├── test-approvals.yaml       测试审批台账（门 1 / 门 6）
+│   ├── test-approvals.yaml       测试审批台账（门 1，含 ADR 检查）
 │   ├── review-memo.md            每个 PR 的审查记录（D4）
 │   ├── debt-register.md          按 AI 时代分类的技术债（D4）
 │   └── bug-diary.md              7 个真实缺陷 + 各自暴露的不变量缺口（D4）
@@ -62,7 +62,7 @@ MedCheck 读取一段自由文本的病例记录，返回一份可复核的裁�
 ├── scripts/                      validate_requirements、check_ai_use_log、
 │                                 check_test_approval、check_permissions_sync、
 │                                 eval_replay、build_ddi_fixtures、sync_blueprint
-├── test/offline/                 199 项确定性测试，无网络、无模型
+├── test/offline/                 250 项确定性测试，无网络、无模型
 ├── test/live/                    依赖模型，打 `live` 标记，不进 CI 门 5
 └── transcripts/                  T1–T5 五份带标注的智能体会话（D5）
 ```
@@ -115,7 +115,9 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | 逐条核对是否符合作业要求 | `docs/compliance-matrix.md`（中文版：`docs/zh/compliance-matrix.zh.md`） |
 | 知道只有团队能做什么 | `SUBMISSION-CHECKLIST.md`（中文版：`docs/zh/submission-checklist.zh.md`） |
 | 看那个「其他一切决定都从它推出来」的决定 | `docs/architecture/adr/001-…md`（中文导读：`docs/zh/architecture-overview.zh.md`） |
-| 看哪里坏过、是谁发现的 | `docs/bug-diary.md`（8 个缺陷，**0 个靠专门读代码找 bug 发现**） |
+| 看哪里坏过、是谁发现的 | `docs/bug-diary.md`（9 个缺陷，**0 个靠专门读代码找 bug 发现**） |
+| 要做演示视频 | `docs/zh/demo-kit/cue-sheet.md`（开录清单）→ `cards.html`（卡片）→ `vo-en.txt` + `subs-en.srt`（剪映配音与字幕）|
+| 要准备现场答辩 | `docs/zh/presentation-outline.zh.md`（七项必答点 + 问答） |
 | 给组员派活（变异检验） | `docs/zh/task-mutation-checks.zh.md` |
 | 看智能体是怎么被监督的 | `transcripts/`（30 处标注干预，中文摘要：`docs/zh/transcript-summaries.zh.md`） |
 
@@ -130,7 +132,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | D5 五份标注会话 | 已记录 T1–T5，共 30 处标注干预；每份文件开头写明取证来源 |
 | D6 报告 | 内容完成（英文 9,623 词 / 约 19 页；中文对照版在 `Report.zh.md`）；六人姓名学号已填，**工时与个人反思仍需本人补** |
 | D7 仓库 + 六道门 | 完成，门自身也被反向测试过 |
-| D8 源码 + 测试 | 确定性内核完成，199 项离线测试全绿；在线抽取器已接线但尚未实测 |
+| D8 源码 + 测试 | 确定性内核完成，250 项离线测试全绿；在线抽取器已接线但尚未实测 |
 | D9 静态提示词 | 完成 |
 
 五份会话记录是根据构建日志**重构**的：智能体输出逐字引用，人的回合由已记录的决策压缩而来。每个文件开头都写明这一点；团队必须逐份认证或重新录制（见 `transcripts/README.md`）。因此，绿色套件是对确定性内核的证据，而会话记录只有在被认证之后才是对「人工监督」的证据。

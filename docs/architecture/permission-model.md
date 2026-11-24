@@ -49,7 +49,7 @@ Notation: *read* = read-only; *write* = read + write; *append* = create new reco
 | Guard | Mechanism | Failure mode |
 |---|---|---|
 | Path whitelist | `.opencode/permissions.jsonc` evaluated before any tool call | tool call returns `PermissionDenied`, logged |
-| Safety-critical write | writes under `src/medcheck/{adjudicator,rules,privacy,audit}` require an ADR id in the PR body and a human approval | CI gate 6 fails the PR (REQ-G-004) |
+| Safety-critical write | writes under `src/medcheck/{adjudicator,rules,privacy,audit}` require an ADR id in the PR body and a human approval | CI gate 1 fails the PR (REQ-G-004) |
 | Table mutation | `build-agent` has read-only on `data/rules/**`; table changes go through a human PR with schema gate | write attempt denied; PR blocked |
 | Append-only stores | `audit` and `debt-register` opened in append mode; `audit` additionally hash-chained | tamper raises `AuditImmutableError` (REQ-F-007) |
 | Secret paths | `.env`, `*.pem`, `secrets/**` denied to all roles | denial logged, secret scan gate also checks |

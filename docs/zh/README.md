@@ -15,6 +15,14 @@
 | [`compliance-matrix.zh.md`](compliance-matrix.zh.md) | `docs/compliance-matrix.md` | 逐条对照作业要求，含未结项与声明偏差 |
 | [`submission-checklist.zh.md`](submission-checklist.zh.md) | `SUBMISSION-CHECKLIST.md` | 提交前要跑的命令、要填的表、要背下来的七个问题 |
 | [`task-mutation-checks.zh.md`](task-mutation-checks.zh.md) | — | 派活用：给 INV-002/004/005 做变异检验的分步任务单（DEBT-09） |
+| [`demo-video-script.zh.md`](demo-video-script.zh.md) | — | 10 分钟演示视频脚本：分镜、台词、命令、预期输出 |
+| [`demo-kit/cue-sheet.md`](demo-kit/cue-sheet.md) | — | **开录清单**：Win+G 分段录、配音、剪辑、45 分钟精简版 |
+| [`demo-kit/teleprompter.md`](demo-kit/teleprompter.md) | — | 提词卡：只有台词，按时间码分段 |
+| [`demo-kit/vo-en.txt`](demo-kit/vo-en.txt) / [`vo-zh.txt`](demo-kit/vo-zh.txt) | — | 按段落的纯文本，可直接粘进剪映「文本朗读」生成语音 |
+| [`demo-kit/subs-en.srt`](demo-kit/subs-en.srt) / [`subs-zh.srt`](demo-kit/subs-zh.srt) | — | 已按 9:20 时间码切好的字幕，可导入剪映 |
+| [`demo-kit/cards.html`](demo-kit/cards.html) | — | 全屏卡片（← → 翻页，F 全屏，B 黑屏），录屏时切画面用 |
+| [`demo-before-after.zh.md`](demo-before-after.zh.md) | — | 视频段 3 用：三组前后对比的实测复现步骤 |
+| [`presentation-outline.zh.md`](presentation-outline.zh.md) | — | 现场演示大纲：七项必答点、十五页、问答准备 |
 
 ## 还没翻译的（按需再翻）
 
@@ -55,4 +63,4 @@
 
 如果想 10 分钟看懂这个项目：先读本目录的 `architecture-overview.zh.md` §1–§5，再读 `transcript-summaries.zh.md` 的「总览」和「五场连起来说明了什么」。
 
-如果要照着做一遍：读 `architecture-overview.zh.md` §11「如果你想动手改」，然后跑 `python -m pytest test/offline -q`，看 199 个测试是怎么把「模型不能决定任何事」这句话变成可执行检查的。
+如果要照着做一遍：读 `architecture-overview.zh.md` §11「如果你想动手改」，然后跑 `python -m pytest test/offline -q`，看 250 个测试是怎么把「模型不能决定任何事」这句话变成可执行检查的。

@@ -1,4 +1,4 @@
-"""Gates 1 and 6 — test-approval gate and safety-critical ADR gate (REQ-G-003, G-004).
+"""Gate 1 — test approval plus the safety-critical ADR checks (REQ-G-003, REQ-G-004).
 
 Both gates read `docs/test-approvals.yaml`, the ledger of approved test plans:
 
@@ -105,14 +105,14 @@ def violations(changed: list[str], ledger: dict | None = None) -> list[str]:
             problems.append(f"module '{module}' approval names no tests (gate 1)")
         if module in SAFETY_MODULES and not entry.get("adr"):
             problems.append(
-                f"module '{module}' is safety-critical and the change has no ADR id (gate 6)"
+                f"module '{module}' is safety-critical and the change has no ADR id (gate 1)"
             )
 
     safety_hits = sorted({_posix(path) for path in changed if is_safety_path(path)})
     if safety_hits and not adrs_touched(changed):
         problems.append(
             "safety-relevant change without a new or amended ADR under "
-            f"{ADR_DIR} (gate 6): " + ", ".join(safety_hits[:3])
+            f"{ADR_DIR} (gate 1): " + ", ".join(safety_hits[:3])
         )
 
     return problems

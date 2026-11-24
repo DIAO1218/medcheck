@@ -81,9 +81,76 @@ Rationale: <one paragraph>
 
 ---
 
+## PR #2 — Fix split dose aggregation and extractor duplicate handling
+
+- Reviewer: TAN Xinyue (BUILD A) + LIN Zijie (BUILD B) · Date: <2026-11-20> · ADR: n/a
+- Changed: `src/medcheck/extractor/`, `src/medcheck/rules/dose.py`, `test/fixtures/cases/` (added 2 cases)
+- Test approval record: `docs/test-approvals.yaml` -> `extractor`, `rules` (approved)
+- CI: gate1..gate6 pass Invariant suite: 0 violations, 195 offline tests green
+
+**Spec alignment.** Closes the gap for daily dose ceiling enforcement (`REQ-F-004` / `INV-002`). The new test cases (`m4_split_above`, `m4_split_unparsed_frequency`) explicitly verify that cumulative daily doses are evaluated, not just single instructions.
+
+**Architecture alignment.** Maintained the authority seam: the extractor (perception layer) now correctly retains multiple records for the same drug with different timings, passing them to the rules engine (authority layer). `dose.py` implements the cumulative aggregation logic without crossing architectural boundaries.
+
+**Code and test quality.** Two negative tests were added and failed before the fix (red), then passed after the fix (green). Mutation checks verified that removing the cumulative addition logic causes the suite to fail.
+
+**Operational metadata.** AI-use log updated. Logged as `BUG-0013` in `docs/bug-diary.md` capturing the invariant gap (INV-002 was only applied to single shots, not split doses).
+
+**Security and efficiency.** No new dependencies added. Aggregation logic is O(n) where n is the number of medications per case (typically < 10), maintaining p95 well within the 50 ms budget.
+
+**Human oversight note.** The agent failed to recognize that prescribing the same drug at different times (e.g., Warfarin 6mg morning + 6mg evening) should be aggregated before checking the ceiling. It was M3 (TAN Xinyue) and M4 (LIN Zijie)'s manual cross-module coordination and reading of the red test failures that caught this silent safety bypass—the AI agent had generated code that looked locally correct but failed system-level safety invariants.
+
+**Verdict: APPROVE**
+
+**Rationale.** The fix directly addresses a critical safety bypass where split doses evaded the daily limit. The coordination between M3 and M4 demonstrates effective human oversight and cross-module integration. The new regression tests ensure this specific safety hole is permanently closed.
+
+**Verification note (LI Decheng, 2026-11-23).** ZHANG Xinshuo's text above is kept as she wrote it. The change it approves is on `m4-mutation-evidence` (`src/medcheck/rules/dose.py`); that branch has no pull request, and `main` at `7044cbc` does not contain it, so the green-suite line is a record of the branch under review and merging waits for Lin Zijie's own pull request.
+
+---
+
+## GitHub PR #1 — fix(M3): authority seam and renderer traceability
+
+This section is not the Sprint 1 close recorded above. That entry stays as written. This one reviews the open pull request https://github.com/DIAO1218/medcheck/pull/1, branch `feat/m3-safety-boundaries`. First read on 2026-11-22 at head `b4b8d960`. Re-checked on 2026-11-23 at head `3f47f75`. The review was done by reading that branch and running tests in a separate worktree. Nothing was pushed to that branch.
+
+- Reviewer: LI Decheng (verification) · Date: 2026-11-23 · ADR: ADR-002 is in the diff; whether it is sufficient is for the architecture owner
+- Changed: `src/medcheck/contracts.py`, `src/medcheck/renderer/template.py`, new offline tests, `docs/ai-use-log.yaml`, `docs/bug-diary.md`, `docs/architecture/adr/002-recursive-authority-check.md`. Commit `3f47f75` (2026-11-22), which moved the head, only deletes the temporary script `test_extract.py`.
+- Test approval record: not updated in this pull request
+- CI: head `b4b8d960` had no reported check statuses. The pytest block below is a local run on that commit, not a GitHub check. This re-check did not re-run the suite.
+- Invariant suite: not separately counted; the offline run is the evidence
+
+**Spec alignment.** The nested-verdict rejection is INV-003. The renderer change is aimed at INV-005 (a rule id must appear in the advisory). The pull request also adds split-dose cases under REQ-F-004. On `b4b8d960` those cases did not pass. The cumulative-dose fix is on `m4-mutation-evidence`, not on this pull request; this review does not record them as fixed here and does not ask this pull request to land that fix again.
+
+**Architecture alignment.** `contracts.py` is a frozen file. ADR-002 is present in the diff. Its revisit condition is performance of the recursive scan, not a safety condition. Sign-off on that decision belongs to the architecture owner. This review does not approve or reject the ADR.
+
+**Code and test quality.** Local command, on commit `b4b8d960`, after `pip install -e ".[dev]"`:
+
+```
+FAILED test/offline/test_m3_m4_integration.py::test_m4_supplemental_cases[m4_split_above]
+FAILED test/offline/test_m3_m4_integration.py::test_m4_supplemental_cases[m4_split_unparsed_frequency]
+2 failed, 217 passed in 8.81s
+```
+
+`m4_split_above` expected `BLOCK` and returned `APPROVE`. `m4_split_unparsed_frequency` expected `HOLD` and returned `APPROVE`. The pull-request text says the offline suite passed. This run, on `b4b8d960`, does not. Head `3f47f75` only removes `test_extract.py`, and this re-check did not re-run pytest, so those two lines are the last measured result. Paste a raw pytest summary of `3f47f75` into the pull request. The split-dose aggregation itself is the subject of `m4-mutation-evidence`, recorded in the PR #2 section above.
+
+`test_nested_authority_field_rejected` does fail when the recursive walk is removed and only the top-level key check remains: `1 failed, 1 passed` in `test/offline/test_llm_adapter.py`, failure `DID NOT RAISE AuthorityViolation`. `test_top_level_authority_rejected` stayed green. The broken file was restored with `git checkout -- src/medcheck/contracts.py` and was not committed. The renderer tests assert the repaired text; this review did not delete the new sentence format and re-run them.
+
+**Operational metadata.** On head `3f47f75`, `docs/ai-use-log.yaml` is still the destroyed log. The previous log from `main` is gone. The same 2026-11-18 entry is repeated three times, with `EOFcat << 'EOF' > docs/ai-use-log.yaml` between the copies. `scripts/check_ai_use_log.py` only checks that the path appears in the diff, so gate 6 does not catch a destroyed log.
+
+**Security and efficiency.** No new dependency is requested by the pull request. Permission files are not in the diff. The split-dose miss measured on `b4b8d960` is handled on `m4-mutation-evidence`, which has no open pull request yet.
+
+**Human oversight note.** The pull-request text reports a green suite and an updated AI-use log. The local suite on `b4b8d960` has two failures, and the log file on `3f47f75` still contains shell text rather than the previous entries.
+
+**Verdict: CHANGES REQUIRED**
+
+**Rationale.** Restore `docs/ai-use-log.yaml` from `main` and append one entry for this change, without the `EOFcat` lines. Paste the raw pytest summary of head `3f47f75` into the pull request. Do not merge on the claim that the suite passed. The two split-dose failures measured on `b4b8d960` belong to `m4-mutation-evidence`; this pull request is not asked to fix them a second time. ADR-002 still needs the architecture owner's review.
+
+---
+
 ## PR log
 
 | PR | Title | Reviewer | Verdict | Date |
 |---|---|---|---|---|
 | #0 | Sprint 1 baseline (scaffold) | PENDING | CHANGES REQUIRED | 2026-11-14 |
 | #1 | Sprint 1 close: D5 + D6, ledger signed, eval set 25 | LI Decheng + ZHANG Xinshuo | APPROVE | 2026-11-14 |
+| #2 | Fix split dose aggregation and extractor duplicate handling | TAN Xinyue + LIN Zijie | APPROVE | 2026-11-20 |
+| GitHub #1 | fix(M3): authority seam and renderer traceability | LI Decheng | CHANGES REQUIRED | 2026-11-23 |

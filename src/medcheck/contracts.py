@@ -173,13 +173,20 @@ class ExtractionRecord:
         )
 
 
-def _assert_no_authority(payload: Mapping[str, Any], where: str) -> None:
-    offending = FORBIDDEN_AUTHORITY_FIELDS.intersection(payload.keys())
-    if offending:
-        raise AuthorityViolation(
-            f"{where} carries authority field(s) {sorted(offending)}; "
-            "only deterministic code may set these (INV-003)"
-        )
+def _assert_no_authority(payload: Any, where: str) -> None:
+    """Recursively assert that no authority fields exist anywhere in the payload."""
+    if isinstance(payload, Mapping):
+        offending = FORBIDDEN_AUTHORITY_FIELDS.intersection(payload.keys())
+        if offending:
+            raise AuthorityViolation(
+                f"{where} carries authority field(s) {sorted(offending)}; "
+                "only deterministic code may set these (INV-003)"
+            )
+        for key, value in payload.items():
+            _assert_no_authority(value, f"{where}.{key}")
+    elif isinstance(payload, (list, tuple)):
+        for index, item in enumerate(payload):
+            _assert_no_authority(item, f"{where}[{index}]")
 
 
 def _optional_float(value: Any) -> float | None:

@@ -62,7 +62,7 @@ gh api -X PUT repos/:owner/medcheck/branches/main/protection \
   -F restrictions=null
 ```
 
-对应作业要求：`ci` 必须通过才能合并；本仓库的汇总检查名是 `all gates`（见 `.github/workflows/ci.yml` 最后一个 job）。安全路径另需人工审查 + ADR，这一条由 `gate 6` 的 `check_test_approval.py` 在 CI 里强制（安全关键模块缺 ADR 直接失败），分支保护只负责「必须有人批过」。
+对应作业要求：`ci` 必须通过才能合并；本仓库的汇总检查名是 `all gates`（见 `.github/workflows/ci.yml` 最后一个 job）。安全路径另需人工审查 + ADR，这一条由 `gate 1` 的 `check_test_approval.py` 在 CI 里强制（安全关键模块缺 ADR 直接失败），分支保护只负责「必须有人批过」。
 
 ## 4. 让同学能看
 
@@ -76,7 +76,7 @@ gh api -X PUT repos/:owner/medcheck/branches/main/protection \
 ## 5. 推之前先过一遍
 
 ```bash
-python -m pytest test/offline -q          # 199 passed
+python -m pytest test/offline -q          # 250 passed
 python scripts/validate_requirements.py    # PASS
 git status --porcelain                      # 应为空
 git log --oneline | head                   # 9 次提交，最新是 docs(zh)

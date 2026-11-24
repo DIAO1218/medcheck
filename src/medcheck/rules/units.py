@@ -7,17 +7,25 @@ authority field invented by omission, INV-003).
 
 from __future__ import annotations
 
+import math
+
 from ..contracts import Medication, UnconvertibleUnit, UnsupportedFrequency
 from .loader import RuleTables
 
 
 def to_mg(dose_value: float, dose_unit: str, tables: RuleTables) -> float:
+    """REQ-F-002 / INV-002: normalize finite doses without guessing invalid values."""
     unit = dose_unit.strip().lower()
     if unit not in tables.conversions:
         raise UnconvertibleUnit(f"unit '{dose_unit}' has no entry in the conversion table")
+    if not math.isfinite(dose_value):
+        raise UnconvertibleUnit("dose value must be finite")
     if dose_value < 0:
         raise ValueError("dose value must not be negative")
-    return dose_value * tables.conversions[unit]
+    converted = dose_value * tables.conversions[unit]
+    if not math.isfinite(converted):
+        raise UnconvertibleUnit("converted dose must be finite")
+    return converted
 
 
 def parse_frequency(frequency_text: str | None, tables: RuleTables) -> float:
@@ -31,13 +39,17 @@ def parse_frequency(frequency_text: str | None, tables: RuleTables) -> float:
 
 
 def to_mg_per_day(medication: Medication, tables: RuleTables) -> float:
+    """REQ-F-002 / INV-002: reject overflow before a daily dose reaches adjudication."""
     if medication.dose_value is None:
         raise UnconvertibleUnit(f"{medication.name_raw}: no dose value")
     if not medication.dose_unit:
         raise UnconvertibleUnit(f"{medication.name_raw}: no dose unit")
     per_dose = to_mg(medication.dose_value, medication.dose_unit, tables)
     per_day = parse_frequency(medication.frequency_text, tables)
-    return per_dose * per_day
+    daily = per_dose * per_day
+    if not math.isfinite(daily):
+        raise UnconvertibleUnit("daily dose must be finite")
+    return daily
 
 
 def mg(value: float) -> str:
