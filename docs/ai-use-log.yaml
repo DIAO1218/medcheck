@@ -12,6 +12,25 @@ policy:
   rule: "an entry that cannot be tied to a transcript entry is not evidence"
 
 entries:
+  - id: AIU-2026-11-24-M3-01
+    date: "2026-11-24"
+    human: "TanXinyue (61050730)"
+    agent: "Claude / Codex assistant"
+    task: "Close the recursive authority bypass (a verdict hidden in a nested payload) and make the renderer cite a resolvable rule."
+    delegated:
+      - "Recursive `_assert_no_authority` over the whole payload, plus negative tests."
+      - "Renderer traceability change so every advisory line carries a rule id."
+      - "Rebase onto main after the Sprint 1 close, resolving the log and bug-diary conflicts."
+    human_checked:
+      - "Rejected the first version that only inspected top-level keys."
+      - "Read the ADR-002 draft; its revisit condition still describes performance, not safety, and belongs to the architecture lead."
+    artefacts:
+      - "src/medcheck/contracts.py"
+      - "src/medcheck/renderer/template.py"
+      - "docs/architecture/adr/002-recursive-authority-check.md"
+    transcript: "transcripts/00371620-T3-plan-approval.md"
+    notes: "Gate 1 rejected this branch until ADR-002 was added to the same change; that is the fresh-ADR check working as intended."
+
   - id: AIU-2026-11-20-M4-04
     date: "2026-11-20"
     human: "Lin Zijie (60839860)"

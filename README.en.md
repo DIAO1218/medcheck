@@ -58,7 +58,7 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 ├── scripts/                      validate_requirements, check_ai_use_log,
 │                                 check_test_approval, check_permissions_sync,
 │                                 eval_replay, build_ddi_fixtures
-├── test/offline/                 230 deterministic tests, no network, no model
+├── test/offline/                 250 deterministic tests, no network, no model
 ├── test/live/                    model-dependent, marked `live`, never in CI gate 5
 └── transcripts/                  five annotated agent sessions (D5) — protocol only, see README
 ```
@@ -122,7 +122,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | D3 coding governance | complete |
 | D4 verification governance | complete; review memo #0 = CHANGES REQUIRED |
 | D7 repo + CI gates | complete; gates self-tested |
-| D8 source + tests | deterministic core complete, 230 offline tests green; live extractor wired but unmeasured |
+| D8 source + tests | deterministic core complete, 250 offline tests green; live extractor wired but unmeasured |
 | D5 five annotated transcripts | recorded T1–T5, 30 annotated interventions; provenance stated in each file |
 | D6 report | complete in content (9,623 words, ~19 pages at Point 12); the six names and student numbers are in, **hours and personal reflections are still the team's to fill** — see `SUBMISSION-CHECKLIST.md` §2 |
 
