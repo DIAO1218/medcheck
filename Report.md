@@ -14,6 +14,24 @@ At the close of Sprint 1 the repository holds 250 deterministic offline tests, a
 
 ---
 
+## Contents
+
+| § | What it answers |
+|---|---|
+| 1 | who did what, and the contribution measure |
+| 2 | the problem and the architecture in one page |
+| 3 | the five sprints, and what changed between them |
+| 4 | requirements: classification, tradeoff, volatility, ambiguity |
+| 5 | architecture decisions, the seam, the context design |
+| 6 | how the agent was supervised, and where it had to stop |
+| 7 | verification: three tiers, invariants, defects, six gates |
+| 8 | what we changed about our own process, and why |
+| 9 | process quality evidence: volatility, defect trends, ambiguity log |
+| 10 | how the artefacts stayed in step |
+| 11 | what a human caught that the agent did not |
+| 12 | limitations and threats to validity |
+| 13 | six reflections, in each member's own words |
+
 ## 1. Team and relative contribution
 
 **Members.** Names and student numbers as the specification requires. The accountability column is what each member owned, not a courtesy title: the plan and the gate output name the same person. §13 is where each of them says what that looked like in practice.
@@ -146,6 +164,11 @@ We then added a sensitivity table, because a single weighted total is numerology
 
 The design rule that made this possible is worth naming: **the contract is the constraint**. A guard that inspects a payload for a verdict field is a second line of defence; the first line is that the type has nowhere to put one. The consequence is that a prompt injection, a model regression, or a future contributor's convenience all hit the same wall.
 
+
+![Figure 1 — where authority stops. The model's output becomes a typed record that has no verdict, severity or dose field; the adjudicator is the only writer of a conclusion.](docs/figures/fig1-authority-seam.png)
+
+*Figure 1.* The seam is a type, not a prompt. A model can put a `verdict` key in its JSON; `from_payload` rejects it, including when it is nested inside `meta`.
+
 ### 5.3 Layered context for the AI component
 
 The extractor receives six layers on every turn: identity (L1), standing constraints (L2), retrieved drug vocabulary (L3), prior turns (L4), resumable state (L5), and the case note (L6). The caps sum to exactly 3000 tokens, which is the cost ceiling in REQ-C-001.
@@ -153,6 +176,11 @@ The extractor receives six layers on every turn: identity (L1), standing constra
 The assembly pipeline is deduplicate → prioritise → budget → compact → assemble. Compaction triggers at 2400 tokens (80% of budget) and proceeds in reverse priority: L4 to the last two turns, then L3 to 40 vocabulary entries, then L5 summarised. L1, L2 and L6 are never compacted — truncating clinical text could drop a medication, and dropping L2 could drop "never emit a verdict".
 
 The critical policy is the one after compaction: **L2 is re-injected verbatim immediately before the task**, and `test_compaction_reinjects_constraints` asserts its presence in the assembled payload. The 80% threshold exists for the same reason: hitting provider-side truncation would silently drop the tail of a prompt, and the tail is where we put the constraints.
+
+
+![Figure 3 — six context layers, the 3000-token cap, compaction at 2400, and the re-injection policy for L2.](docs/figures/fig3-context.png)
+
+*Figure 3.* Three layers never compact; the constraints layer is re-injected verbatim immediately before the task, which is the only reason compaction is safe.
 
 ### 5.4 What we got wrong, and amended
 
@@ -173,6 +201,11 @@ Nine surfaces are human-only: `AGENTS.md`, the blueprint, `Prompt.md`, `.opencod
 > If an agent could write them, every invariant would be advisory — a constraint the constrained party can edit is not a constraint.
 
 The model is enforced, not documented: `test_default_deny_for_unlisted_path` requests 12 non-whitelisted paths across the three roles and requires 12 denials. That number found a real bypass. Our path normaliser used `lstrip("./")`, which strips *characters* rather than a prefix, turning `.env` into `env` and silently disabling every deny rule keyed on a leading dot. A criterion of "default deny is configured" would have passed that code forever (BUG-0003).
+
+
+![Figure 4 — one change end to end: five steps, five human signatures, and the split of labour between the agent and the person.](docs/figures/fig4-supervised-change.png)
+
+*Figure 4.* The agent moves between the gates by itself. Every arrow is a place where it stops.
 
 ### 6.2 The static prompt as a launch instruction
 
@@ -220,7 +253,7 @@ Two guards are proven load-bearing and three are asserted but unproven. We repor
 
 ### 7.3 Defects and what found them
 
-Nine defects, zero of them found by reading the implementation looking for bugs. Two were found by a CI gate or fitness function, five by a test, and two by a human — one reading someone else's pull request, one during cross-module coordination. The first of those two matters most, because it found a defect *in the gates themselves*.
+Nine defects, zero of them found by reading the implementation looking for bugs. Three were found by a CI gate or fitness function, four by a test, and two by a human — one reading someone else's pull request, one during cross-module coordination. The first of those two matters most, because it found a defect *in the gates themselves*.
 
 | Bug | Detected by | What it exposed |
 |---|---|---|
@@ -251,6 +284,11 @@ All six are self-tested: `test_gates_selftest.py` constructs the violation each 
 
 ---
 
+
+![Figure 2 — six blocking gates in merge order, each annotated with a defect it actually caught.](docs/figures/fig2-gates.png)
+
+*Figure 2.* The right-hand column is the part that matters: each gate is labelled with something it stopped, not with what it is supposed to prevent.
+
 ## 8. How we optimised the process
 
 Four changes, each triggered by evidence rather than preference, and each with a number attached.
@@ -277,8 +315,11 @@ Two registry revisions, five criteria changed, four of them before any code depe
 
 | Sprint | Defects found | By gate / fitness | By test | By human | By code reading |
 |---|---|---|---|---|---|
-| Sprint 1 (baseline) | 7 | 3 | 2 | 1 | 0 |
-| Sprint 2–5 (to date) | 1 | 0 | 0 | 1 | 0 |
+| Sprint 1 (baseline) | 7 | 3 | 4 | 0 | 0 |
+| Sprint 2–5 (to date) | 2 | 0 | 0 | 2 | 0 |
+| **Total** | **9** | **3** | **4** | **2** | **0** |
+
+![Figure 5 — nine defects by what found them: three by a gate or fitness function, four by a test, two by a human, none by reading the code.](docs/figures/fig5-defect-sources.png)
 
 The zero in the last column is the number this project is actually about. It is not a claim that our code is obviously correct; it is a claim about where correctness came from. We did not find defects by being careful. We found them by building machines that disagree with us.
 
