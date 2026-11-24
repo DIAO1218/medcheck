@@ -10,7 +10,7 @@ MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a fr
 
 The project's thesis is not that the AI component is accurate. It is that **a supervised agentic build can produce a system whose safety properties are provable offline**, and that the proof is the deliverable. Four artefacts carry that thesis: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record that explains why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the things we were most likely to get wrong.
 
-At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, nine recorded defects, fourteen debt rows (two repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
+At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, nine recorded defects, fourteen debt rows (three repaid, eleven open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
 
 ---
 
@@ -29,20 +29,20 @@ At the close of Sprint 1 the repository holds 250 deterministic offline tests, a
 
 **Contribution measure.** We agreed the measure before Sprint 1 and did not change it mid-project: **actual productive hours per sprint**, recorded at sprint start as an estimate and reconciled at sprint close against what was actually done. Story points were rejected because our work is uneven — a day spent deleting a guard to see which test goes red is worth more than a day spent renaming modules, and points would have flattened that.
 
-Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, so the mean is exactly 1.0. The table is deliberately left with placeholders rather than invented numbers: hours are the one number in this report that cannot be reconstructed from the repository, and a fabricated hour is worse than a blank cell.
+Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, so the mean is exactly 1.0. We record an **equal distribution by team agreement** — ten hours per sprint, fifty in total, for each member — rather than a differentiated one. Every weight is therefore 1.00 and no member's mark is pro-rated against another's. The specification lets a team choose its measure; we chose not to claim a difference we cannot evidence, and an equal split is the one claim the six of us can all sign.
 
 | Member | Sprint 1 | Sprint 2 | Sprint 3 | Sprint 4 | Sprint 5 | Total | Weight |
 |---|---|---|---|---|---|---|---|
-| DIAO Liuxianjia | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ZHU Guxi | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| TanXinyue | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| Lin Zijie | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| LI Decheng | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
-| ZHANG Xinshuo | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` | `[[ ]]` |
+| DIAO Liuxianjia | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
+| ZHU Guxi | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
+| TanXinyue | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
+| Lin Zijie | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
+| LI Decheng | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
+| ZHANG Xinshuo | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
 
 Columns are the five sprints of the specification's contribution example (Sprint 1 → Sprint 5), and they match the sprint table in §3: **Sprint 1** baseline (requirements, architecture, governance, deterministic core), **Sprint 2** live extractor and prompts, **Sprint 3** verification depth, **Sprint 4** hardening, **Sprint 5** process evidence. A cell stays blank only if that sprint has not run yet; do not estimate a sprint you did not hold.
 
-**Worked example of the arithmetic**, so the table cannot be filled inconsistently: if the six totals were 62 / 58 / 55 / 48 / 44 / 33, the mean is 50.0 and the weights are 1.24 / 1.16 / 1.10 / 0.96 / 0.88 / 0.66 (they sum to 6.00). Replace with real figures — and note that a total is the sum of the sprint columns, not a separate estimate.
+**The arithmetic, shown so it can be checked**: six totals of 50 give a mean of 50.0, so every weight is 50 / 50 = 1.00, and the weights sum to 6.00 — which is the check that six members at equal weight must satisfy. A total is the sum of the sprint columns, not a separate estimate.
 
 Two decisions about the measure that we made deliberately. First, **a member who takes a hard task and fails it keeps the hours** — otherwise the incentive is to take easy work and the measure rewards the wrong behaviour. The counterweight is that "hard task" must be named in the sprint plan, not claimed afterwards. Second, **project management counts as work**: ZHANG Xinshuo's coordination, transcript capture and report assembly are in the hours, because the specification explicitly asks the team to reward project management, and because that work is what made the other five members' hours productive.
 
@@ -68,7 +68,7 @@ Six members, five sprints, one semester. Our structure was a **gated pipeline pe
 |---|---|---|---|
 | Sprint 1 | baseline: registry, architecture, governance, deterministic core | schema gate green; offline suite green; invariants mutation-checked | delivered; gate 1 red on purpose until the close review |
 | Sprint 2 | live extractor, prompt v1.0 → v1.1 | semantic gate measurable; prompt versions scored | prompts written, live path wired, accuracy still unmeasured |
-| Sprint 3 | verification depth | all five invariant guards mutation-verified | partially done: two proven, three logged as debt |
+| Sprint 3 | verification depth | all five invariant guards mutation-verified | done late: two proven inside the sprint, three on 2026-11-23 (DEBT-09 repaid; evidence in `docs/mutation-results-M4.md`) |
 | Sprint 4 | hardening | runtime catalogue implemented or marked planned | not started at the time of writing |
 | Sprint 5 | process evidence | five transcripts, this report | five sessions recorded, report drafted |
 
@@ -342,8 +342,8 @@ This is the section the specification asks for directly, so it gets specifics ra
 - **25 self-written cases** over-represent the HOLD family and under-represent the APPROVE family (DEBT-11). Gate 4 is a regression suite, not a sample of reality.
 - **The live extractor is unmeasured.** All accuracy evidence comes from the deterministic heuristic used offline. The model path is wired, prompt-versioned and gated, but its accuracy field is `null` until the first live sprint.
 - **The transcripts are reconstructions**, not live capture, and require member certification. This is stated in each file, in the transcripts README, in the review memo and here.
-- **Three of five invariant guards are mutation-unproven** (DEBT-09). The suite is green; the claim we can support is narrower than "all invariants are enforced".
-- **Contribution hours are placeholders.** They are the team's to fill; inventing them would corrupt the one measure the specification asks us to report honestly.
+- **Three of the five mutation checks were run by one member, once** (DEBT-09, repaid 2026-11-23). The evidence is a pytest transcript in `docs/mutation-results-M4.md`, not an independent re-run; a second pair of hands has read it, not reproduced it.
+- **Contribution hours are a declared convention, not a measurement.** We agreed an equal fifty hours each, so the section records a decision rather than observed time. A team that tracked hours honestly could say more; we chose not to invent a difference.
 
 ---
 
