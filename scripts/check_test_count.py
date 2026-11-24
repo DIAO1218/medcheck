@@ -74,7 +74,7 @@ def collect_count() -> int:
     """Number of tests pytest would run offline, asked from pytest itself."""
     result = subprocess.run(
         [sys.executable, "-m", "pytest", "test/offline", "--collect-only", "-q"],
-        cwd=ROOT, capture_output=True, text=True,
+        check=False, cwd=ROOT, capture_output=True, text=True,
     )
     match = re.search(r"(\d+)\s+tests?\s+collected", result.stdout)
     if not match:
