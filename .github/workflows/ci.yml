@@ -57,6 +57,10 @@ jobs:
       - name: Dependency allowlist and structural fitness functions
         run: |
           python -m pytest test/offline/test_dependencies.py test/offline/test_structure.py -q
+      # 文档里的测试数必须等于 pytest 实际收集数。历史上从 165 写到 199 再写到 210，
+      # 每份文档各记各的，没有东西比对过散文和 `--collect-only`。
+      - name: Documented test counts match the suite
+        run: python scripts/check_test_count.py
       - name: Permission surface checks on safety-relevant changes
         run: |
           BASE="origin/${{ github.base_ref }}"
