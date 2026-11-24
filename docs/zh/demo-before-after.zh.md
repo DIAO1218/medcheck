@@ -211,7 +211,7 @@ python scripts/check_test_approval.py --changed docs/zh/README.md
 
 ```bash
 git status --porcelain     # 必须为空
-python -m pytest test/offline -q   # 199 passed
+python -m pytest test/offline -q   # 230 passed
 ```
 
 如果这两条不成立，**不要**继续录下一组——先还原，再重来。

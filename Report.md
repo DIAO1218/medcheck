@@ -10,7 +10,7 @@ MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a fr
 
 The project's thesis is not that the AI component is accurate. It is that **a supervised agentic build can produce a system whose safety properties are provable offline**, and that the proof is the deliverable. Four artefacts carry that thesis: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record that explains why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the things we were most likely to get wrong.
 
-At the close of Sprint 1 the repository holds 199 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, eight recorded defects, fourteen debt rows (two repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
+At the close of Sprint 1 the repository holds 230 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, eight recorded defects, fourteen debt rows (two repaid, twelve open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
 
 ---
 
@@ -202,7 +202,7 @@ Five sessions, thirty marked interventions: 8 REJECT, 9 REDIRECT, 4 CORRECT, 3 I
 
 Structural verification asks whether the code still matches the architecture: import directions, module-to-element mapping, single-authority sites, permission manifest consistency, and requirement traceability. It is implemented as architectural fitness functions, not as review checklists, because a checklist is a document and a fitness function is a build failure.
 
-Regression asks whether everything that worked still works. 199 offline tests, no network, no model, 7.5 seconds. This is deliberately cheap: a suite that takes ten minutes gets run weekly, and a suite that gets run weekly is not a regression suite.
+Regression asks whether everything that worked still works. 230 offline tests, no network, no model, 7.5 seconds. This is deliberately cheap: a suite that takes ten minutes gets run weekly, and a suite that gets run weekly is not a regression suite.
 
 Behavioural verification asks whether quality held: faithfulness ≥ 0.90 and relevance ≥ 0.85 on the frozen set, plus zero invariant violations. We are explicit that these are **proxy metrics** — faithfulness measures whether every advisory sentence traces to a finding, which is a structural property of the renderer, not a clinical judgement about the advisory's usefulness. The human audit (20% of cases per sprint) is what keeps the proxy from drifting; until that audit exists the score means less than it appears to.
 
@@ -394,7 +394,7 @@ What I would tell the next team: never put an authority field in a model-writabl
 
 ### 13.4 Lin Zijie (60839860) — build lead, rules and dose logic
 
-My M4 work has included checking the rules and dose path, and I used the mutation exercise to see whether the safety checks would catch specific failures. I first confirmed the 199-test baseline, then disabled one guard at a time and restored it after each run. Both INV-002 checks were detected: raising the recorded ceiling without changing the table made the ceiling-integrity test fail, and suppressing the required `DOSE_CEILING` finding made the silent-overdose test fail. The INV-004 masking check and both INV-005 traceability checks were detected too. Disabling rule resolution triggered two tests, including one in verdict composition. I had expected only the direct resolution test to fail, so that result showed the rule was also enforced at a second boundary.
+My M4 work has included checking the rules and dose path, and I used the mutation exercise to see whether the safety checks would catch specific failures. I first confirmed the 230-test baseline, then disabled one guard at a time and restored it after each run. Both INV-002 checks were detected: raising the recorded ceiling without changing the table made the ceiling-integrity test fail, and suppressing the required `DOSE_CEILING` finding made the silent-overdose test fail. The INV-004 masking check and both INV-005 traceability checks were detected too. Disabling rule resolution triggered two tests, including one in verdict composition. I had expected only the direct resolution test to fail, so that result showed the rule was also enforced at a second boundary.
 
 After that assignment, I reproduced a separate dose bug: a model extraction containing `NaN` could pass through normalization and produce `APPROVE`. I asked the assistant to add regression tests before changing the implementation. The first ten cases failed against the existing code, covering `NaN`, infinities, and overflow during conversion or daily-dose multiplication. After I approved the test results, the assistant added finite-value checks in `rules/units.py`, using the existing `UnconvertibleUnit` path so the dose checker would return `HOLD` with `UNIT_UNSUPPORTED`.
 
@@ -402,7 +402,7 @@ I also ran mutation checks on the three new checks. Two mutations were caught im
 
 I then directed a same-drug accumulation fix. With both extracted schedules preserved, morning and evening doses now share one daily total and ceiling. Tests also show that an unsupported or missing frequency returns `HOLD` without publishing a partial total, even without an extractor warning. M3 still needs to preserve the second record in the default extraction path; the tests verify the M4 boundary, not a completed natural-language fix.
 
-The local integration suite reached 241 passing tests. After transferring only M4 changes back to the independent M4 branch, its suite passed 230 tests; the difference is M3's 11 tests, which were not transferred. I directed and reviewed this work, while the assistant edited code and ran commands. The evidence supports the specific cases tested. I would retain the same process: reproduce a problem, test it before the fix, check whether removing the guard causes failure, and preserve the actual output.
+The local integration suite reached 241 passing cases. After transferring only M4 changes back to the independent M4 branch, its suite passed 230 tests; the difference is M3's 11 tests, which were not transferred. I directed and reviewed this work, while the assistant edited code and ran commands. The evidence supports the specific cases tested. I would retain the same process: reproduce a problem, test it before the fix, check whether removing the guard causes failure, and preserve the actual output.
 
 — Lin Zijie, 60839860
 
@@ -412,7 +412,7 @@ I owned the gates, which means I owned the things that were supposed to catch us
 
 The permission gate is the example. I wrote it to check that the model was deny-by-default, and it passed, and I felt good about it. Then DIAO Liuxianjia asked what the fit criterion actually said, and it said twelve paths, twelve denials. I implemented that and got eleven. The missing one was `.env` — our normaliser used `lstrip("./")`, which strips characters rather than a prefix, so `.env` became `env` and every deny rule keyed on a leading dot was dead. The configuration was correct; the code reading it was not; and the only reason we know is that the criterion counted.
 
-The mutation check changed my relationship with green. I had 165 passing tests (the suite is 199 now) and I believed them. Deleting the coverage branch broke exactly one test — good, it was load-bearing. Disabling the authority check broke ten. But then I had to write down that three of five guards had never been checked that way, and the sentence "we have five invariant suites" became "we have two proven and three asserted". That is a worse sentence and a better report. I put it in the debt register before I put it in the report, because I did not want to be the person who discovers the gap while writing the summary.
+The mutation check changed my relationship with green. I had 165 passing tests (the suite is 230 now) and I believed them. Deleting the coverage branch broke exactly one test — good, it was load-bearing. Disabling the authority check broke ten. But then I had to write down that three of five guards had never been checked that way, and the sentence "we have five invariant suites" became "we have two proven and three asserted". That is a worse sentence and a better report. I put it in the debt register before I put it in the report, because I did not want to be the person who discovers the gap while writing the summary.
 
 The thing I got wrong: I signed off the test-approval ledger late, and for a while gate 1 was red because the baseline had been written in one pass and nobody had approved its tests in advance. My instinct was to leave it red and describe it as rigour. The honest description is that we built a baseline without a test-approval step and then approved it retroactively; both facts are now in the review memo. A gate that was red for a legitimate reason and then went green for a slightly weaker reason should say so.
 
@@ -447,7 +447,7 @@ What I would tell the next team: write the provenance of your evidence before th
 | D5 transcripts | `transcripts/60371620-DIAO-Liuxianjia-T1…T5-*.md` (30 annotated interventions) |
 | D6 report | this file |
 | D7 repository + CI | `.github/workflows/ci.yml` (6 gates), branch protection described in `README.md` |
-| D8 source and tests | `src/medcheck/` (7 packages), `test/offline/` (199), `test/live/` (3, marked) |
+| D8 source and tests | `src/medcheck/` (7 packages), `test/offline/` (230), `test/live/` (3, marked) |
 | D9 static prompt | `Prompt.md` (5 gated phases) |
 
 ## Appendix B — Gate results at Sprint 1 close
@@ -457,7 +457,7 @@ $ python scripts/validate_requirements.py
 PASS: 25 requirements (5 invariants) validate against req-schema.json
 
 $ python -m pytest test/offline -q
-199 passed in 7.59s
+230 passed in 7.59s
 
 $ python scripts/eval_replay.py
 cases: 25
