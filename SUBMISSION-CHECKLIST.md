@@ -12,7 +12,7 @@ Run every command in §1 before you zip. It takes about 15 seconds and it is the
 pip install -e ".[dev]"
 
 python scripts/validate_requirements.py          # gate 3
-python -m pytest test/offline -q                 # gates 2 + 5  → expect 193 passed
+python -m pytest test/offline -q                 # gates 2 + 5  → expect 199 passed
 python scripts/eval_replay.py                    # gate 4      → expect 25 cases, 1.0 / 1.0
 python scripts/check_permissions_sync.py         # gate 2
 python scripts/build_ddi_fixtures.py --check     # fixtures not stale
@@ -95,7 +95,7 @@ Answer these out loud before you submit; if any answer is "uh", fix the artefact
 | D5 | five annotated transcripts | recorded — **needs certification or re-recording** |
 | D6 | report | complete in content — names in; **needs hours, and each reflection rewritten by its author** |
 | D7 | repo + six gates | complete, gates self-tested |
-| D8 | source + tests | complete (193 offline, 3 live marked) |
+| D8 | source + tests | complete (199 offline, 3 live marked) |
 | D9 | static prompt | complete |
 
 Two cells still depend on you, and both are marked in the report itself. That is the intended state: the artefacts a team must own are the ones about the team.
