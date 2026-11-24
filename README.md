@@ -27,7 +27,7 @@ MedCheck 读取一段自由文本的病例记录，返回一份可复核的裁�
 ├── architecture-blueprint.md     架构总纲 / 主约束文档（D2.1）
 ├── Prompt.md                     静态启动提示词，五阶段带门（D9）
 ├── Report.md                     过程报告 + 反思（D6，英文提交版）
-├── Report.zh.md                  过程报告中文对照版（D6）
+├── Report.zh.md                  过程报告中文对照版（非提交稿；D6 以 Report.md 为准）
 ├── SUBMISSION-CHECKLIST.md       只有团队能做的事（英文）
 ├── docs/
 │   ├── zh/                       全部中文对照版 + 中文索引
@@ -130,7 +130,7 @@ python -m medcheck.api.cli --case test/fixtures/cases/c01_approve_single.json --
 | D3 编码治理 | 完成 |
 | D4 验证治理 | 完成；审查备忘录 #0 = CHANGES REQUIRED，#1 = APPROVE |
 | D5 五份标注会话 | 已记录 T1–T5，共 30 处标注干预；每份文件开头写明取证来源 |
-| D6 报告 | 内容完成（英文 9,623 词 / 约 19 页；中文对照版在 `Report.zh.md`）；六人姓名学号已填，**工时与个人反思仍需本人补** |
+| D6 报告 | 内容完成（英文 9,600 词 / 约 17–21 页；中文对照稿在 `Report.zh.md`，不提交）；六人姓名学号、工时表已填（团队约定等权 1.00） |
 | D7 仓库 + 六道门 | 完成，门自身也被反向测试过 |
 | D8 源码 + 测试 | 确定性内核完成，250 项离线测试全绿；在线抽取器已接线但尚未实测 |
 | D9 静态提示词 | 完成 |

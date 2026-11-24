@@ -30,7 +30,7 @@ All seven must print `PASS`. If one fails, the failure is real — do not edit t
 
 | Where | What |
 |---|---|
-| `Report.md` §1 and `Report.zh.md` §1 | six names + student numbers — **done**; per-sprint hours (Sprint 1–5) still blank |
+| `Report.md` §1 | six names + student numbers — **done**; per-sprint hours filled with the agreed equal split (10 per sprint, 50 each, weight 1.00), and the section says it is a convention, not a measurement |
 | `Report.md` §1 hours table | per-sprint productive hours, then compute weights with the formula |
 | `Report.md` §13 / `Report.zh.md` §13 | name + student number lines are in — **each member still rewrites their own entry in their own voice** |
 | `transcripts/*.md` headers | "Annotating" lines carry real names — **done**; each annotator still has to certify the file |
