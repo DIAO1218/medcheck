@@ -36,7 +36,7 @@ python scripts/check_ai_use_log.py --changed src/medcheck/rules/dose.py docs/ai-
 | 两版报告 §13 | 姓名 + 学号已填——**每人仍须用自己语气重写自己那段** |
 | `transcripts/*.md` 文件头 | 「Annotating」行已换成真实姓名——**已填**；各人仍需逐份认证 |
 | `docs/test-approvals.yaml` | `approved_by` 换成真实姓名 |
-| `README.md` / `README.en.md` 末尾 | 真实 GitHub 地址 |
+| `README.md` / `README.md` 末尾 | 真实 GitHub 地址 |
 
 **工时的处理方式已定。** 团队选择等权（每人 50 小时），报告里明确写成「约定，不是实测」——这样既不编造差别，也不再留空格。若改成真实工时，记得同时改正文那一句。
 

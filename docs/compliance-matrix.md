@@ -133,7 +133,7 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 
 | Requirement | Artefact | Status |
 |---|---|---|
-| README in Chinese (team request) | `README.md` (Chinese, primary) + `README.en.md` (English) | met — both carry a language switch |
+| README in Chinese (team request) | `README.md` (Chinese, primary) + `README.md` (English) | met — both carry a language switch |
 | Every report has a Chinese counterpart | `Report.zh.md`, `docs/zh/compliance-matrix.zh.md`, `docs/zh/submission-checklist.zh.md`, `docs/zh/architecture-overview.zh.md`, `docs/zh/transcript-summaries.zh.md`, index in `docs/zh/README.md` | met |
 | The English text remains the submitted version | stated in `Report.zh.md` header and `docs/zh/README.md` | met |
 

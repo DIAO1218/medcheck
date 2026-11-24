@@ -8,7 +8,7 @@
 |---|---|---|
 | [`../../项目简介.md`](../../项目简介.md) | — | 给同学看的项目简介：做什么、为什么这么设计、现在能做什么 |
 | [`../../各角色具体分工.md`](../../各角色具体分工.md) | — | **分工清单**：六个角色各自打开哪个文件、做什么、怎么算做完（放在根目录） |
-| [`../../README.md`](../../README.md) | `README.en.md` | 项目入口（中文为主，英文版单独保留） |
+| [`../../README.md`](../../README.md) | `README.md` | 项目入口（中文为主，英文版单独保留） |
 | [`../../Report.zh.md`](../../Report.zh.md) | `Report.md` | 过程报告全文中文版（13 节 + 4 附录） |
 | [`architecture-overview.zh.md`](architecture-overview.zh.md) | `architecture-blueprint.md` + `docs/architecture/adr/001-…md` | 架构导读：接缝、数据流、结论语义、五条不变量、六层上下文、权限、被否方案 |
 | [`transcript-summaries.zh.md`](transcript-summaries.zh.md) | `transcripts/T1…T5` | 五场会话摘要，含 30 处干预的关键几条 |
@@ -16,13 +16,10 @@
 | [`submission-checklist.zh.md`](submission-checklist.zh.md) | `SUBMISSION-CHECKLIST.md` | 提交前要跑的命令、要填的表、要背下来的七个问题 |
 | [`task-mutation-checks.zh.md`](task-mutation-checks.zh.md) | — | 派活用：给 INV-002/004/005 做变异检验的分步任务单（DEBT-09） |
 | [`demo-video-script.zh.md`](demo-video-script.zh.md) | — | 10 分钟演示视频脚本：分镜、台词、命令、预期输出 |
-| [`demo-kit/cue-sheet.md`](demo-kit/cue-sheet.md) | — | **开录清单**：Win+G 分段录、配音、剪辑、45 分钟精简版 |
-| [`demo-kit/teleprompter.md`](demo-kit/teleprompter.md) | — | 提词卡：只有台词，按时间码分段 |
-| [`demo-kit/vo-en.txt`](demo-kit/vo-en.txt) / [`vo-zh.txt`](demo-kit/vo-zh.txt) | — | 按段落的纯文本，可直接粘进剪映「文本朗读」生成语音 |
-| [`demo-kit/subs-en.srt`](demo-kit/subs-en.srt) / [`subs-zh.srt`](demo-kit/subs-zh.srt) | — | 已按 9:20 时间码切好的字幕，可导入剪映 |
-| [`demo-kit/cards.html`](demo-kit/cards.html) | — | 全屏卡片（← → 翻页，F 全屏，B 黑屏），录屏时切画面用 |
 | [`demo-before-after.zh.md`](demo-before-after.zh.md) | — | 视频段 3 用：三组前后对比的实测复现步骤 |
 | [`presentation-outline.zh.md`](presentation-outline.zh.md) | — | 现场演示大纲：七项必答点、十五页、问答准备 |
+
+> 演示视频的素材（卡片、台词、字幕、成片）不在仓库里：它们在 `CS5351/demo-video-assets/`。作业说明的 D1–D9 不要求视频，所以仓库只保留与提交物直接相关的文档。
 
 ## 还没翻译的（按需再翻）
 
