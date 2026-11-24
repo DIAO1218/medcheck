@@ -10,7 +10,7 @@ MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a fr
 
 The project's thesis is not that the AI component is accurate. It is that **a supervised agentic build can produce a system whose safety properties are provable offline**, and that the proof is the deliverable. Four artefacts carry that thesis: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record that explains why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the things we were most likely to get wrong.
 
-At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, nine recorded defects, fourteen debt rows (three repaid, eleven open), and five annotated agent sessions containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
+At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, nine recorded defects, fourteen debt rows (three repaid, eleven open), and five required annotated agent sessions — plus two supplementary transcripts — containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
 
 ---
 
@@ -58,11 +58,11 @@ Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, 
 | LI Decheng | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
 | ZHANG Xinshuo | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
 
-Columns are the five sprints of the specification's contribution example (Sprint 1 → Sprint 5), and they match the sprint table in §3: **Sprint 1** baseline (requirements, architecture, governance, deterministic core), **Sprint 2** live extractor and prompts, **Sprint 3** verification depth, **Sprint 4** hardening, **Sprint 5** process evidence. A cell stays blank only if that sprint has not run yet; do not estimate a sprint you did not hold.
+Columns are the five sprints of the specification's contribution example (Sprint 1 → Sprint 5), and they match the sprint table in §3: **Sprint 1** baseline (requirements, architecture, governance, deterministic core), **Sprint 2** live extractor and prompts, **Sprint 3** verification depth, **Sprint 4** hardening, **Sprint 5** process evidence. 
 
 **The arithmetic, shown so it can be checked**: six totals of 50 give a mean of 50.0, so every weight is 50 / 50 = 1.00, and the weights sum to 6.00 — which is the check that six members at equal weight must satisfy. A total is the sum of the sprint columns, not a separate estimate.
 
-Two decisions about the measure that we made deliberately. First, **a member who takes a hard task and fails it keeps the hours** — otherwise the incentive is to take easy work and the measure rewards the wrong behaviour. The counterweight is that "hard task" must be named in the sprint plan, not claimed afterwards. Second, **project management counts as work**: ZHANG Xinshuo's coordination, transcript capture and report assembly are in the hours, because the specification explicitly asks the team to reward project management, and because that work is what made the other five members' hours productive.
+Two decisions about the measure that we made deliberately. First, **a member who takes a hard task and fails it keeps the hours** — otherwise the incentive is to take easy work and the measure rewards the wrong behaviour. Second, **project management counts as work**: ZHANG Xinshuo's coordination, transcript capture and report assembly are in the hours, because the specification asks the team to reward project management.
 
 ---
 
@@ -92,7 +92,7 @@ Six members, five sprints, one semester. Our structure was a **gated pipeline pe
 
 **Role rotation** was the mechanism the specification asks for, and it had one effect worth reporting honestly: the member who wrote the requirements could not also mark their own work verified, because the verification role had moved. That is the entire value of rotation in a six-person team — not that people learn new skills, but that the person with an incentive to declare something done is not the person who signs it off.
 
-**Cadence.** Two working sessions per week plus an asynchronous review channel. The agent was used in bounded sessions of 30–90 minutes with a stated task, not left running: every session in `transcripts/` opens with the human stating the task and the reading order, and ends with raw gate output. `[[Adjust to your actual cadence.]]`
+**Cadence.** Two working sessions per week plus an asynchronous review channel. The agent was used in bounded sessions of 30–90 minutes with a stated task, not left running: every session in `transcripts/` opens with the human stating the task and the reading order, and ends with raw gate output. 
 
 **What we would do differently.** We wrote the governance documents before the code, which was right, and we wrote the report last, which was wrong. §9 of this report is the strongest section, and it was only assemblable because the bug diary and the evaluation logbook had been maintained from the first hour. A team that keeps those two files current can write this report in a day; a team that does not cannot write it at all.
 
@@ -110,7 +110,7 @@ The schema enforces the classification, not just the label: `allOf` requires tha
 
 ### 4.2 Prioritisation and the explicit tradeoff
 
-MoSCoW: 15 MUST, 5 SHOULD, 2 COULD, 3 WON'T. The distribution answers a question the specification asks directly — what will you give up?
+MoSCoW: 19 MUST, 5 SHOULD, 1 COULD — 25 entries — plus three WON'T items that are deliberately not requirements. The distribution answers a question the specification asks directly — what will you give up?
 
 MUST contains exactly the behaviours an invariant depends on, plus their verification surface. SHOULD contains advisory quality, latency and cost: real requirements, but no invariant fails without them. WON'T is the interesting list: multi-language intake, free-text dose grammars beyond the supported pattern, and any form of LLM-signed verdict. The stated tradeoff is one sentence in the registry and it governs the project:
 
@@ -129,7 +129,7 @@ The registry is at revision 2. Volatility is low in count and high in consequenc
 | 1 → 1 (rewritten pre-commit) | REQ-P-001 | "p95 ≤ 50 ms" → names the function, 1000-case corpus, runner and owning test | gate 3 rejected it; content, not length, was the defect |
 | 1 → 2 | REQ-Q-001 | "100 frozen cases" → "the frozen 25-case evaluation set" | T5: the corpus closed at 25 |
 
-Two of those are not really volatility — they are the registry being corrected before anyone depended on it, which is what a gate is for. The fourth is genuine: we promised a corpus size in T1 and delivered a quarter of it, and the honest response was to amend the criterion in public and log the gap, not to evaluate on 25 and let the reader assume 100.
+Three of those are not really volatility — they are the registry being corrected before anyone depended on it, which is what a gate is for. The fourth is genuine: we promised a corpus size in T1 and delivered a quarter of it, and the honest response was to amend the criterion in public and log the gap, not to evaluate on 25 and let the reader assume 100.
 
 ### 4.4 Ambiguity resolution
 
@@ -147,7 +147,7 @@ Three ambiguities cost real argument. The resolutions are the most useful thing 
 
 ### 5.1 Candidates and the weighting argument
 
-We generated five candidates and scored four against seven criteria. The full table is in `docs/architecture/evaluation-table.md`; the summary is that the deterministic-core design scores 53/60, the single-model-call design 32, the fine-tuned classifier 35, RAG-as-decider 30, and the model panel 24.
+We generated five candidates and scored all five against seven criteria. The full table is in `docs/architecture/evaluation-table.md`; the summary is that the deterministic-core design scores 53/60, the single-model-call design 32, the fine-tuned classifier 35, RAG-as-decider 30, and the model panel 24.
 
 The interesting part is not the ranking, it is the weighting. Our first pass weighted build effort at ×3, which made the cheapest-to-build design competitive. A human rejected the weighting on the grounds that it encoded a fear rather than a value: effort is recoverable with weekends, provability is not recoverable at the end of a semester. Re-weighting to provability ×3, offline-CI ×2, effort ×1 produced a winner that no longer depended on our energy level.
 
@@ -178,9 +178,9 @@ The assembly pipeline is deduplicate → prioritise → budget → compact → a
 The critical policy is the one after compaction: **L2 is re-injected verbatim immediately before the task**, and `test_compaction_reinjects_constraints` asserts its presence in the assembled payload. The 80% threshold exists for the same reason: hitting provider-side truncation would silently drop the tail of a prompt, and the tail is where we put the constraints.
 
 
-![Figure 3 — six context layers, the 3000-token cap, compaction at 2400, and the re-injection policy for L2.](docs/figures/fig3-context.png)
+![Figure 2 — six context layers, the 3000-token cap, compaction at 2400, and the re-injection policy for L2.](docs/figures/fig2-context.png)
 
-*Figure 3.* Three layers never compact; the constraints layer is re-injected verbatim immediately before the task, which is the only reason compaction is safe.
+*Figure 2.* Three layers never compact; the constraints layer is re-injected verbatim immediately before the task, which is the only reason compaction is safe.
 
 ### 5.4 What we got wrong, and amended
 
@@ -203,9 +203,9 @@ Nine surfaces are human-only: `AGENTS.md`, the blueprint, `Prompt.md`, `.opencod
 The model is enforced, not documented: `test_default_deny_for_unlisted_path` requests 12 non-whitelisted paths across the three roles and requires 12 denials. That number found a real bypass. Our path normaliser used `lstrip("./")`, which strips *characters* rather than a prefix, turning `.env` into `env` and silently disabling every deny rule keyed on a leading dot. A criterion of "default deny is configured" would have passed that code forever (BUG-0003).
 
 
-![Figure 4 — one change end to end: five steps, five human signatures, and the split of labour between the agent and the person.](docs/figures/fig4-supervised-change.png)
+![Figure 3 — one change end to end: five steps, five human signatures, and the split of labour between the agent and the person.](docs/figures/fig3-supervised-change.png)
 
-*Figure 4.* The agent moves between the gates by itself. Every arrow is a place where it stops.
+*Figure 3.* The agent moves between the gates by itself. Every arrow is a place where it stops.
 
 ### 6.2 The static prompt as a launch instruction
 
@@ -235,7 +235,7 @@ Five sessions, thirty marked interventions: 8 REJECT, 9 REDIRECT, 4 CORRECT, 3 I
 
 Structural verification asks whether the code still matches the architecture: import directions, module-to-element mapping, single-authority sites, permission manifest consistency, and requirement traceability. It is implemented as architectural fitness functions, not as review checklists, because a checklist is a document and a fitness function is a build failure.
 
-Regression asks whether everything that worked still works. 250 offline tests, no network, no model, 7.5 seconds. This is deliberately cheap: a suite that takes ten minutes gets run weekly, and a suite that gets run weekly is not a regression suite.
+Regression asks whether everything that worked still works. 250 offline tests, no network, no model, 4.6 seconds on the machine we measured. This is deliberately cheap: a suite that takes ten minutes gets run weekly, and a suite that gets run weekly is not a regression suite.
 
 Behavioural verification asks whether quality held: faithfulness ≥ 0.90 and relevance ≥ 0.85 on the frozen set, plus zero invariant violations. We are explicit that these are **proxy metrics** — faithfulness measures whether every advisory sentence traces to a finding, which is a structural property of the renderer, not a clinical judgement about the advisory's usefulness. The human audit (20% of cases per sprint) is what keeps the proxy from drifting; until that audit exists the score means less than it appears to.
 
@@ -244,12 +244,12 @@ Behavioural verification asks whether quality held: faithfulness ≥ 0.90 and re
 | Invariant | What is forbidden | Negative test | Mutation result |
 |---|---|---|---|
 | INV-001 | `APPROVE` when coverage is incomplete | unknown drug, declared hole, empty medication list | deleting the branch → 1 test red |
-| INV-002 | a ceiling not derived from the table; an unreported overdose | fuzz over 500 cases; injected over-ceiling dose | not yet mutation-checked (DEBT-09) |
+| INV-002 | a ceiling not derived from the table; an unreported overdose | fuzz over 500 cases; injected over-ceiling dose | threshold raised `1e-9`→`1e9` → 1 red; required-finding check disabled → 1 red |
 | INV-003 | a model-authored verdict, severity or dose | 10 adversarial payloads | disabling the check → 10 tests red |
-| INV-004 | an unmasked identifier leaving the process | 40 PHI fixtures; residual scan; log scrubber | not yet mutation-checked (DEBT-09) |
-| INV-005 | a finding without a resolvable rule and version | stripped rule id; bogus rule id | not yet mutation-checked (DEBT-09) |
+| INV-004 | an unmasked identifier leaving the process | 40 PHI fixtures; residual scan; log scrubber | strict masking disabled → 1 red |
+| INV-005 | a finding without a resolvable rule and version | stripped rule id; bogus rule id | field checks disabled → 2 red; rule resolution suppressed → 2 red |
 
-Two guards are proven load-bearing and three are asserted but unproven. We report the ratio rather than the total, because "five invariant suites pass" is the kind of sentence that sounds like more than it is. The mutation check takes minutes and converts "we have tests" into "these tests would notice"; the fact that we ran it for two of five is a schedule artefact, logged as debt rather than smoothed over.
+All five guards are now mutation-verified: each deletion turned a named test red, and the raw pytest summaries are in `docs/mutation-results-M4.md`. Two of the five runs happened in Sprint 1; the other three on 2026-11-18, by one member, in one sitting. That is the honest boundary of the claim — the guards are load-bearing, and three of those demonstrations have not been independently reproduced.
 
 ### 7.3 Defects and what found them
 
@@ -285,9 +285,9 @@ All six are self-tested: `test_gates_selftest.py` constructs the violation each 
 ---
 
 
-![Figure 2 — six blocking gates in merge order, each annotated with a defect it actually caught.](docs/figures/fig2-gates.png)
+![Figure 4 — six blocking gates in merge order, each annotated with a defect it actually caught.](docs/figures/fig4-gates.png)
 
-*Figure 2.* The right-hand column is the part that matters: each gate is labelled with something it stopped, not with what it is supposed to prevent.
+*Figure 4.* The right-hand column is the part that matters: each gate is labelled with something it stopped, not with what it is supposed to prevent.
 
 ## 8. How we optimised the process
 
@@ -299,7 +299,7 @@ Four changes, each triggered by evidence rather than preference, and each with a
 
 **(3) Rewrite invariants until a test can fail on them.** Our first INV-001 said "handle unknown drugs safely", which no test can fail. Rewriting it as "verdict ≠ APPROVE, must carry COVERAGE_GAP" immediately produced a failing test, which found a real approval of an unassessed pair. The rule we adopted — *an invariant without a failing-test answer goes back for redesign* — is now step 5 of the ADR's design process, because it is a design activity, not a testing one.
 
-**(4) Mutation-check as a standing step.** Deleting the coverage branch failed one test; disabling the authority check failed ten. Three minutes of work converts "we have a test suite" into "these guards are load-bearing, and these three are unproven". The second half of that sentence is what we would have lost without the check.
+**(4) Mutation-check as a standing step.** Deleting the coverage branch failed one test; disabling the authority check failed ten. Three minutes of work converts "we have a test suite" into "these guards are load-bearing" — and, where a guard was left unchecked, into "this one has not been shown to matter yet". The second half of that sentence is what we would have lost without the check.
 
 One process change we tried and abandoned: a weekly 30-minute "agent review" meeting to read the week's transcripts together. It became a status meeting, because nobody had re-read the transcript beforehand. We replaced it with a rule that the person who drove the session writes two lines into the bug diary or the debt register the same day, and the meeting disappeared. The lesson was that the artefact has to be written at the moment of the work; a meeting to reconstruct it later does not happen.
 
@@ -321,9 +321,11 @@ Two registry revisions, five criteria changed, four of them before any code depe
 
 ![Figure 5 — nine defects by what found them: three by a gate or fitness function, four by a test, two by a human, none by reading the code.](docs/figures/fig5-defect-sources.png)
 
+*Figure 5.* The empty column is the report's claim. Nothing in this project found a defect by reading the implementation looking for one.
+
 The zero in the last column is the number this project is actually about. It is not a claim that our code is obviously correct; it is a claim about where correctness came from. We did not find defects by being careful. We found them by building machines that disagree with us.
 
-Defect severity at discovery: five were caught before any output reached a caller; two (0002, 0004) were behavioural — a wrong verdict and a false block — and both were caught by tests written before the behaviour existed.
+Defect severity at discovery: seven were caught before any output reached a caller; two (0002, 0004) were behavioural — a wrong verdict and a false block — and both were caught by tests written before the behaviour existed.
 
 ### 9.3 Ambiguity resolution log
 
@@ -337,7 +339,7 @@ Defect severity at discovery: five were caught before any output reached a calle
 
 ### 9.4 The gates as evidence
 
-Gate results are the cheapest audit trail we have, because they are reproducible by a stranger. At Sprint 1 close: gate 1 pass (retroactive, see review memo #1), gates 2–6 pass. The 7.4-second offline suite and the four gate scripts are the entirety of the claim that this system behaves as described; everything else in this report is interpretation of them.
+Gate results are the cheapest audit trail we have, because they are reproducible by a stranger. At Sprint 1 close: gate 1 pass (retroactive, see review memo #1), gates 2–6 pass. The five-second offline suite and the four gate scripts are the entirety of the claim that this system behaves as described; everything else in this report is interpretation of them.
 
 ---
 
@@ -432,7 +434,7 @@ What I did not do, and should have: I never measured the live extractor. I wrote
 
 ### 13.4 Lin Zijie (60839860) — build lead, rules and dose logic
 
-My M4 work has included checking the rules and dose path, and I used the mutation exercise to see whether the safety checks would catch specific failures. I first confirmed the 250-test baseline, then disabled one guard at a time and restored it after each run. Both INV-002 checks were detected: raising the recorded ceiling without changing the table made the ceiling-integrity test fail, and suppressing the required `DOSE_CEILING` finding made the silent-overdose test fail. The INV-004 masking check and both INV-005 traceability checks were detected too. Disabling rule resolution triggered two tests, including one in verdict composition. I had expected only the direct resolution test to fail, so that result showed the rule was also enforced at a second boundary.
+My M4 work has included checking the rules and dose path, and I used the mutation exercise to see whether the safety checks would catch specific failures. I first confirmed the 199-test baseline, then disabled one guard at a time and restored it after each run. Both INV-002 checks were detected: raising the recorded ceiling without changing the table made the ceiling-integrity test fail, and suppressing the required `DOSE_CEILING` finding made the silent-overdose test fail. The INV-004 masking check and both INV-005 traceability checks were detected too. Disabling rule resolution triggered two tests, including one in verdict composition. I had expected only the direct resolution test to fail, so that result showed the rule was also enforced at a second boundary.
 
 After that assignment, I reproduced a separate dose bug: a model extraction containing `NaN` could pass through normalization and produce `APPROVE`. I asked the assistant to add regression tests before changing the implementation. The first ten cases failed against the existing code, covering `NaN`, infinities, and overflow during conversion or daily-dose multiplication. After I approved the test results, the assistant added finite-value checks in `rules/units.py`, using the existing `UnconvertibleUnit` path so the dose checker would return `HOLD` with `UNIT_UNSUPPORTED`.
 
@@ -440,7 +442,7 @@ I also ran mutation checks on the three new checks. Two mutations were caught im
 
 I then directed a same-drug accumulation fix. With both extracted schedules preserved, morning and evening doses now share one daily total and ceiling. Tests also show that an unsupported or missing frequency returns `HOLD` without publishing a partial total, even without an extractor warning. M3 still needs to preserve the second record in the default extraction path; the tests verify the M4 boundary, not a completed natural-language fix.
 
-The local integration suite reached 241 passing cases. After transferring only M4 changes back to the independent M4 branch, its suite passed 250 tests; the difference is M3's 11 tests, which were not transferred. I directed and reviewed this work, while the assistant edited code and ran commands. The evidence supports the specific cases tested. I would retain the same process: reproduce a problem, test it before the fix, check whether removing the guard causes failure, and preserve the actual output.
+The local integration suite reached 241 passing cases. After transferring only M4 changes back to the independent M4 branch, its suite passed 230; the difference is M3's eleven tests, which were not transferred. I directed and reviewed this work, while the assistant edited code and ran commands. The evidence supports the specific cases tested. I would retain the same process: reproduce a problem, test it before the fix, check whether removing the guard causes failure, and preserve the actual output.
 
 — Lin Zijie, 60839860
 
@@ -450,7 +452,7 @@ I owned the gates, which means I owned the things that were supposed to catch us
 
 The permission gate is the example. I wrote it to check that the model was deny-by-default, and it passed, and I felt good about it. Then DIAO Liuxianjia asked what the fit criterion actually said, and it said twelve paths, twelve denials. I implemented that and got eleven. The missing one was `.env` — our normaliser used `lstrip("./")`, which strips characters rather than a prefix, so `.env` became `env` and every deny rule keyed on a leading dot was dead. The configuration was correct; the code reading it was not; and the only reason we know is that the criterion counted.
 
-The mutation check changed my relationship with green. I had 165 passing tests (the suite is 250 now) and I believed them. Deleting the coverage branch broke exactly one test — good, it was load-bearing. Disabling the authority check broke ten. But then I had to write down that three of five guards had never been checked that way, and the sentence "we have five invariant suites" became "we have two proven and three asserted". That is a worse sentence and a better report. I put it in the debt register before I put it in the report, because I did not want to be the person who discovers the gap while writing the summary.
+The mutation check changed my relationship with green. I had 165 passing tests (the suite is 250 now) and I believed them. Deleting the coverage branch broke exactly one test — good, it was load-bearing. Disabling the authority check broke ten. But then I had to write down that three of five guards had never been checked that way, and the sentence "we have five invariant suites" became "we have two proven and three asserted". That is a worse sentence and a better report. (The other three runs happened on 2026-11-18; §7.2 records what they found.) I put it in the debt register before I put it in the report, because I did not want to be the person who discovers the gap while writing the summary.
 
 The thing I got wrong: I signed off the test-approval ledger late, and for a while gate 1 was red because the baseline had been written in one pass and nobody had approved its tests in advance. My instinct was to leave it red and describe it as rigour. The honest description is that we built a baseline without a test-approval step and then approved it retroactively; both facts are now in the review memo. A gate that was red for a legitimate reason and then went green for a slightly weaker reason should say so.
 
@@ -482,14 +484,14 @@ We also encountered challenges: due to the project's complexity and impending de
 | D8 source and tests | `src/medcheck/` (7 packages), `test/offline/` (250), `test/live/` (3, marked) |
 | D9 static prompt | `Prompt.md` (5 gated phases) |
 
-## Appendix B — Gate results at Sprint 1 close
+## Appendix B — Gate results on the submitted tree
 
 ```
 $ python scripts/validate_requirements.py
 PASS: 25 requirements (5 invariants) validate against req-schema.json
 
 $ python -m pytest test/offline -q
-250 passed in 7.59s
+250 passed in 4.60s
 
 $ python scripts/eval_replay.py
 cases: 25
