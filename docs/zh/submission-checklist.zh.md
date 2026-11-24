@@ -25,7 +25,6 @@ python scripts/check_ai_use_log.py --changed src/medcheck/rules/dose.py docs/ai-
 
 ## 1b. 仓库已经发布
 
-<https://github.com/DIAO1218/medcheck> 已公开，CI 绿，`main` 已开分支保护（需 PR + 一次批准 + `all gates`）。后续推送：`git push origin main`。若你的网络连不上 `github.com`，见 `PUBLISH.zh.md` §6。
 
 ## 2. 填六个人的身份（只有你们能做）
 
