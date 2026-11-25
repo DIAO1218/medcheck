@@ -123,7 +123,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | D7 repo + CI gates | complete; gates self-tested |
 | D8 source + tests | deterministic core complete, 250 offline tests green; live extractor wired but unmeasured |
 | D5 five annotated transcripts | recorded T1–T5, 30 annotated interventions; provenance stated in each file |
-| D6 report | complete in content (9,623 words, ~19 pages at Point 12); the six names and student numbers are in, **hours and personal reflections are still the team's to fill** — see `SUBMISSION-CHECKLIST.md` §2 |
+| D6 report | complete: 9,723 words, 15 pages at 12 pt single spacing; six names and student numbers in, contribution table filled, six reflections in each member's own words — see `SUBMISSION-CHECKLIST.md` §2 |
 
 The transcripts are reconstructed from the Sprint 1 build log with agent output quoted verbatim and human turns condensed from recorded decisions. Each file says so at the top; the team must certify or re-record them (`transcripts/README.md`). A reader should treat the green suite as evidence about the deterministic core, and the transcripts as evidence about supervision only once certified.
 
