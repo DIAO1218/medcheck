@@ -242,7 +242,7 @@ The six entries below were written on 2026-11-24, after the merge queue closed, 
 ### GitHub PR #5 — docs(report): update M6 self-reflection (Chinese)
 
 - Reviewer: verification lead (retrospective) · Date: 2026-11-24 · ADR: none
-- Changed: `Report.zh.md` §13.6
+- Changed: `Report.zh.md` §13.6 (a reading copy later removed from the submission)
 
 Same content as PR #10 in Chinese. The same open concern applies: the prose is generic and the failure narrative is gone.
 

@@ -129,13 +129,9 @@ Audited 2026-11-14 against registry revision 2 and tag `s0-baseline`.
 | Stops for human approval before generating code | Phase 1 hard stop on `PLAN APPROVED`; "silence is not approval" | met |
 | Does not run the agent unattended to completion | Phase 5 hand-off; standing prohibitions | met |
 
-## Bilingual delivery
+## Language
 
-| Requirement | Artefact | Status |
-|---|---|---|
-| README in Chinese (team request) | `README.md` (Chinese, primary) + `README.md` (English) | met — both carry a language switch |
-| Every report has a Chinese counterpart | `Report.zh.md`, `docs/zh/compliance-matrix.zh.md`, `docs/zh/submission-checklist.zh.md`, `docs/zh/architecture-overview.zh.md`, `docs/zh/transcript-summaries.zh.md`, index in `docs/zh/README.md` | met |
-| The English text remains the submitted version | stated in `Report.zh.md` header and `docs/zh/README.md` | met |
+The submission is English-only. Earlier drafts carried a Chinese companion tree (`Report.zh.md`, `docs/zh/`); it was removed before packaging so the submitted structure matches the requirement sheet exactly. Team-internal Chinese notes are not part of the deliverable.
 
 ## Submission format and required structure
 

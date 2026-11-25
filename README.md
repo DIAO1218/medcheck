@@ -1,7 +1,5 @@
 # MedCheck
 
-Chinese version: [README.zh.md](README.zh.md) · Chinese companion docs: [docs/zh/README.md](docs/zh/README.md)
-
 **Medication interaction and dose-ceiling adjudication with a deterministic safety core.**
 *CS5351 Agentic Software Engineering Project — NOT FOR CLINICAL USE.*
 

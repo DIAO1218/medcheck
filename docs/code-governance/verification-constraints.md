@@ -42,7 +42,7 @@ INV-002, INV-004 and INV-005 were measured on 2026-11-18 by Lin Zijie (60839860)
 | both required-field checks disabled in `contracts.py:203,205` | `test_inv005_missing_rule_id_aborts`, `test_inv005_missing_table_version_aborts` (2 failed, 197 passed) | load-bearing, measured |
 | exception for unknown rules suppressed in `verdict.py:76` | `test_inv005_unresolvable_rule_aborts`, `test_inv005_compose_refuses_unresolvable_finding` (2 failed, 197 passed) | load-bearing, measured |
 
-The task sheet `docs/zh/task-mutation-checks.zh.md` expected only `test_inv005_unresolvable_rule_aborts` for the last row. The run also failed `test_inv005_compose_refuses_unresolvable_finding`. Both detected the missing rejection. DEBT-09 is repaid on the strength of `docs/mutation-results-M4.md`.
+The task sheet circulated for the mutation check expected only `test_inv005_unresolvable_rule_aborts` for the last row. The run also failed `test_inv005_compose_refuses_unresolvable_finding`. Both detected the missing rejection. DEBT-09 is repaid on the strength of `docs/mutation-results-M4.md`.
 
 A guard whose deletion breaks nothing is either untested or unnecessary — both are findings for the debt register.
 
