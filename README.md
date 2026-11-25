@@ -22,7 +22,6 @@ MedCheck reads a free-text clinical case note and returns a reviewable adjudicat
 ├── architecture-blueprint.md     master constraint document (D2.1)
 ├── Prompt.md                     static startup prompt, five gated phases (D9)
 ├── Report.md                     process report + reflections (D6, 9,600 words)
-├── SUBMISSION-CHECKLIST.md       what only the team can do before zipping
 ├── docs/compliance-matrix.md     every requirement-sheet clause → artefact → status
 ├── docs/
 │   ├── req/
@@ -105,7 +104,6 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | If you want to… | Read |
 |---|---|
 | check the submission against the requirement sheet | `docs/compliance-matrix.md` (clause → artefact → status) |
-| know what only the team can do | `SUBMISSION-CHECKLIST.md` |
 | see the one decision everything else follows from | `docs/architecture/adr/001-…md` |
 | see what broke and what found it | `docs/bug-diary.md` (8 defects, 0 found by reading code looking for bugs) |
 | see the agent being supervised | `transcripts/` (30 marked interventions) |
@@ -121,7 +119,7 @@ Exit codes: `0` adjudicated · `2` malformed input · `3` invariant abort / inva
 | D7 repo + CI gates | complete; gates self-tested |
 | D8 source + tests | deterministic core complete, 250 offline tests green; live extractor wired but unmeasured |
 | D5 five annotated transcripts | recorded T1–T5, 30 annotated interventions; provenance stated in each file |
-| D6 report | complete: 9,723 words, 15 pages at 12 pt single spacing; six names and student numbers in, contribution table filled, six reflections in each member's own words — see `SUBMISSION-CHECKLIST.md` §2 |
+| D6 report | complete: 9,723 words, 15 pages at 12 pt single spacing; six names and student numbers in, contribution table filled, six reflections in each member's own words |
 
 The transcripts are reconstructed from the Sprint 1 build log with agent output quoted verbatim and human turns condensed from recorded decisions. Each file says so at the top; the team must certify or re-record them (`transcripts/README.md`). A reader should treat the green suite as evidence about the deterministic core, and the transcripts as evidence about supervision only once certified.
 

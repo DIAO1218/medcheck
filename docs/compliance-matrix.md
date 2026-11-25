@@ -143,7 +143,7 @@ The submission is English-only. Earlier drafts carried a Chinese companion tree 
 | README: how to run offline, live, full suite | met (three commands + exit codes) |
 | README: GitHub repo that contains the real project | <https://github.com/DIAO1218/medcheck> | met |
 
-Structure check: every path in §5 exists, plus a mirror of the blueprint, `docs/test-approvals.yaml`, `SUBMISSION-CHECKLIST.md`, `docs/compliance-matrix.md`, `data/rules/`, `scripts/`.
+Structure check: every path in §5 exists, plus a mirror of the blueprint, `docs/test-approvals.yaml`, `docs/compliance-matrix.md`, `data/rules/`, `scripts/`.
 
 ---
 
