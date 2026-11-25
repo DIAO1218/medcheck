@@ -362,3 +362,33 @@ entries:
       offline suite reached 217 passing tests. Requirements, permission,
       AI-use-log and test-approval/ADR gates passed. Ruff is unavailable locally.
       Existing uncommitted NaN changes and the human-authored ADR were preserved.
+
+  - id: AIU-2026-11-23-01
+    date: "2026-11-23"
+    sprint: 3
+    session: "M5 verification review"
+    human: "LI Decheng (61078578)"
+    agent: "Cursor coding assistant"
+    task: >-
+      Record the verification review: correct the mutation table, review GitHub
+      PR #1, keep both review-memo sections, and enter Lin Zijie's pasted pytest
+      summaries.
+    delegated:
+      - "read the open branches and the two review-memo edits"
+      - "draft the combined memo, the measured rows, and the DEBT-09 repayment"
+      - "run the six local checks named in the role sheet"
+    human_checked:
+      - "hours, the reflection rewrite, and Certified lines stayed out of that session"
+      - "nothing was pushed to feat/m3-safety-boundaries and GitHub Approve was not used"
+      - "DEBT-09 is repaid by citation of docs/mutation-results-M4.md, which is now on main"
+    artefacts:
+      - "docs/code-governance/verification-constraints.md"
+      - "docs/review-memo.md"
+      - "docs/debt-register.md"
+      - "transcripts/61078578-LI-Decheng.md"
+      - "Report.md section 13.5"
+    transcript: "transcripts/61078578-LI-Decheng.md"
+    notes: >-
+      The transcript is a reconstruction of the 2026-11-22 and 2026-11-23
+      verification sessions. It does not certify T1-T5. The mutation-results
+      file was not on main when the sessions were run; it is on main now.
