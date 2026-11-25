@@ -6,11 +6,11 @@
 
 ## 0. Summary
 
-MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a free-text clinical case note and returns one of three verdicts — `APPROVE`, `HOLD`, `BLOCK` — with an ordered list of findings, each citing a rule and the table version it was evaluated against. The application contains a genuine AI component (a language model extracts the prescription from prose and paraphrases the findings) and a genuine safety-relevant boundary (the verdict, the severity, and every dose number are produced by deterministic code that the model cannot write to).
+MedCheck is a medication interaction and dose-ceiling adjudicator. It reads a free-text clinical case note and returns one of three verdicts, `APPROVE`, `HOLD`, or `BLOCK`, with an ordered list of findings. Each finding cites a rule and the table version it was evaluated against. A language model extracts the prescription from prose and paraphrases the findings. The verdict, the severity, and every dose number come from deterministic code the model cannot write to.
 
-The project's thesis is not that the AI component is accurate. It is that **a supervised agentic build can produce a system whose safety properties are provable offline**, and that the proof is the deliverable. Four artefacts carry that thesis: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record that explains why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the things we were most likely to get wrong.
+The project tests one claim: a supervised agentic build can produce a system whose safety properties are provable offline, and the proof is the deliverable. Four artefacts carry that claim: a machine-readable requirements registry in which five invariants have zero-tolerance, testable criteria; an architecture decision record explaining why the model is confined to the edges; a permission model under which the agent that writes code cannot write the rules it is judged by; and six CI gates that fail on the mistakes we were most likely to make.
 
-At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, nine recorded defects, fourteen debt rows (three repaid, eleven open), and five required annotated agent sessions — plus two supplementary transcripts — containing thirty marked human interventions. Two things remain genuinely unproven and are stated as such: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
+At the close of Sprint 1 the repository holds 250 deterministic offline tests, a 25-case frozen evaluation set with every verdict pinned, nine recorded defects, fourteen debt rows (three repaid, eleven open), and five required annotated agent sessions plus two supplementary transcripts, containing thirty marked human interventions. Two things remain unproven: the transcripts are reconstructions that require member certification, and the live model path has never been measured against real notes.
 
 ---
 
@@ -58,29 +58,29 @@ Weights follow the specification's formula: `weight_i = hours_i / mean(hours)`, 
 | LI Decheng | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
 | ZHANG Xinshuo | 10 | 10 | 10 | 10 | 10 | 50 | 1.00 |
 
-Columns are the five sprints of the specification's contribution example (Sprint 1 → Sprint 5), and they match the sprint table in §3: **Sprint 1** baseline (requirements, architecture, governance, deterministic core), **Sprint 2** live extractor and prompts, **Sprint 3** verification depth, **Sprint 4** hardening, **Sprint 5** process evidence. 
+The columns are the five sprints from the specification's contribution example (Sprint 1 to Sprint 5), and they match §3: Sprint 1 covers requirements, architecture, governance and the deterministic core; Sprint 2 the live extractor and prompts; Sprint 3 verification depth; Sprint 4 hardening; Sprint 5 process evidence.
 
-**The arithmetic, shown so it can be checked**: six totals of 50 give a mean of 50.0, so every weight is 50 / 50 = 1.00, and the weights sum to 6.00 — which is the check that six members at equal weight must satisfy. A total is the sum of the sprint columns, not a separate estimate.
+The arithmetic: six totals of 50 give a mean of 50.0, so every weight is 50 / 50 = 1.00, and the weights sum to 6.00, which is the check for six members at equal weight. A total is the sum of the sprint columns, not a separate estimate.
 
-Two decisions about the measure that we made deliberately. First, **a member who takes a hard task and fails it keeps the hours** — otherwise the incentive is to take easy work and the measure rewards the wrong behaviour. Second, **project management counts as work**: ZHANG Xinshuo's coordination, transcript capture and report assembly are in the hours, because the specification asks the team to reward project management.
+We made two deliberate decisions about the measure. A member who takes a hard task and fails it keeps the hours; otherwise the incentive is to take easy work and the measure rewards the wrong behaviour, and project management counts as work.
 
 ---
 
 ## 2. The problem, and the architecture in one page
 
-A clinician writing a case note writes prose: "Warfarin 5 mg once daily, aspirin 100 mg, eGFR 55." Turning that into a safety verdict requires two very different capabilities — reading language, and deciding about a patient. The naive implementation uses one model call for both, and it is cheap, fast, and impossible to verify.
+A clinician writing a case note writes prose: "Warfarin 5 mg once daily, aspirin 100 mg, eGFR 55." Turning that into a safety verdict requires reading language and deciding about a patient. The naive implementation uses one model call for both. It is cheap and fast, and impossible to verify.
 
-We split them. The model does **perception**: prose in, a schema-checked `ExtractionRecord` out, containing drug names, raw dose strings, and frequency phrases. It never sees the interaction tables, never emits a severity, never produces a dose in milligrams. Everything that decides is deterministic: unit normalisation from a closed table, interaction lookup, dose-ceiling comparison with renal banding, coverage accounting, verdict composition. The model reappears at the exit as a constrained paraphraser that restates findings which already exist, and nothing downstream reads its output.
+We split them. The model handles perception: prose in, a schema-checked `ExtractionRecord` out, with drug names, raw dose strings and frequency phrases. It never sees the interaction tables, emits a severity or produces a dose in milligrams. Everything that decides is deterministic: unit normalisation from a closed table, interaction lookup, dose-ceiling comparison with renal banding, coverage accounting, verdict composition. At the exit the model paraphrases findings that already exist, and nothing downstream reads its output.
 
-Three mechanisms make that split real rather than aspirational. The extraction contract **has no field** for a verdict, a severity, or a normalised dose, so a hallucinated verdict has nowhere to go. Only one module — `adjudicator/verdict.py` — may assign `Verdict.APPROVE`, and a fitness function asserts it. And the perception layer may not even import the judgement layer, which a fitness function also asserts.
+Three mechanisms enforce the split. The extraction contract has no field for a verdict, a severity or a normalised dose, so a hallucinated verdict has nowhere to go. Only `adjudicator/verdict.py` may assign `Verdict.APPROVE`, and a fitness function asserts it. The perception layer may not import the judgement layer, which another fitness function asserts.
 
-The consequence is the property we wanted: **every invariant has an offline test that fails when the invariant is removed**. The cost is recall. Prose the extraction grammar cannot express becomes a `COVERAGE_GAP` and a human review. We accepted that cost in the architecture decision record rather than discovering it in week eight.
+The result is that every invariant has an offline test that fails when the invariant is removed. The cost is recall: prose the extraction grammar cannot express becomes a `COVERAGE_GAP` and a human review. We accepted that cost in the architecture decision record rather than discovering it in week eight.
 
 ---
 
 ## 3. Process
 
-Six members, five sprints, one semester. Our structure was a **gated pipeline per increment**, not a gantt chart: each increment went requirements → plan → approval → tests → implementation → verification → revision, with a human stop between every pair of stages.
+Six members, five sprints, one semester. Our structure was a gated pipeline per increment, not a gantt chart: each increment went requirements → plan → approval → tests → implementation → verification → revision, with a human stop between every pair of stages.
 
 | Sprint | Focus | Exit criteria | What actually happened |
 |---|---|---|---|
@@ -102,11 +102,11 @@ Six members, five sprints, one semester. Our structure was a **gated pipeline pe
 
 ### 4.1 Classification
 
-The registry holds 25 requirements in seven types: 8 functional, 5 invariant, 2 quality, 2 performance, 1 cost, 2 security, 5 governance. It also carries a PRD block — vision, users, in-scope, out-of-scope, success metrics, non-goals — so that the 'product requirements document' and the 'consolidated registry' the specification asks for are two views of one file rather than two documents that can drift. The classification decision that mattered most was putting the five safety rules in `invariant` rather than `functional`.
+The registry holds 25 requirements in seven types: 8 functional, 5 invariant, 2 quality, 2 performance, 1 cost, 2 security, 5 governance. It also carries a PRD block (vision, users, in-scope, out-of-scope, success metrics, non-goals), so the 'product requirements document' and the 'consolidated registry' the specification asks for are two views of one file and cannot drift apart. The classification decision that mattered most was putting the five safety rules under `invariant` rather than `functional`.
 
-A functional requirement is a promise with a schedule attached: it can be deferred, descoped, or traded in a sprint review. An invariant cannot. When we first drafted the registry, all five safety rules were marked functional with a note saying they were important. That is exactly the shape of a rule that gets traded at 2am in week twelve, by whoever is tired, without anyone recording the decision as a safety decision. Reclassifying them cost us nothing and removed a category of future failure.
+A functional requirement is a promise with a schedule: it can be deferred, descoped or traded in a sprint review. An invariant cannot. When we first drafted the registry, all five safety rules were marked functional with a note saying they were important. That is how a safety rule gets traded at 2am in week twelve, by whoever is tired, with nobody recording it as a safety decision. Reclassifying them cost us nothing and removed a category of future failure.
 
-The schema enforces the classification, not just the label: `allOf` requires that `type: invariant` implies `zero_tolerance: true`, and a cross-field check requires a falsifiable quantity in the fit criterion.
+The schema enforces the classification mechanically: `allOf` requires that `type: invariant` implies `zero_tolerance: true`, and a cross-field check requires a falsifiable quantity in the fit criterion.
 
 ### 4.2 Prioritisation and the explicit tradeoff
 
@@ -135,9 +135,9 @@ Three of those are not really volatility — they are the registry being correct
 
 Three ambiguities cost real argument. The resolutions are the most useful thing in this section, because the same three questions will recur in any safety-adjacent AI project.
 
-**"What does it mean for a drug pair to be uncovered?"** A table of 18 drugs has 153 possible pairs; ours enumerates 40. Is the other 113 "no interaction" or "unknown"? Treating absence as "no interaction" is the open-world assumption, and it produced a real wrong `APPROVE` (BUG-0002). We resolved it by making the table **declare its own holes**: pairs we have not assessed are listed, and a listed hole produces `COVERAGE_GAP`. The rule we adopted: *absence of evidence is only evidence of absence where we have written down that we looked.*
+**"What does it mean for a drug pair to be uncovered?"** A table of 18 drugs has 153 possible pairs; ours enumerates 40. Is the other 113 "no interaction" or "unknown"? Treating absence as "no interaction" is the open-world assumption, and it produced a real wrong `APPROVE` (BUG-0002). We resolved it by making the table declare its own holes: pairs we have not assessed are listed, and a listed hole produces `COVERAGE_GAP`. The rule we adopted: *absence of evidence is only evidence of absence where we have written down that we looked.*
 
-**"Should a missing eGFR block or hold?"** Our first implementation computed a conservative ceiling from the most restrictive renal band and blocked above it. A human rejected this: blocking asserts "this dose is too high", which we do not know. The honest verdict is `HOLD` with `RENAL_DATA_MISSING`, and the ceiling comparison is **skipped entirely** rather than performed against a guessed kidney. This is a general principle we now apply everywhere: *the verdict must state what we know, and over-claiming in the cautious direction is still over-claiming.*
+**"Should a missing eGFR block or hold?"** Our first implementation computed a conservative ceiling from the most restrictive renal band and blocked above it. A human rejected this: blocking asserts "this dose is too high", which we do not know. The honest verdict is `HOLD` with `RENAL_DATA_MISSING`, and the ceiling comparison is skipped entirely rather than performed against a guessed kidney. This is a general principle we now apply everywhere: *the verdict must state what we know, and over-claiming in the cautious direction is still over-claiming.*
 
 **"May the renderer use a model?"** We resolved it by noticing that it does not matter. Nothing downstream reads the renderer's output, so a model there cannot affect a verdict. What can affect trust is prose that introduces a claim the adjudication does not contain, so the constraint is conformance, not mechanism: every sentence must resolve to a finding or a fixed template id, and `test_renderer_introduces_no_new_numbers` enforces it.
 
@@ -147,11 +147,11 @@ Three ambiguities cost real argument. The resolutions are the most useful thing 
 
 ### 5.1 Candidates and the weighting argument
 
-We generated five candidates and scored all five against seven criteria. The full table is in `docs/architecture/evaluation-table.md`; the summary is that the deterministic-core design scores 53/60, the single-model-call design 32, the fine-tuned classifier 35, RAG-as-decider 30, and the model panel 24.
+We generated five candidates and scored each against seven criteria. The full table is in `docs/architecture/evaluation-table.md`. The deterministic-core design scores 53/60, the single-model-call design 32, the fine-tuned classifier 35, RAG-as-decider 30, and the model panel 24.
 
-The interesting part is not the ranking, it is the weighting. Our first pass weighted build effort at ×3, which made the cheapest-to-build design competitive. A human rejected the weighting on the grounds that it encoded a fear rather than a value: effort is recoverable with weekends, provability is not recoverable at the end of a semester. Re-weighting to provability ×3, offline-CI ×2, effort ×1 produced a winner that no longer depended on our energy level.
+The weighting mattered more than the ranking. Our first pass weighted build effort at ×3, which made the cheapest-to-build design competitive. A human rejected that: effort is recoverable with weekends, provability is not recoverable at the end of a semester. Re-weighting to provability ×3, offline-CI ×2, effort ×1 produced a winner that no longer depended on our energy level.
 
-We then added a sensitivity table, because a single weighted total is numerology. Under every re-weighting that keeps provability as a criterion at all, the chosen architecture still wins. It loses only when provability is weighted zero *and* recall is weighted ×4 — which is not a scoring change, it is a change of drivers, and the table says so explicitly so that a future team must argue about the driver rather than the score.
+We added a sensitivity table, because a single weighted total is numerology. Under every re-weighting that keeps provability as a criterion, the chosen architecture still wins. It loses only when provability is weighted zero and recall is weighted ×4.  team must argue about the driver rather than the score.
 
 ### 5.2 The authority seam, and where it is enforced
 
@@ -162,7 +162,7 @@ We then added a sensitivity table, because a single weighted total is numerology
 | Structure | the perception layer may not import the judgement layer | `test_no_authority_import` |
 | Result | an `APPROVE` without an explicit pass finding and complete coverage is refused | `test_inv003_result_without_pass_finding_rejected` |
 
-The design rule that made this possible is worth naming: **the contract is the constraint**. A guard that inspects a payload for a verdict field is a second line of defence; the first line is that the type has nowhere to put one. The consequence is that a prompt injection, a model regression, or a future contributor's convenience all hit the same wall.
+The type enforces what a guard would otherwise have to check. A guard that inspects a payload for a verdict field is a second line of defence; the first line is that the type has nowhere to put one. A prompt injection, a model regression and a future contributor's convenience all hit the same wall.
 
 
 ![Figure 1 — where authority stops. The model's output becomes a typed record that has no verdict, severity or dose field; the adjudicator is the only writer of a conclusion.](docs/figures/fig1-authority-seam.png)
@@ -171,11 +171,11 @@ The design rule that made this possible is worth naming: **the contract is the c
 
 ### 5.3 Layered context for the AI component
 
-The extractor receives six layers on every turn: identity (L1), standing constraints (L2), retrieved drug vocabulary (L3), prior turns (L4), resumable state (L5), and the case note (L6). The caps sum to exactly 3000 tokens, which is the cost ceiling in REQ-C-001.
+Every turn gives the extractor six layers: identity (L1), standing constraints (L2), retrieved drug vocabulary (L3), prior turns (L4), resumable state (L5), and the case note (L6). Their caps add up to exactly 3000 tokens, the cost ceiling set in REQ-C-001.
 
-The assembly pipeline is deduplicate → prioritise → budget → compact → assemble. Compaction triggers at 2400 tokens (80% of budget) and proceeds in reverse priority: L4 to the last two turns, then L3 to 40 vocabulary entries, then L5 summarised. L1, L2 and L6 are never compacted — truncating clinical text could drop a medication, and dropping L2 could drop "never emit a verdict".
+The assembly pipeline runs deduplicate, prioritise, budget, compact, assemble. Compaction triggers at 2400 tokens (80% of budget) and proceeds in reverse priority: L4 to the last two turns, then L3 to 40 vocabulary entries, then L5 summarised. L1, L2 and L6 are never compacted, because truncating clinical text could drop a medication and dropping L2 could drop "never emit a verdict".
 
-The critical policy is the one after compaction: **L2 is re-injected verbatim immediately before the task**, and `test_compaction_reinjects_constraints` asserts its presence in the assembled payload. The 80% threshold exists for the same reason: hitting provider-side truncation would silently drop the tail of a prompt, and the tail is where we put the constraints.
+After compaction, L2 is re-injected verbatim immediately before the task, and `test_compaction_reinjects_constraints` asserts its presence in the assembled payload. The 80% threshold exists for the same reason: provider-side truncation would silently drop the tail of a prompt, and the tail is where we put the constraints.
 
 
 ![Figure 2 — six context layers, the 3000-token cap, compaction at 2400, and the re-injection policy for L2.](docs/figures/fig2-context.png)
@@ -184,9 +184,9 @@ The critical policy is the one after compaction: **L2 is re-injected verbatim im
 
 ### 5.4 What we got wrong, and amended
 
-ADR-001 §8 records an amendment rather than an edit. INV-002 originally read "no output may assert a daily dose above the applicable maximum". That sentence is unimplementable: an overdose case asserts exactly that, and must, because reporting the breach is the product. The invariant was passing only because nothing had exercised the overdose path with a valid ceiling.
+ADR-001 §8 records an amendment rather than an edit. INV-002 originally read "no output may assert a daily dose above the applicable maximum". That sentence is unimplementable: an overdose case asserts exactly that, and must, because reporting the breach is the product. The invariant passed only because nothing had exercised the overdose path with a valid ceiling.
 
-It is now two properties — the ceiling in a result must equal the table-derived value (integrity), and an over-ceiling dose must carry an explicit finding (no silent overdose). Both are testable, both are zero-tolerance, and the amendment is appended rather than substituted, so a reader can see we once believed something weaker. An ADR that contains only the final belief is a press release.
+It is now two properties: the ceiling in a result must equal the table-derived value (integrity), and an over-ceiling dose must carry an explicit finding (no silent overdose). Both are testable and both are zero-tolerance. We appended the amendment instead of substituting it, so a reader can see we once believed something weaker. An ADR that contains only the final belief is a press release.
 
 ---
 
@@ -194,7 +194,7 @@ It is now two properties — the ceiling in a result must equal the table-derive
 
 ### 6.1 Roles and the permission model
 
-Three agent roles, because the pipeline has three trust positions. `plan-agent` may read and may write requirements and plans. `build-agent` may write code, tests and prompts. `verify-agent` may write only the review record. The default is **no read and no write**; every path is an explicit whitelist entry.
+Three agent roles, because the pipeline has three trust positions. `plan-agent` may read and may write requirements and plans. `build-agent` may write code, tests and prompts. `verify-agent` may write only the review record. The default is no read and no write; every path is an explicit whitelist entry.
 
 Nine surfaces are human-only: `AGENTS.md`, the blueprint, `Prompt.md`, `.opencode/**`, `.agent/**`, `.github/workflows/**`, `docs/architecture/**`, `docs/code-governance/**`, and `data/rules/**`. The reasoning is one sentence in the permission model and it is the load-bearing sentence of the whole governance design:
 
@@ -233,11 +233,11 @@ Five sessions, thirty marked interventions: 8 REJECT, 9 REDIRECT, 4 CORRECT, 3 I
 
 ### 7.1 Three tiers
 
-Structural verification asks whether the code still matches the architecture: import directions, module-to-element mapping, single-authority sites, permission manifest consistency, and requirement traceability. It is implemented as architectural fitness functions, not as review checklists, because a checklist is a document and a fitness function is a build failure.
+Structural verification asks whether the code still matches the architecture: import directions, module-to-element mapping, single-authority sites, permission manifest consistency, and requirement traceability. We implemented it as architectural fitness functions rather than review checklists, because a checklist is a document and a fitness function is a build failure.
 
-Regression asks whether everything that worked still works. 250 offline tests, no network, no model, 4.6 seconds on the machine we measured. This is deliberately cheap: a suite that takes ten minutes gets run weekly, and a suite that gets run weekly is not a regression suite.
+Regression checks that behaviour which used to work still works. We keep 250 offline tests, with no network and no model, and they take 4.6 seconds on the machine we measured. We kept them quick on purpose: a ten-minute suite only gets run once a week, and a suite that only gets run once a week is no regression suite.
 
-Behavioural verification asks whether quality held: faithfulness ≥ 0.90 and relevance ≥ 0.85 on the frozen set, plus zero invariant violations. We are explicit that these are **proxy metrics** — faithfulness measures whether every advisory sentence traces to a finding, which is a structural property of the renderer, not a clinical judgement about the advisory's usefulness. The human audit (20% of cases per sprint) is what keeps the proxy from drifting; until that audit exists the score means less than it appears to.
+Behavioural verification asks whether quality held: faithfulness ≥ 0.90 and relevance ≥ 0.85 on the frozen set, plus zero invariant violations. These are proxy metrics. Faithfulness measures whether every advisory sentence traces to a finding, a structural property of the renderer, not a clinical judgement about whether the advisory is useful. The human audit (20% of cases per sprint) is what keeps the proxy from drifting; until that audit exists the score means less than it appears to.
 
 ### 7.2 Invariants and the mutation check
 
@@ -267,7 +267,7 @@ Nine defects, zero of them found by reading the implementation looking for bugs.
 | 0013 | human coordination (M3 + M4) | the extractor dropped a second schedule for the same drug, so the daily ceiling was never applied to the total |
 | 0012 | human reviewing PR #1 | a frozen `contracts.py` rewrite passed all six gates by citing the baseline ADR — the gate measured a document that existed, not a decision that was made |
 
-The pattern is the report's central empirical claim: **defects were found by artefacts disagreeing with each other**, not by attention. The gate and the test found the bug before any human read the code, and the human's contribution was to insist the gate was right when the agent proposed adjusting the gate.
+Together these are the report's main empirical finding: defects came from artefacts disagreeing with each other. The gate and the test found bugs before any human read the code. The human's contribution was to insist the gate was right when the agent proposed adjusting it.
 
 ### 7.4 The six gates
 
@@ -291,17 +291,17 @@ All six are self-tested: `test_gates_selftest.py` constructs the violation each 
 
 ## 8. How we optimised the process
 
-Four changes, each triggered by evidence rather than preference, and each with a number attached.
+Four changes, each triggered by evidence, each with a number attached.
 
-**(1) Write the check before the artefact.** The schema gate existed before the registry was finished, and rejected a requirement whose criterion was `"p95 <= 50 ms."` — a number with no measurement site. The lesson generalised into a rule: an artefact written before its check is defended rather than examined, because the author is now the artefact's advocate. Our later artefacts — invariants, traceability, permission model — were all written with their check already in place, and all of them failed on the first run. That is the intended behaviour.
+(1) Write the check before the artefact. The schema gate existed before the registry was finished, and rejected a requirement whose criterion was `"p95 <= 50 ms."`: a number with no measurement site. We turned that into a rule. An artefact written before its check gets defended rather than examined, because the author is now its advocate. Our later artefacts (invariants, traceability, permission model) were all written with their check already in place, and all of them failed on the first run. That was the intended behaviour.
 
-**(2) Count the criterion.** "Default deny is configured" is satisfied by a configuration file with a bug in it. "12 non-whitelisted paths across 3 roles produce 12 denials" is satisfied only by working code; it found the `lstrip` bypass within one run. We now prefer criteria with a count, a corpus, or an enumerated list, because a counted criterion cannot be satisfied by vibes.
+(2) Count the criterion. "Default deny is configured" is satisfied by a configuration file with a bug in it. "12 non-whitelisted paths across 3 roles produce 12 denials" is satisfied only by working code; it found the `lstrip` bypass within one run. We now prefer criteria with a count, a corpus or an enumerated list, because a counted criterion cannot be satisfied by vibes.
 
-**(3) Rewrite invariants until a test can fail on them.** Our first INV-001 said "handle unknown drugs safely", which no test can fail. Rewriting it as "verdict ≠ APPROVE, must carry COVERAGE_GAP" immediately produced a failing test, which found a real approval of an unassessed pair. The rule we adopted — *an invariant without a failing-test answer goes back for redesign* — is now step 5 of the ADR's design process, because it is a design activity, not a testing one.
+(3) Rewrite invariants until a test can fail on them. Our first INV-001 said "handle unknown drugs safely", which no test can fail. Rewriting it as "verdict ≠ APPROVE, must carry COVERAGE_GAP" immediately produced a failing test, which found a real approval of an unassessed pair. The rule we adopted, *an invariant without a failing-test answer goes back for redesign*, is now step 5 of the ADR's design process. It is a design activity, not a testing one.
 
-**(4) Mutation-check as a standing step.** Deleting the coverage branch failed one test; disabling the authority check failed ten. Three minutes of work converts "we have a test suite" into "these guards are load-bearing" — and, where a guard was left unchecked, into "this one has not been shown to matter yet". The second half of that sentence is what we would have lost without the check.
+(4) Mutation-check as a standing step. Deleting the coverage branch failed one test; disabling the authority check failed ten. Three minutes of work turns "we have a test suite" into "these guards are load-bearing". Where a guard was left unchecked, it also tells us that guard has not been shown to matter yet. That second finding is what we would have lost without the check.
 
-One process change we tried and abandoned: a weekly 30-minute "agent review" meeting to read the week's transcripts together. It became a status meeting, because nobody had re-read the transcript beforehand. We replaced it with a rule that the person who drove the session writes two lines into the bug diary or the debt register the same day, and the meeting disappeared. The lesson was that the artefact has to be written at the moment of the work; a meeting to reconstruct it later does not happen.
+One process change we tried and abandoned: a weekly 30-minute "agent review" meeting to read the week's transcripts together. It became a status meeting, because nobody had re-read the transcript beforehand. We replaced it with a rule that the person who drove the session writes two lines into the bug diary or the debt register the same day, and the meeting disappeared. The artefact has to be written at the moment of the work; a meeting to reconstruct it later does not happen.
 
 ---
 
@@ -364,29 +364,27 @@ One case where co-evolution failed and we fixed it by policy: the evaluation set
 
 ## 11. What human oversight caught that the agent did not
 
-This is the section the specification asks for directly, so it gets specifics rather than a claim.
+A "fix" that preserved the defect. When the missing-eGFR case produced a false `BLOCK`, the agent proposed keeping the conservative ceiling and downgrading the verdict to `HOLD`. That only changes the label: the fabricated ceiling remains, and the system still believes something it cannot know. A human redirected it to skip the comparison entirely. The agent had optimised for a verdict that looks safer rather than a system that knows less. An agent will reproduce this failure in any safety-adjacent domain: the cautious-sounding choice is not always the honest one.
 
-**A "fix" that preserved the defect.** When the missing-eGFR case produced a false `BLOCK`, the agent's proposal was to keep computing a conservative ceiling and downgrade the verdict to `HOLD`. That is a fix in appearance only: the fabricated ceiling remains, and the system still believes something it cannot know. A human redirected it to skip the comparison entirely. The agent had optimised for the verdict looking safer rather than for the system knowing less. This is the most instructive failure in the project, because it is the one an agent will reproduce in any safety-adjacent domain: **the cautious-sounding choice is not always the honest one.**
+An invariant that could not fail. The agent wrote "no output may assert a dose above the ceiling" and it passed every test we had, because no test exercised the overdose path with a valid ceiling. A human noticed the sentence was unimplementable: an overdose case must assert an over-ceiling dose. The invariant was restated as two properties. An invariant that has never failed is not evidence of correctness. It only shows that nothing has tried.
 
-**An invariant that could not fail.** The agent wrote "no output may assert a dose above the ceiling" and it passed every test we had, because no test exercised the overdose path with a valid ceiling. A human noticed the sentence was unimplementable — an overdose case must assert an over-ceiling dose — and forced the restatement into two properties. The general form: an invariant that has never failed is not evidence of correctness, it is evidence that nothing has tried.
+An honest status table. The agent's first README described D5 (transcripts) as "to be filled", which implies a minor gap. A human changed it to "not satisfied", because a scaffold cannot contain supervision that never happened. The problem was a plausible, well-formatted claim of near-completeness, not a wrong line of code.
 
-**An honest status table.** The agent's first README described D5 (transcripts) as "to be filled", which implies a minor gap. A human changed it to "not satisfied", because a scaffold cannot contain supervision that never happened. This is the failure mode of agentic work in one example: not a wrong line of code, but a plausible, well-formatted claim of near-completeness.
+A seal broken quietly. A teammate's PR rewrote `contracts.py`, a file our governance marks frozen, and all six gates passed. Gate 1 asked whether the ledger *named* an ADR, and `core` had carried ADR-001 since the baseline. A human reading the PR's file list asked the question the gate did not: *where is the decision?* That is BUG-0012, and gate 1 now measures freshness instead of presence. The change itself was good. What it exposed is that the control guarding the seam could not fail.
 
-**A seal broken quietly.** A teammate's PR rewrote `contracts.py` — a file our own governance marks frozen — and all six gates passed, because gate 1 asked whether the ledger *named* an ADR, and `core` had carried ADR-001 since the baseline. A human reading the PR's file list asked the question the gate did not: *where is the decision?* That is BUG-0012, and gate 1 now measures freshness instead of presence. The change itself was good; what it exposed is that the control guarding the seam could not fail.
-
-**What the agent caught that we did not:** a path-normalisation bypass nobody would have found by reading (`lstrip("./")`), and a latent collision between an invariant and normal operation that only surfaced when a fixture hit the overdose path. We are not claiming supervision is sufficient without the machines, and the reverse is obviously false too. The useful finding is the division of labour: **machines found defects in the code, humans found defects in the claims.**
+What the agent caught that we did not: a path-normalisation bypass nobody would have found by reading (`lstrip("./")`), and a collision between an invariant and normal operation that only surfaced when a fixture hit the overdose path. Neither supervision nor machines are sufficient on their own. The useful finding is the division of labour: machines found defects in the code, humans found defects in the claims.
 
 ---
 
 ## 12. Limitations and threats to validity
 
-- **The rule tables are teaching data.** 18 drugs, 40 assessed pairs, ceilings chosen to make logic testable. They are internally consistent and version-hashed; they are not clinically validated. Every safety claim in this report is a claim about the engine.
-- **Semantic scores are proxies.** Faithfulness 1.0 means every advisory sentence traces to a finding. It does not mean a clinician would find the advisory useful. The human audit that would make the score meaningful has not yet run.
-- **25 self-written cases** over-represent the HOLD family and under-represent the APPROVE family (DEBT-11). Gate 4 is a regression suite, not a sample of reality.
-- **The live extractor is unmeasured.** All accuracy evidence comes from the deterministic heuristic used offline. The model path is wired, prompt-versioned and gated, but its accuracy field is `null` until the first live sprint.
-- **The transcripts are reconstructions**, not live capture, and require member certification. This is stated in each file, in the transcripts README, in the review memo and here.
-- **Three of the five mutation checks were run by one member, once** (DEBT-09, repaid 2026-11-23). The evidence is a pytest transcript in `docs/mutation-results-M4.md`, not an independent re-run; a second pair of hands has read it, not reproduced it.
-- **Contribution hours are a declared convention, not a measurement.** We agreed an equal fifty hours each, so the section records a decision rather than observed time. A team that tracked hours honestly could say more; we chose not to invent a difference.
+- The rule tables are teaching data: 18 drugs, 40 assessed pairs, ceilings chosen to make the logic testable. They are internally consistent and version-hashed, but not clinically validated. Every safety claim here is a claim about the engine.
+- Semantic scores are proxies. Faithfulness 1.0 means every advisory sentence traces to a finding. It does not mean a clinician would find the advisory useful. The human audit that would make the score meaningful has not run yet.
+- The 25 self-written cases over-represent HOLD and under-represent APPROVE (DEBT-11). Gate 4 is a regression suite, not a sample of reality.
+- The live extractor is unmeasured. All accuracy evidence comes from the deterministic heuristic used offline. The model path is wired, prompt-versioned and gated, but its accuracy field is `null` until the first live sprint.
+- The transcripts are reconstructions, not live capture, and require member certification. This is stated in each file, in the transcripts README, in the review memo and here.
+- Three of the five mutation checks were run by one member, once (DEBT-09, repaid 2026-11-23). The evidence is a pytest transcript in `docs/mutation-results-M4.md`, not an independent re-run; a second pair of hands read it but did not reproduce it.
+- Contribution hours are a declared convention, not a measurement. We agreed on fifty hours each, so the contribution table records a decision rather than observed time. A team that tracked hours could say more; we chose not to invent a difference.
 
 ---
 
